@@ -44,6 +44,7 @@
         <xs:element minOccurs="0" name="scale" type="xs:boolean" />
         <xs:element minOccurs="0" name="width" type="xs:int" />
         <xs:element minOccurs="0" name="height" type="xs:int" />
+        <xs:element minOccurs="0" name="FPS" type="xs:float" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

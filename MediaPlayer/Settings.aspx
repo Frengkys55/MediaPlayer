@@ -59,7 +59,7 @@
                     CssClass="w3-panel">
                     <header>
                         <h4>
-                            Average frame rate (Experimental)
+                            Frame rate override (Experimental)
                         </h4>
                     </header>
                     <div class="w3-container">
@@ -70,13 +70,13 @@
                             ID="lstFrameRate"
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
-                            <asp:ListItem Selected="True">
-                                Default
+                            <asp:ListItem>
+                                No override
                             </asp:ListItem>
                             <asp:ListItem>
                                 24fps
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Selected="True">
                                 30fps
                             </asp:ListItem>
                             <asp:ListItem>
@@ -144,6 +144,29 @@
                     </div>
                 </asp:Panel>
                 <asp:Panel
+                    ID="pnlPlayMode"
+                    runat="server"
+                    CssClass="w3-panel">
+                    <header>
+                        <h4>
+                            Play mode (Experimental)
+                        </h4>
+                    </header>
+                    <div class="w3-container">
+                        <asp:DropDownList
+                            ID="lstPlayMode"
+                            runat="server"
+                            CssClass="w3-input w3-border w3-border-theme">
+                            <asp:ListItem Selected="True">
+                                Use setInterval
+                            </asp:ListItem>
+                            <asp:ListItem>
+                                Use requestAnimationFrame
+                            </asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </asp:Panel>
+                <asp:Panel
                     ID="pnlSettingsConfirmation"
                     runat="server"
                     CssClass="w3-panel">
@@ -170,6 +193,7 @@
                         Text="Cancel"
                         OnClick="btnCancelSettings_Click" />
                 </asp:Panel>
+                
             </div>
         </div>
     </form>

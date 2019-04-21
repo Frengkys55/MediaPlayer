@@ -85,7 +85,7 @@ namespace MediaPlayer.VideoProcessingService {
         string GetFramesList(string videoName, string sessionID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ProcessVideo2", ReplyAction="http://tempuri.org/IService1/ProcessVideo2Response")]
-        string[] ProcessVideo2(string location, bool withAudio, string ID, bool scale, int width, int height);
+        string[] ProcessVideo2(string location, bool withAudio, string ID, bool scale, int width, int height, float FPS);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CheckEndFrame", ReplyAction="http://tempuri.org/IService1/CheckEndFrameResponse")]
         string CheckEndFrame(string videoURL);
@@ -129,8 +129,8 @@ namespace MediaPlayer.VideoProcessingService {
             return base.Channel.GetFramesList(videoName, sessionID);
         }
         
-        public string[] ProcessVideo2(string location, bool withAudio, string ID, bool scale, int width, int height) {
-            return base.Channel.ProcessVideo2(location, withAudio, ID, scale, width, height);
+        public string[] ProcessVideo2(string location, bool withAudio, string ID, bool scale, int width, int height, float FPS) {
+            return base.Channel.ProcessVideo2(location, withAudio, ID, scale, width, height, FPS);
         }
         
         public string CheckEndFrame(string videoURL) {

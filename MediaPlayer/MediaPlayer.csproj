@@ -182,6 +182,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="DataClass.cs" />
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -211,6 +212,8 @@
     <Compile Include="Player.aspx.designer.cs">
       <DependentUpon>Player.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ProcessingClass.cs" />
+    <Compile Include="Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.aspx.cs">
       <DependentUpon>Settings.aspx</DependentUpon>
@@ -220,6 +223,7 @@
       <DependentUpon>Settings.aspx</DependentUpon>
     </Compile>
     <Compile Include="SiteSettings.cs" />
+    <Compile Include="Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

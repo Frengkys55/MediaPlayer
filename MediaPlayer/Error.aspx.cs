@@ -14,9 +14,34 @@ namespace MediaPlayer
         {
             if (Request.QueryString.Count != 0)
             {
+                bool urlHasBeenSet = false;
                 if (Request.QueryString["id"] == "1")
                 {
-                    lbError.Text = "Couldn't play. The browser does not support this kind of thins (for now)...";
+                    lbError.Text = "Couldn't play. The browser doesn't support this kind of things (for now)...";
+                }
+                else if (Request.QueryString["id"] == "10")
+                {
+                    lbError.Text = "There's an error that happening on the service (WCFAIOProcessor)";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+                    urlHasBeenSet = true;
+                }
+                else if (Request.QueryString["id"] == "20")
+                {
+                    lbError.Text = "There's an error that happening on the service (MediaPlayer)";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+                    urlHasBeenSet = true;
+                }
+                else if (Request.QueryString["id"] == "21")
+                {
+                    lbError.Text = "Can't load your info. Something is wrong...";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+                    urlHasBeenSet = true;
+                }
+                else if (Request.QueryString["id"] == "22")
+                {
+                    lbError.Text = "Can't load your settings. Something is wrong...";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+                    urlHasBeenSet = true;
                 }
                 else if (Request.QueryString["id"] == "50")
                 {
@@ -25,14 +50,20 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "96")
                 {
                     lbError.Text = "well.... you just found a not yet implemented function...";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime_uninterested.png";
+                    urlHasBeenSet = true;
                 }
                 else if (Request.QueryString["id"] == "97")
                 {
                     lbError.Text = "hmmm.... where did the id go?";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime_confuse.png";
+                    urlHasBeenSet = true;
                 }
                 else if (Request.QueryString["id"] == "98")
                 {
                     lbError.Text = "hmmm.... where did the url go?";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime_confuse.png";
+                    urlHasBeenSet = true;
                 }
                 else if (Request.QueryString["id"] == "99")
                 {
@@ -42,8 +73,17 @@ namespace MediaPlayer
                 {
                     lbError.Text = "This is an error page....";
                 }
-                errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
-    }
+                else
+                {
+                    lbError.Text = "hmmmmmmmm....";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime_uninterested.png";
+                    urlHasBeenSet = true;
+                }
+                if (!urlHasBeenSet)
+                {
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+                }
+            }
             else
             {
                 lbError.Text = "hmm? are you lost?<br />let me take you <a href=\"Index.aspx\">home</a>";

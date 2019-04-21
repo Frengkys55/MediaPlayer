@@ -22,23 +22,44 @@
 
         <div class="w3-panel" id="pnlVideo">
             <div class="w3-container w3-border w3-border-theme w3-center">
-                <canvas
+                <%--<canvas
                     runat="server"
                     id="playerWindow"
                     class=" w3-border
-                    w3-border-theme"></canvas>
+                    w3-border-theme"
+                    style="visibility:hidden">
+                </canvas>
+                 --%>>
+                <img
+                    id="frame1"
+                    alt="Player window"
+                    src="http://toshiba/Sources/Images/Under_Construction/UnderConstruction.png"
+                    style="display:normal; text-align:center" />
+                <!--For double buffer coniguration (experimental)-->
+                <img
+                    id="frame2"
+                    alt="Player window"
+                    src="http://toshiba/Sources/Images/Under_Construction/UnderConstruction.png"
+                    style="display:none"
+                    class="w3-center" />
+                <!--For triple buffer configuration (not yet supported)-->
+                <img
+                    id="frame3"
+                    alt="Player window"
+                    src="http://toshiba/Sources/Images/Under_Construction/UnderConstruction.png"
+                    style="display:none;" />
             </div>
             <div class="w3-white">
                 <div class="w3-theme" style="width: 50%; height: 5px"></div>
             </div>
             <div class="w3-container w3-theme-d5">
                 <div class="w3-bar">
-                    <button class="w3-bar-item w3-button w3-hover-white buttonHover" onclick=Play()><img class="buttonChild" src="Sources/Images/Controls/noun_play_410051.png" alt="MediaPlayer" height="20px" /></button>
+                    <button class="w3-bar-item w3-button w3-hover-white buttonHover" onclick="Play"><img class="buttonChild" src="Sources/Images/Controls/noun_play_410051.png" alt="MediaPlayer" height="20px" /></button>
                     <div class="w3-bar-item w3-right">0:00:00</div>
                 </div>
             </div>
         </div>
-        <div id="pnlError" class="Position-Screen-Middle w3-display-container" style="visibility:hidden">
+        <div id="pnlError" class="Position-Screen-Middle w3-display-container" style="display:none">
             <div class="w3-display-middle">
                 <h1>
                     <asp:Label
@@ -52,7 +73,7 @@
         
         <div hidden="hidden">
             <div class="" style="width:640px;z-index:2">
-                <img id="frame1" alt="frame1" src="http://toshiba/Sources/Images/GIF/loading.gif" style="width:640px; position:absolute" class="w3-border w3-border-theme" />
+                <img id="frame" alt="frame1" src="http://toshiba/Sources/Images/GIF/loading.gif" style="width:640px; position:absolute" class="w3-border w3-border-theme" />
                 <audio id="audio" src='<%= VideoURL %>/audio.mp3'></audio>
             </div>
         </div>
@@ -108,7 +129,7 @@
 
             // Button functions
             function Play() {
-                window.location.href = "Error.aspx?id=50";
+                alert("Player");
             }
         </script>
 
@@ -285,6 +306,104 @@
       
                 requestAnimationFrame(ProcessFrame);
             }--%>
+        </script>
+
+        <script type="text/javascript">
+            // Player settings
+            
+            /*
+             * Frame buffer mode
+             * 0 = Single buffer
+             * 1 = Double buffer (Experimental)
+             * 3 = Triple buffer (Not yet supported)
+             */
+            var frameBufferMode = 0;
+            var currentBuffer = 0;
+            var nextBuffer = 0;
+
+            /*
+             * Frame rate override
+             * 0 = No override
+             * 1 = 24 fps
+             * 2 = 30 fps
+             * 3 = 60 fps
+             * 4 = 120 fps
+             */
+            var framerateOverride = 0;
+
+            /*
+             * Frame preload
+             * 0 = Enable preload
+             * 1 = Disable preload
+             */
+            var framePreload = true;
+
+            /*
+             * Player mode
+             * 0 = Using setInterval()
+             * 1 = Using requestAnimationFrame();
+             */
+            var playMode = 0;
+            var animationId;
+
+            // Video settings
+            var videoLocation;
+            var audioLocation;
+            var videoFrameRate = 0;
+            var currentWorkingFrame;
+            var startFrame;
+            var endFrame;
+            var videoWidth;
+            var videoHeight;
+            var audioLevel;
+
+            // Application functions ]
+            //--------------------------------------------
+            // Video playing function
+            function ProcessVideo() {
+                
+                if (frameBufferMode === 0) {
+                    
+                }
+                else if (frameBufferMode === 1) {
+
+                }
+                else if (frameBufferMode === 2) {
+
+                }
+
+                // Switch buffer
+
+            }
+
+            // Frame switcher (If enabling multiple buffer)
+            function SwitchBuffer() {
+                if (currentBuffer === 0) { // Single buffer
+                    currentBuffer = 1;
+                }
+                else if (currentBuffer === 1) { // Double buffer
+                    currentBuffer = 2;
+                }
+                else if (currentBuffer === 2) { // Triple buffer (Not yet supported)
+                    currentBuffer = 0;
+                }
+            }
+
+
+            // Player function
+            function Play() {
+                animationId = requestAnimationFrame(ProcessVideo);
+            }
+
+            function Pause() {
+                if (playMode === 1) {
+                    cancelAnimationFrame(id);
+                }
+            }
+            function Stop() {
+                cancelAnimationFrame(id);
+                currentWorkingFrame = 0;
+            }
         </script>
     </form>
 </body>

@@ -8,33 +8,51 @@ namespace MediaPlayer
 {
     public static class HelperClass
     {
-        public static bool WriteLog(string sessionID,  VideoPlayerSettings userSettings, string connectionString)
+        #region Checking
+
+        #region User checking
+        public static bool CheckUser(string database, string userTable, string sessionID, string connectionString)
         {
-            #region Preparation
-            // SettingsInformation
-            string ID = string.Empty;
-            string userSettingsID = string.Empty;
+            return Peralatan.PeriksaDataDatabase(sessionID, "SessionID", database, userTable, connectionString);
+        }
+        #endregion User checking
 
+        #region Settings checking
+        public static bool CheckSettings(string database, string userTable, string settingsTable, string sessionID, string connectionString)
+        {
+            string userID = Peralatan.MintaDataDatabase(database, "UserID", userTable, "SessionID", sessionID, connectionString);
+            return Peralatan.PeriksaDataDatabase(userID, "UserID", database, settingsTable, connectionString);
+        }
+        #endregion Settings checking
+        #endregion Checking
 
+        public static bool AddUser(string database, string userTable, string sessionID, string connectionString)
+        {
             string SQLCommand = string.Empty;
-
-            #endregion Preparation
+            SQLCommand += "USE " + database + ";";
+            SQLCommand += "INSERT INTO " + userTable + " (SessionID) VALUES ('" + sessionID + "');";
 
             return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
         }
-        public static bool CreateNewSettings(string database, string table, string connectionString)
+        
+        public static bool CreateNewSettings(string database, string table, string sessionID, string connectionString)
         {
             VideoPlayerSettings playerSettings = new VideoPlayerSettings();
             playerSettings.bufferMode = BufferMode.SingleBuffer;
-            playerSettings.frameRate = FrameRate.Default;
-            playerSettings.resolution = Resolution.Original;
-            playerSettings.preloadFrames = PreloadFrames.DisablePreload;
+            playerSettings.frameRate = FrameRate._30fps;
+            playerSettings.resolution = Resolution.SD_480p;
+            playerSettings.preloadFrames = PreloadFrames.EnablePreload;
+
+            string userID = Peralatan.MintaDataDatabase(database, "UserID", "SessionInfo", "SessionID", sessionID, connectionString);
 
             string SQLCommand = string.Empty;
+            SQLCommand += "USE " + database + ";";
+            SQLCommand += "INSERT INTO " + table + " (UserID, VideoWidth, VideoHeight, FrameRate, BufferMode, PreloadFrames) VALUES (";
+            SQLCommand += userID + ", 0, " + (int)playerSettings.resolution + ", " + (float)playerSettings.frameRate + ", " + (int)playerSettings.bufferMode + ", " + (int)playerSettings.preloadFrames + ");";
             
             return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
         }
-
+        
         public static void UpdateSettings(VideoPlayerSettings settings, string database, string table, string connectionString)
         {
             string SQLCommand = string.Empty;
@@ -82,35 +100,44 @@ namespace MediaPlayer
             return Peralatan.UbahDataDatabase(SQLCommand, connectionString);
         }
 
+
         public static VideoPlayerSettings ReadPlayerSettings(string sessionID, string database, string table, string connectionString)
         {
             VideoPlayerSettings UserSettings = new VideoPlayerSettings();
 
-            // Read userID
-            string userID = Peralatan.MintaDataDatabase(database, "ID", table, "SessionID", sessionID, connectionString);
+            string userID = Peralatan.MintaDataDatabase(database, "UserID", "SessionInfo", "SessionID", sessionID, connectionString);
 
-            #region Video resolution
-            if (Peralatan.MintaDataDatabase(database, "VideoResolution", table, "UserID", userID, connectionString) == "1")
+            #region Settings checking
+
+            //if (!CheckSettings(database, "SessionInfo", table, sessionID, connectionString));
+            //{
+            //    CreateNewSettings(database, table, sessionID, connectionString);
+            //}
+            #endregion Settings checking
+
+            #region Video 
+            string receivedHeight = Peralatan.MintaDataDatabase(database, "VideoHeight", table, "UserID", userID, connectionString);
+            if (receivedHeight == ((int)Resolution.Original).ToString())
             {
                 UserSettings.resolution = Resolution.Original;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoResolution", table, "UserID", userID, connectionString) == "2")
+            else if (receivedHeight == ((int)Resolution.SD_360p).ToString())
             {
                 UserSettings.resolution = Resolution.SD_360p;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoResolution", table, "UserID", userID, connectionString) == "3")
+            else if (receivedHeight == ((int)Resolution.SD_480p).ToString())
             {
                 UserSettings.resolution = Resolution.SD_480p;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoResolution", table, "UserID", userID, connectionString) == "4")
+            else if (receivedHeight == ((int)Resolution.HD_720p).ToString())
             {
                 UserSettings.resolution = Resolution.HD_720p;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoResolution", table, "UserID", userID, connectionString) == "5")
+            else if (receivedHeight == ((int)Resolution.HD_1080p).ToString())
             {
                 UserSettings.resolution = Resolution.HD_1080p;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoResolution", table, "UserID", userID, connectionString) == "6")
+            else if (receivedHeight == ((int)Resolution.SUHD_1440p).ToString())
             {
                 UserSettings.resolution = Resolution.SUHD_1440p;
             }
@@ -121,23 +148,24 @@ namespace MediaPlayer
             #endregion Video resolution
 
             #region Video framerate
-            if (Peralatan.MintaDataDatabase(database, "VideoFrameRate", table, "UserID", userID, connectionString) == "0")
+            string receivedFrameRate = Peralatan.MintaDataDatabase(database, "FrameRate", table, "UserID", userID, connectionString);
+            if (receivedFrameRate == ((int)FrameRate.Default).ToString())
             {
                 UserSettings.frameRate = FrameRate.Default;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoFrameRate", table, "UserID", userID, connectionString) == "1")
+            else if (receivedFrameRate == ((int)FrameRate._24fps).ToString())
             {
                 UserSettings.frameRate = FrameRate._24fps;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoFrameRate", table, "UserID", userID, connectionString) == "2")
+            else if (receivedFrameRate == ((int)FrameRate._30fps).ToString())
             {
                 UserSettings.frameRate = FrameRate._30fps;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoFrameRate", table, "UserID", userID, connectionString) == "3")
+            else if (receivedFrameRate == ((int)FrameRate._60fps).ToString())
             {
                 UserSettings.frameRate = FrameRate._60fps;
             }
-            else if (Peralatan.MintaDataDatabase(database, "VideoFrameRate", table, "UserID", userID, connectionString) == "4")
+            else if (receivedFrameRate == ((int)FrameRate._120fps).ToString())
             {
                 UserSettings.frameRate = FrameRate._120fps;
             }
@@ -148,15 +176,16 @@ namespace MediaPlayer
             #endregion Video framerate
 
             #region Video buffer mode
-            if (Peralatan.MintaDataDatabase(database, "BufferMode", table, "UserID", userID, connectionString) == "0")
+            string receivedBufferMode = Peralatan.MintaDataDatabase(database, "BufferMode", table, "UserID", userID, connectionString);
+            if (receivedBufferMode == ((int)BufferMode.SingleBuffer).ToString())
             {
                 UserSettings.bufferMode = BufferMode.SingleBuffer;
             }
-            else if (Peralatan.MintaDataDatabase(database, "BufferMode", table, "UserID", userID, connectionString) == "1")
+            else if (receivedBufferMode == ((int)BufferMode.DoubleBuffer).ToString())
             {
                 UserSettings.bufferMode = BufferMode.DoubleBuffer;
             }
-            else if (Peralatan.MintaDataDatabase(database, "BufferMode", table, "UserID", userID, connectionString) == "2")
+            else if (receivedBufferMode == ((int)BufferMode.TripleBuffer).ToString())
             {
                 UserSettings.bufferMode = BufferMode.TripleBuffer;
             }
@@ -167,11 +196,12 @@ namespace MediaPlayer
             #endregion Video buffer mode
 
             #region Video preload frames
-            if (Peralatan.MintaDataDatabase(database, "PreloadFrames", table, "UserID", userID, connectionString) == "0")
+            string receivedPreload = Peralatan.MintaDataDatabase(database, "PreloadFrames", table, "UserID", userID, connectionString);
+            if (receivedPreload == ((int)PreloadFrames.DisablePreload).ToString())
             {
                 UserSettings.preloadFrames = PreloadFrames.DisablePreload;
             }
-            else if (Peralatan.MintaDataDatabase(database, "PreloadFrames", table, "UserID", userID, connectionString) == "1")
+            else if (receivedPreload == ((int)PreloadFrames.EnablePreload).ToString())
             {
                 UserSettings.preloadFrames = PreloadFrames.EnablePreload;
             }
@@ -256,5 +286,21 @@ namespace MediaPlayer
             
             return result;
         }
+
+        public static bool WriteLog(string sessionID, VideoPlayerSettings userSettings, string connectionString)
+        {
+            #region Preparation
+            // SettingsInformation
+            string ID = string.Empty;
+            string userSettingsID = string.Empty;
+
+
+            string SQLCommand = string.Empty;
+
+            #endregion Preparation
+
+            return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
+        }
+
     }
 }  

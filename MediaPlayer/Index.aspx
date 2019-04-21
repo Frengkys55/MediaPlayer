@@ -6,6 +6,19 @@
 <head runat="server">
     <link rel="stylesheet" href="Sources/CSS/W3S/w3.css" />
     <link rel="stylesheet" href="Sources/CSS/Custom.css" />
+
+    <style>
+        .Position-Screen-Middle {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height:<%= panelHeight %>;
+        }
+    </style>
     
     <title>Media Player</title>
 </head>
@@ -92,7 +105,7 @@
                                 <asp:Button
                                     ID="btnSettings"
                                     runat="server"
-                                    Text="Settings"
+                                    Text="v"
                                     CssClass="  w3-button
                                                 w3-white
                                                 w3-hover-theme
@@ -158,6 +171,32 @@
                         </div>
                     </div>
                 </asp:Panel>
+                <asp:Panel
+                    ID="pnlPlaySettings"
+                    runat="server"
+                    Visible="false">
+                    <asp:Panel
+                        ID="pnlURLPlaySettings"
+                        runat="server"
+                        CssClass="w3-row">
+                        <div class="w3-col s2 w3-right">
+                            <asp:Button
+                                ID="btnMoreSettings"
+                                runat="server"
+                                Text="More"
+                                Width="120px"
+                                CssClass="  w3-button
+                                            w3-border
+                                            w3-border-theme
+                                            w3-white
+                                            w3-hover-theme"
+                                OnClick="btnMoreSettings_Click" />
+                        </div>
+                        <div class="w3-col w3-rest w3-red">
+
+                        </div>
+                    </asp:Panel>
+                </asp:Panel>
             </div>
         </div>
 
@@ -187,13 +226,13 @@
         <script src="http://toshiba/Sources/JavaScript/jquery.js" type="text/javascript"></script>
         <script type="text/javascript" src="http://toshiba/Sources/JavaScript/jquery.easing.1.3.js"></script>
         <script>
-            var img1 = "url('http://toshiba/Sources/Images/Other/GunsGirlZ.jpg') no-repeat center center fixed";
-            var img2 = "url('http://toshiba/Sources/Images/Other/HonkaiGakuen.jpg') no-repeat center center fixed";
-            var img3 = "url('http://toshiba/Sources/Images/Other/Vocaloid (4).png') no-repeat center center fixed";
-            var img4 = "url('http://toshiba/Sources/Images/Other/Honkai Gakuen(3).jpg') no-repeat center center fixed";
-            var img5 = "url('http://toshiba/Sources/Images/Other/YuYuYu.jpg') no-repeat center center fixed";
-            var img6 = "url('http://toshiba/Sources/Images/Other/Nekopara(11).png') no-repeat center center fixed";
-            var img7 = "url('http://toshiba/Sources/Images/Other/anime-girl-gunner-ak-12-winter-silverhair-anime-2529.jpg') no-repeat center center fixed";
+            var img1 = "url('" + '<%= backgroundImage1 %>' + "') no-repeat center center fixed";
+            var img2 = "url('" + '<%= backgroundImage2 %>' + "') no-repeat center center fixed";
+            var img3 = "url('" + '<%= backgroundImage3 %>' + "') no-repeat center center fixed";
+            var img4 = "url('" + '<%= backgroundImage4 %>' + "') no-repeat center center fixed";
+            var img5 = "url('" + '<%= backgroundImage5 %>' + "') no-repeat center center fixed";
+            var img6 = "url('" + '<%= backgroundImage6 %>' + "') no-repeat center center fixed";
+            var img7 = "url('" + '<%= backgroundImage7 %>' + "') no-repeat center center fixed";
             var bgNumber = 1;
             
             setInterval(function () {

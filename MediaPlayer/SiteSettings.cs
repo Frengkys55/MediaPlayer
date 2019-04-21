@@ -26,26 +26,26 @@ namespace MediaPlayer
     }
     public enum Resolution
     {
-        Original = 1,
-        SD_360p,
-        SD_480p,
-        HD_720p,
-        HD_1080p,
-        SUHD_1440p,
-        Other
+        Original = 0,
+        SD_360p = 360,
+        SD_480p = 480,
+        HD_720p = 720,
+        HD_1080p = 1080,
+        SUHD_1440p = 1440,
+        Other = 7
     }
     public enum FrameRate
     {
-        Default,
-        _24fps,
-        _30fps,
-        _60fps,
-        _120fps
+        Default = 0,
+        _24fps = 24,
+        _30fps = 30,
+        _60fps = 60,
+        _120fps = 120
     }
     public enum PreloadFrames
     {
-        EnablePreload = 1,
-        DisablePreload
+        DisablePreload = 0,
+        EnablePreload = 1
     }
 
     public enum AccessMode
@@ -78,4 +78,5 @@ namespace MediaPlayer
         DateTime VideoDuration;
         bool withAudio;
     }
+
 }

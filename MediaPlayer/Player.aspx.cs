@@ -79,7 +79,7 @@ namespace MediaPlayer
             videoWidth = Convert.ToInt32(Request.QueryString["videowidth"]);
             videoHeight = 480;
             // Configuring canvas
-            playerWindow.Attributes.Add("style", "width:" + videoWidth + "px; height:" + videoHeight + "px;");
+            //playerWindow.Attributes.Add("style", "width:" + videoWidth + "px; height:" + videoHeight + "px;");
         }
     }
 }
