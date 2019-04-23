@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -16,6 +17,8 @@ namespace MediaPlayer
     #endregion Function enum
 
     #region Video enums
+
+    [Obsolete("Use Resolution in SiteSettings.cs instead", true)]
     public enum VideoResolution
     {
         Original,
@@ -27,6 +30,8 @@ namespace MediaPlayer
         FHD_1080p = 1080,
         QHD_1440p = 1440
     }
+
+    [Obsolete("Use Resolution in SiteSettings.cs instead", true)]
     public enum VideoFrameRate
     {
         Original = 0,
@@ -59,13 +64,14 @@ namespace MediaPlayer
 
 
     #region Video informations
-
+    #region From "Processor.cs" in WCFAIOProcessor service
     public struct ProcessedVideo
     {
         public string videoSource;
         public string localAccessLocation;
         public string networkAccessLocation;
         public string videoName;
+        public string processedVideoName;
         public double videoDuration;
         public double frameRate;
         public int startFrame;
@@ -85,11 +91,15 @@ namespace MediaPlayer
         public bool scale { set; get; }
         public float fps { set; get; }
     }
-    
+
+    #endregion From "Processor.cs" in WCFAIOProcessor service
+
     public struct VideoProcessingSetting
     {
-        public VideoResolution processedVideoResolution;
-        public VideoFrameRate frameRate;
+        public Resolution processedVideoResolution;
+        public int height; // if processedVideoResolution is set to Custom
+        public FrameRate frameRate;
+        public float FPS; // if frameRate is set to Custom
         public AudioProcessing audioProcessing;
     }
 
@@ -99,12 +109,17 @@ namespace MediaPlayer
         public int VideoHeight;
         public bool ContainAudio;
     }
-
-    public struct VideoProcessingInformation
+    public struct VideoProcessingLocations
     {
         public string VideoLocation;
         public string videoSaveLocation;
         public string videoNetworkSaveLocation;
+    }
+    public struct VideoProcessingInformation
+    {
+        public VideoProcessingSetting VideoSetting;
+        public VideoProcessingLocations VideoLocations;
+
     }
     #endregion Video informations
 
@@ -117,14 +132,56 @@ namespace MediaPlayer
 
     public struct SystemConfiguration
     {
+        #region Processor application location
+
+        #region VideoProcessing.exe
+        public string VideoProcessorLocation;
+        public string AudioProcessorLocation; // Skip this variable!
+        #endregion VideoProcessing.exe
+
+        #region FFmpeg location
+        public bool useCustomFFmpeg;
+        public string FFmpegLocation;
+        public string FFProbeLocation;
+        #endregion FFmpeg location
+        #endregion Processor application location
+
+        #region Video working location
         public string TemporaryVideoSaveLocation;
         public string ProcessedVideoSaveLocation;
         public string NetworkProcessedVideoSaveLocation;
+        #endregion Video working location
+
+        #region File operation
+        public bool DeleteTemporaryFileWhenFinished;
+        #endregion File operation
+
+        #region Address overriding
         public bool OverrideHostAddress;
-        public string VideoProcessingApplicationLocation;
+        public string OldAddress;
+        public string NewAddress;
+        #endregion Address overriding
+
+        #region VideoProcessing.exe window style
+        public ProcessWindowStyle windowStyle;
+        #endregion VideoProcessing.exe window style
+
+        public DatabaseConfiguration DatabaseProcessingConfiguration;
     }
 
     #endregion System configurations
+
+    #region User informations
+
+    #region User information
+    public struct UserInfo
+    {
+        public int UserID;
+        public string SessionID;
+    }
+    #endregion User information
+
+    #endregion User informations
 
     #region Log informations
     public struct ProcessingLog
@@ -135,6 +192,11 @@ namespace MediaPlayer
         VideoOriginalInformation originalVideoInformation;
         VideoProcessingInformation videoProcessingInformation;
         VideoProcessingSetting videoProcessingSetting;
+    }
+
+    public struct ProcessedVideoLog
+    {
+
     }
     #endregion Log informations
 }

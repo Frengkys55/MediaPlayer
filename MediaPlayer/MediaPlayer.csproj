@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NReco.VideoInfo, Version=1.1.1.0, Culture=neutral, PublicKeyToken=8f59ee36d2987295, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.VideoInfo.1.1.1\lib\net35\NReco.VideoInfo.dll</HintPath>
+    </Reference>
     <Reference Include="SQLClassPeralatan">
       <HintPath>..\..\..\..\Documents\Visual Studio 2017\Projects\SQLClassPeralatan\SQLClassPeralatan\bin\Debug\SQLClassPeralatan.dll</HintPath>
     </Reference>
@@ -61,6 +64,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="VideoProcessor">
+      <HintPath>..\..\VideoProcessor\VideoProcessor\bin\Debug\VideoProcessor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Checker.aspx" />
@@ -80,6 +86,7 @@
     <None Include="Connected Services\VideoProcessingService\Service13.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

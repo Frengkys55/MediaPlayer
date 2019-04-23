@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using SQLClassPeralatan;
@@ -18,9 +19,9 @@ namespace MediaPlayer
         #endregion User checking
 
         #region Settings checking
-        public static bool CheckSettings(string database, string userTable, string settingsTable, string sessionID, string connectionString)
+        public static bool CheckSettings(string database, UserInfo userInfo, string settingsTable, string connectionString)
         {
-            string userID = Peralatan.MintaDataDatabase(database, "UserID", userTable, "SessionID", sessionID, connectionString);
+            string userID = userInfo.UserID.ToString();
             return Peralatan.PeriksaDataDatabase(userID, "UserID", database, settingsTable, connectionString);
         }
         #endregion Settings checking
@@ -35,7 +36,7 @@ namespace MediaPlayer
             return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
         }
         
-        public static bool CreateNewSettings(string database, string table, string sessionID, string connectionString)
+        public static bool CreateNewSettings(string database, string table, UserInfo userInfo, string connectionString)
         {
             VideoPlayerSettings playerSettings = new VideoPlayerSettings();
             playerSettings.bufferMode = BufferMode.SingleBuffer;
@@ -43,7 +44,7 @@ namespace MediaPlayer
             playerSettings.resolution = Resolution.SD_480p;
             playerSettings.preloadFrames = PreloadFrames.EnablePreload;
 
-            string userID = Peralatan.MintaDataDatabase(database, "UserID", "SessionInfo", "SessionID", sessionID, connectionString);
+            string userID = userInfo.UserID.ToString();
 
             string SQLCommand = string.Empty;
             SQLCommand += "USE " + database + ";";
@@ -106,14 +107,6 @@ namespace MediaPlayer
             VideoPlayerSettings UserSettings = new VideoPlayerSettings();
 
             string userID = Peralatan.MintaDataDatabase(database, "UserID", "SessionInfo", "SessionID", sessionID, connectionString);
-
-            #region Settings checking
-
-            //if (!CheckSettings(database, "SessionInfo", table, sessionID, connectionString));
-            //{
-            //    CreateNewSettings(database, table, sessionID, connectionString);
-            //}
-            #endregion Settings checking
 
             #region Video 
             string receivedHeight = Peralatan.MintaDataDatabase(database, "VideoHeight", table, "UserID", userID, connectionString);
@@ -300,6 +293,82 @@ namespace MediaPlayer
             #endregion Preparation
 
             return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
+        }
+
+        /// <summary>
+        /// Function to load system configurations from Web.config file
+        /// </summary>
+        /// <returns>Loaded system configurations</returns>
+        public static SystemConfiguration SystemConfigurationLoader()
+        {
+            SystemConfiguration loadedConfiguration = new SystemConfiguration();
+
+            #region Application locations
+            #region VideoProcessing.exe location
+            loadedConfiguration.VideoProcessorLocation = ConfigurationManager.AppSettings["VideoProcessorLocation"];
+            loadedConfiguration.AudioProcessorLocation = ConfigurationManager.AppSettings["AudioProcessorLocation"];
+            #endregion VideoProcessing.exe location
+
+            #region FFmpeg location
+            loadedConfiguration.FFmpegLocation = ConfigurationManager.AppSettings["FFmpegLocation"];
+            loadedConfiguration.FFProbeLocation = ConfigurationManager.AppSettings["FFProbeLocation"];
+            #endregion FFmpeg location
+            #endregion Application locations
+
+            #region Video working location
+            loadedConfiguration.TemporaryVideoSaveLocation = ConfigurationManager.AppSettings["TemporaryVideoDirectory"];
+            loadedConfiguration.ProcessedVideoSaveLocation = ConfigurationManager.AppSettings["ProcessedVideoSaveLocation"];
+            loadedConfiguration.NetworkProcessedVideoSaveLocation = ConfigurationManager.AppSettings["NetworkProcessedVideoSaveLocation"];
+            #endregion Video working location
+
+            #region File operation
+            if (ConfigurationManager.AppSettings["DeleteTemporaryVideoWhenFinished"] == "true")
+            {
+                loadedConfiguration.DeleteTemporaryFileWhenFinished = true;
+            }
+            else
+            {
+                loadedConfiguration.DeleteTemporaryFileWhenFinished = false;
+            }
+            #endregion File operation
+
+            #region Address overriding
+            if (ConfigurationManager.AppSettings["overrideHostADdress"] == "true")
+            {
+                loadedConfiguration.OverrideHostAddress = true;
+            }
+            else
+            {
+                loadedConfiguration.OverrideHostAddress = false;
+            }
+            loadedConfiguration.OldAddress = ConfigurationManager.AppSettings["oldHostAddress"];
+            loadedConfiguration.NewAddress = ConfigurationManager.AppSettings["newHostAddress"];
+            #endregion Address overriding
+
+            #region VideoProcessing.exe window style
+            if (ConfigurationManager.AppSettings["VideoProcessingWindowType"].ToLower() == "normal")
+            {
+                loadedConfiguration.windowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+            }
+            else if (ConfigurationManager.AppSettings["VideoProcessingWindowType"].ToLower() == "maximized")
+            {
+                loadedConfiguration.windowStyle = System.Diagnostics.ProcessWindowStyle.Maximized;
+            }
+            else if (ConfigurationManager.AppSettings["VideoProcessingWindowType"].ToLower() == "minimized")
+            {
+                loadedConfiguration.windowStyle = System.Diagnostics.ProcessWindowStyle.Minimized;
+            }
+            else
+            {
+                loadedConfiguration.windowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            }
+            #endregion VideoProcessing.exe windows style
+
+            #region Database information
+            loadedConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString = ConfigurationManager.AppSettings["DatabaseConnectionString"];
+            #endregion Database information
+
+            return loadedConfiguration;
         }
 
     }

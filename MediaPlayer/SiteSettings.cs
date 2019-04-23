@@ -36,7 +36,8 @@ namespace MediaPlayer
     }
     public enum FrameRate
     {
-        Default = 0,
+        Default = -1,
+        Other = 0,
         _24fps = 24,
         _30fps = 30,
         _60fps = 60,

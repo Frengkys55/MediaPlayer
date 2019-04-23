@@ -34,7 +34,7 @@ namespace MediaPlayer
                     videoFrameRate = Convert.ToDouble(Request.QueryString["framerate"]);
                     startFrame = Request.QueryString["startframe"];
                     videoTotalFrame = Request.QueryString["endframe"];
-                    videoWidth = Convert.ToInt32(Request.QueryString["videowidth"]);
+                    videoHeight = Convert.ToInt32(Request.QueryString["videoresolution"]);
                     middleFrame = videoTotalFrame;
                 }
                 else

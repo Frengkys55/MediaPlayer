@@ -58,18 +58,6 @@ namespace MediaPlayer
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Loader
-            ConfigurationLoader();
-            if (!IsPostBack)
-            {
-                if (!UserLoader())
-                {
-                    Response.Redirect("Error.aspx?id=21");
-                }
-                if (!PlayerSettingsLoader())
-                {
-                    Response.Redirect("Error.aspx?id=22");
-                }
-            }
             BackgroundImageLoader();
             #endregion Loader
 
@@ -91,7 +79,7 @@ namespace MediaPlayer
                     }
                     else
                     {
-                        Response.Redirect("Error.aspx");
+                        Response.Redirect("Error.aspx?id=98");
                     }
                 }
                 else if (Request.QueryString["mode"] == "sample")
@@ -161,53 +149,141 @@ namespace MediaPlayer
                 }
                 #endregion In line commands
 
-                #region Read player settings
-                VideoPlayerSettings settings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
-                #endregion Read player settings
+                #region (Old) Main Processing
 
-                #region Main Processing
+                //#region Old main processing
+                //#region Service initialization
+                //VideoProcessingService.Service1Client videoProcessor = new VideoProcessingService.Service1Client();
+                //#endregion Service initialization
 
-                #region Service initialization
-                VideoProcessingService.Service1Client videoProcessor = new VideoProcessingService.Service1Client();
-                #endregion Service initialization
+                //#region Main process
+                //string[] receivedVideoInfo = videoProcessor.ProcessVideo2(txtURLSource.Text, true, Session.SessionID, true, 0, (int)settings.resolution, (float)settings.frameRate);
+                //#endregion Main process
+                //#endregion Old main processing
 
-                #region Main process
-                string[] receivedVideoInfo = videoProcessor.ProcessVideo2(txtURLSource.Text, true, Session.SessionID, true, 0, (int)settings.resolution, (float)settings.frameRate);
-                #endregion Main process
+                //#region Result processor
+                //Stopwatch waitTime = new Stopwatch();
+                //waitTime.Start();
 
-                #region Result processor
-                Stopwatch waitTime = new Stopwatch();
-                waitTime.Start();
+                //if (receivedVideoInfo.Length == 0)
+                //{
+                //    System.Threading.Thread.Sleep(1000);
+                //    if (waitTime.ElapsedMilliseconds == 20000)
+                //    {
+                //        waitTime.Stop();
+                //        Response.Redirect("Error.aspx");
+                //    }
+                //}
+                //videoProcessor.Close();
+                //if (receivedVideoInfo[0].ToLower().Contains("error"))
+                //{
+                //    Response.Redirect("Error.aspx?id=10a");
+                //}
+                //else
+                //{
+                //    string queryString = string.Empty;
+                //    queryString += "?new=true&";
+                //    queryString += "path=" + receivedVideoInfo[1] + "&";
+                //    queryString += "name=" + receivedVideoInfo[2] + "&";
+                //    queryString += "duration=" + receivedVideoInfo[3] + "&";
+                //    queryString += "framerate=" + receivedVideoInfo[4] + "&";
+                //    queryString += "startframe=" + receivedVideoInfo[5] + "&";
+                //    queryString += "endframe=" + receivedVideoInfo[6] + "&";
+                //    queryString += "videowidth=" + receivedVideoInfo[7];
+                //    Response.Redirect("Player.aspx" + queryString);
+                //}
+                //#endregion Result processor
+                #endregion (Old) Main Processing
 
-                if (receivedVideoInfo.Length == 0)
+                #region  New processing
+                #region Preparation
+                string databaseName = "MediaPlayerDatabase";
+                string userTableName = "SessionInfo";
+                string settingsTable = "UserSettings";
+
+                Processor mainProcessor = new Processor();
+                UserInfo userInfo = new UserInfo();
+                VideoProcessingInformation videoProcessingInformation = new VideoProcessingInformation();
+
+                #region System configuration loader
+                SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+                #endregion System configuration loader
+
+                #region User settings
+                // Check for user information in database
+                if (HelperClass.CheckUser(databaseName, userTableName, Session.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
                 {
-                    System.Threading.Thread.Sleep(1000);
-                    if (waitTime.ElapsedMilliseconds == 20000)
+                    userInfo.SessionID = Session.SessionID;
+                    SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
+                    if (!mintaDataDatabase.TerdapatKesalahan)
                     {
-                        waitTime.Stop();
-                        Response.Redirect("Error.aspx");
+                        userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
                     }
-                }
-                videoProcessor.Close();
-                if (receivedVideoInfo[0].ToLower().Contains("error"))
-                {
-                    Response.Redirect("Error.aspx?id=10a");
                 }
                 else
                 {
-                    string queryString = string.Empty;
+                    userInfo.SessionID = Session.SessionID;
+                    if (!HelperClass.AddUser(databaseName, userTableName, userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                    {
+                        Response.Redirect("Error.aspx?id=23");
+                    }
+                    SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
+                    if (!mintaDataDatabase.TerdapatKesalahan)
+                    {
+                        userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                    }
+                }
+                #endregion User settings
+
+                #region Player settings loader
+                VideoPlayerSettings settings = new VideoPlayerSettings();
+                // Check settings
+                if (HelperClass.CheckSettings(databaseName, userInfo, settingsTable, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                {
+                    settings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
+                }
+                else
+                {
+                    if (HelperClass.CreateNewSettings(databaseName, settingsTable, userInfo, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                    {
+                        settings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
+                    }
+                }
+                #endregion Player settings loader
+
+                #endregion Preparation;
+
+                #region Information generation
+                videoProcessingInformation.VideoLocations.VideoLocation = txtURLSource.Text;
+                videoProcessingInformation.VideoLocations.videoSaveLocation = systemConfiguration.ProcessedVideoSaveLocation;
+                videoProcessingInformation.VideoLocations.videoNetworkSaveLocation = systemConfiguration.NetworkProcessedVideoSaveLocation;
+                videoProcessingInformation.VideoSetting.processedVideoResolution = settings.resolution;
+                videoProcessingInformation.VideoSetting.frameRate = settings.frameRate;
+                videoProcessingInformation.VideoSetting.audioProcessing = AudioProcessing.ProcessAudio;
+
+                userInfo.SessionID = Session.SessionID;
+                #endregion Information generation
+
+
+                #region Main process
+                ProcessedVideo processedVideo = mainProcessor.ProcessVideo(videoProcessingInformation, systemConfiguration, userInfo);
+                #endregion Main process
+
+                string queryString = string.Empty;
+                if (processedVideo.result == Result.Success)
+                {
                     queryString += "?new=true&";
-                    queryString += "path=" + receivedVideoInfo[1] + "&";
-                    queryString += "name=" + receivedVideoInfo[2] + "&";
-                    queryString += "duration=" + receivedVideoInfo[3] + "&";
-                    queryString += "framerate=" + receivedVideoInfo[4] + "&";
-                    queryString += "startframe=" + receivedVideoInfo[5] + "&";
-                    queryString += "endframe=" + receivedVideoInfo[6] + "&";
-                    queryString += "videowidth=" + receivedVideoInfo[7];
+                    queryString += "path=" + processedVideo.networkAccessLocation + "&";
+                    queryString += "name=" + processedVideo.videoName + "&";
+                    queryString += "duration=" + processedVideo.videoDuration + "&";
+                    queryString += "framerate=" + processedVideo.frameRate + "&";
+                    queryString += "startframe=" + processedVideo.startFrame + "&";
+                    queryString += "endframe=" + processedVideo.endFrame + "&";
+                    queryString += "videoresolution=" + processedVideo.videoHeight;
                     Response.Redirect("Player.aspx" + queryString);
                 }
-                #endregion Result processor
-                #endregion Main Processing
+
+                #endregion New processing
             }
             else if (mode == AccessMode.Other)
             {
@@ -395,23 +471,22 @@ namespace MediaPlayer
             }
         }
 
-        protected bool PlayerSettingsLoader()
-        {
+        //protected bool PlayerSettingsLoader()
+        //{
             
+        //    if (!HelperClass.CheckSettings(database, sessionInfoTable, settingsTable, Session.SessionID, connectionString))
+        //    {
+        //        HelperClass.CreateNewSettings(database, settingsTable, Session.SessionID, connectionString);
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
 
-            if (!HelperClass.CheckSettings(database, sessionInfoTable, settingsTable, Session.SessionID, connectionString))
-            {
-                HelperClass.CreateNewSettings(database, settingsTable, Session.SessionID, connectionString);
-            }
-            else
-            {
-                return false;
-            }
+        //    playerSettings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
 
-            playerSettings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
-
-            return true;
-        }
+        //    return true;
+        //}
 
         #endregion Loader functions
 

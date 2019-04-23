@@ -17,11 +17,6 @@ namespace MediaPlayer
         {
             FunctionResult result = new FunctionResult();
 
-            string videoProcessingArguments = "GetFrames ";
-            videoProcessingArguments += videoInformation.VideoLocation;
-            videoProcessingArguments += " " + videoInformation.videoSaveLocation;
-            videoProcessingArguments += 
-
             return result;
         }
     }

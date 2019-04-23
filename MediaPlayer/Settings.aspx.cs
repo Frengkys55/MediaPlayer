@@ -18,6 +18,7 @@ namespace MediaPlayer
         protected void Page_Load(object sender, EventArgs e)
         {
             //savedSettings = HelperClass.ReadPlayerSettings(Session.SessionID, settingsDatabase, settingsTable, connectionString);
+            
         }
 
         protected void btnSaveSettings_Click(object sender, EventArgs e)
