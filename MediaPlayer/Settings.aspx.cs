@@ -82,12 +82,112 @@ namespace MediaPlayer
 
             #endregion Preparation
 
-            
+            lstVideoResolution.SelectedValue = ((int)userPlayerSetting.resolution).ToString();
+            lstFrameRate.SelectedValue = ((int)userPlayerSetting.frameRate).ToString();
+            lstFrameBufferMode.SelectedValue = ((int)userPlayerSetting.bufferMode).ToString();
+            lstFramePreload.SelectedValue = ((int)userPlayerSetting.preloadFrames).ToString();
+            lstPlayMode.SelectedIndex = 0;
         }
 
         protected void btnSaveSettings_Click(object sender, EventArgs e)
         {
+            #region Preparation
             VideoPlayerSettings settings = new VideoPlayerSettings();
+
+            #endregion Preparation
+
+            #region Resolution
+            int selectedResolution = Convert.ToInt32(lstVideoResolution.SelectedValue);
+            
+            if (selectedResolution == (int)Resolution.Original)
+            {
+                settings.resolution = Resolution.Original;
+            }
+            else if (selectedResolution == (int)Resolution.SD_360p)
+            {
+                settings.resolution = Resolution.SD_360p;
+            }
+            else if (selectedResolution == (int)Resolution.SD_480p)
+            {
+                settings.resolution = Resolution.SD_480p;
+            }
+            else if (selectedResolution == (int)Resolution.HD_720p)
+            {
+                settings.resolution = Resolution.HD_720p;
+            }
+            else if (selectedResolution == (int)Resolution.HD_1080p)
+            {
+                settings.resolution = Resolution.HD_1080p;
+            }
+            else if (selectedResolution == (int)Resolution.SUHD_1440p)
+            {
+                settings.resolution = Resolution.SUHD_1440p;
+            }
+            else
+            {
+                settings.resolution = Resolution.Other;
+            }
+            #endregion Resolution
+
+            #region Framerate
+            int selectedFramerate = Convert.ToInt32(lstFrameRate.SelectedValue);
+            if (selectedFramerate == (int)FrameRate.Default)
+            {
+                settings.frameRate = FrameRate.Default;
+            }
+            else if (selectedFramerate == (int)FrameRate._24fps)
+            {
+                settings.frameRate = FrameRate._24fps;
+            }
+            else if (selectedFramerate == (int)FrameRate._30fps)
+            {
+                settings.frameRate = FrameRate._30fps;
+            }
+            else if (selectedFramerate == (int)FrameRate._60fps)
+            {
+                settings.frameRate = FrameRate._60fps;
+            }
+            else if (selectedFramerate == (int)FrameRate._120fps)
+            {
+                settings.frameRate = FrameRate._120fps;
+            }
+            else
+            {
+                settings.frameRate = FrameRate.Other;
+            }
+            #endregion Framerate
+
+            #region Buffer mode
+            int selectedBufferMode = Convert.ToInt32(lstFrameBufferMode.SelectedValue);
+
+            if (selectedBufferMode == (int)BufferMode.SingleBuffer)
+            {
+                settings.bufferMode = BufferMode.SingleBuffer;
+            }
+            else if (selectedBufferMode == (int)BufferMode.DoubleBuffer)
+            {
+                settings.bufferMode = BufferMode.DoubleBuffer;
+            }
+            else
+            {
+                settings.bufferMode = BufferMode.TripleBuffer;
+            }
+            #endregion Buffer mode
+
+            #region Frame preload
+            int selectedFramePreload = Convert.ToInt32(lstFramePreload.SelectedValue);
+
+            if (selectedFramePreload == (int)PreloadFrames.EnablePreload)
+            {
+                settings.preloadFrames = PreloadFrames.EnablePreload;
+            }
+            else
+            {
+                settings.preloadFrames = PreloadFrames.DisablePreload;
+            }
+
+            #endregion Frame preload
+
             HelperClass.UpdateSettings(settings, settingsDatabase, settingsTable, connectionString);
         }
 

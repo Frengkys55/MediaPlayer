@@ -21,33 +21,36 @@
                     CssClass="w3-panel">
                     <header>
                         <h4>
-                            Video resolution (Experimental)
+                            Video resolution
                         </h4>
                     </header>
                     <div class="w3-container">
                         <div class="w3-text-red">
-                            Note: If the video resolution is lower, the player will not override it
+
                         </div>
                         <asp:DropDownList
                             ID="lstVideoResolution"
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
-                            <asp:ListItem>
+                            <asp:ListItem Value="0">
                                 Original
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="7" Enabled="false">
+                                Other
+                            </asp:ListItem>
+                            <asp:ListItem Value="360">
                             360p
                             </asp:ListItem>
-                            <asp:ListItem Selected="True">
+                            <asp:ListItem Value="480" Selected="True">
                             480p
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="720">
                             720p
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="1080">
                             1080p
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="1440">
                             1440p
                             </asp:ListItem>
                         </asp:DropDownList>
@@ -59,12 +62,12 @@
                     CssClass="w3-panel">
                     <header>
                         <h4>
-                            Frame rate override (Experimental)
+                            Frame rate override
                         </h4>
                     </header>
                     <div class="w3-container">
                         <div class="w3-text-red">
-                            Note: The player will use the video frame speed if the speed is lower than the setting
+                            
                         </div>
                         <asp:DropDownList
                             ID="lstFrameRate"
@@ -105,13 +108,13 @@
                             ID="lstFrameBufferMode"
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
-                            <asp:ListItem Selected="True">
+                            <asp:ListItem Value="1" Selected="True">
                                 Single buffer
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="2" Enabled="false">
                                 Double buffer (Experimental)
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="3" Enabled="false">
                                 Triple buffer (Not yet supported)
                             </asp:ListItem>
                         </asp:DropDownList>
@@ -134,10 +137,10 @@
                             ID="lstFramePreload"
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
-                            <asp:ListItem Selected="True">
+                            <asp:ListItem Value="1" Selected="True">
                                 Enable preload (Experimental)
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="0" Enabled="false">
                                 Disable preload
                             </asp:ListItem>
                         </asp:DropDownList>
@@ -157,10 +160,10 @@
                             ID="lstPlayMode"
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
-                            <asp:ListItem Selected="True">
+                            <asp:ListItem Value="1" Selected="True">
                                 Use setInterval
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="2" Enabled="false">
                                 Use requestAnimationFrame
                             </asp:ListItem>
                         </asp:DropDownList>
