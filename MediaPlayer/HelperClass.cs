@@ -54,13 +54,34 @@ namespace MediaPlayer
             return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
         }
         
-        public static void UpdateSettings(VideoPlayerSettings settings, string database, string table, string connectionString)
+        public static FunctionResult UpdateSettings(VideoPlayerSettings settings, UserInfo userInfo, string database, string table, string connectionString)
         {
+            #region Preparation
+            SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+            FunctionResult result = new FunctionResult();
+            #endregion Preparation
+
+            #region SQL statement
             string SQLCommand = string.Empty;
             SQLCommand = "USE " + database + ";";
-            SQLCommand += "UPDATE " + table + " ";
-            
-            throw new NotImplementedException("This function is not yet implemented");
+            SQLCommand += "UPDATE " + table + " SET ";
+            SQLCommand += "VideoHeight=" + settings.resolution + ", ";
+            SQLCommand += "FrameRate=" + settings.frameRate + ", ";
+            SQLCommand += "BufferMode=" + settings.bufferMode + ", ";
+            SQLCommand += "PreloadFrames=" + settings.preloadFrames + " WHERE ";
+            SQLCommand += "UserID=" + userInfo.UserID + ";";
+            #endregion SQL statement
+
+            if (!Peralatan.UbahDataDatabase(SQLCommand, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+            {
+                result.functionResult = Result.Fail;
+                result.functionErrroInformation.errorMessage = Peralatan.PesanKesalahan;
+            }
+            else
+            {
+                result.functionResult = Result.Success;
+            }
+            return result;
         }
 
         /// <summary>
