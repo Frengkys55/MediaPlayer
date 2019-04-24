@@ -283,6 +283,10 @@ namespace MediaPlayer
                 }
                 #endregion FPS overriding
 
+                #region Audio processing
+                arguments += " with_audio=true";
+                #endregion Audio processing
+
                 #region Requester
                 arguments += " requester=mediaplayer";
                 arguments += " sessionid=" + userInfo.SessionID;
