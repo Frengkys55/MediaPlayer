@@ -16,6 +16,7 @@ namespace MediaPlayer
         public FrameRate frameRate;
         public BufferMode bufferMode;
         public PreloadFrames preloadFrames;
+        public PlaySpeed playSpeed;
     }
 
     public enum BufferMode
@@ -47,6 +48,15 @@ namespace MediaPlayer
     {
         DisablePreload = 0,
         EnablePreload = 1
+    }
+    public enum PlaySpeed
+    {
+        Normal = 0,
+        _2x = 2,
+        _4x = 4,
+        _8x = 8,
+        _16x = 16,
+        _32x = 32,
     }
 
     public enum AccessMode
@@ -80,4 +90,15 @@ namespace MediaPlayer
         bool withAudio;
     }
 
+
+    public enum PlayMode
+    {
+        Url,
+        FileUpload
+    }
+    public enum OptionalSettingsStatus
+    {
+        Opened,
+        Closed
+    }
 }

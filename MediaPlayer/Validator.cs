@@ -14,7 +14,7 @@ namespace MediaPlayer
     {
         public static bool IsUrl(string input)
         {
-            if (input.ToLower().Contains("http://") || input.ToLower().Contains("ftp://"))
+            if (input.ToLower().Contains("http://") || input.ToLower().Contains("https://") || input.ToLower().Contains("ftp://"))
             {
                 return true;
             }
@@ -26,7 +26,7 @@ namespace MediaPlayer
 
         public static bool IsHttp(string input)
         {
-            if (input.ToLower().Contains("http://"))
+            if (input.ToLower().Contains("http://") || input.ToLower().Contains("https://"))
             {
                 return true;
             }

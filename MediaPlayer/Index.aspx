@@ -179,8 +179,46 @@
                         ID="pnlURLPlaySettings"
                         runat="server"
                         CssClass="w3-row">
-                        <div class="w3-col s2 w3-right">
-                            <asp:Button
+                        <div class="w3-col w3-container w3-rest Button-Even-Spacing">
+                            <div class="w3-padding">
+                                <asp:DropDownList
+                                    ID="lstPlayingSpeed"
+                                    runat="server"
+                                    CssClass="w3-input w3-border w3-border-theme w3-bar-item"
+                                    Width="120px"
+                                    ToolTip="Play speed">
+                                    <asp:ListItem Value="0">
+                                    Speed
+                                    </asp:ListItem>
+                                    <asp:ListItem Value="2">
+                                    2x
+                                    </asp:ListItem>
+                                    <asp:ListItem Value="4">
+                                    4x
+                                    </asp:ListItem>
+                                    <asp:ListItem Value="8">
+                                    8x
+                                    </asp:ListItem>
+                                    <asp:ListItem Value="16">
+                                    16x
+                                    </asp:ListItem>
+                                    <asp:ListItem Value="32">
+                                    32x
+                                    </asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                            <div class="w3-padding">
+                                <asp:TextBox
+                                    ID="txtCustomPlayTime"
+                                    runat="server"
+                                    CssClass="w3-input w3-border w3-border-theme w3-bar-item"
+                                    placeholder="0:00:00"
+                                    Width="120px"
+                                    ToolTip="Play position">
+                                </asp:TextBox>
+                            </div>
+                            <div class="w3-padding">
+                                <asp:Button
                                 ID="btnMoreSettings"
                                 runat="server"
                                 Text="More"
@@ -191,9 +229,7 @@
                                             w3-white
                                             w3-hover-theme"
                                 OnClick="btnMoreSettings_Click" />
-                        </div>
-                        <div class="w3-col w3-rest w3-red">
-
+                            </div>
                         </div>
                     </asp:Panel>
                 </asp:Panel>

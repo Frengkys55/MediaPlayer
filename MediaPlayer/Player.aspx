@@ -16,9 +16,13 @@
 <body>
     <form id="form1" runat="server">
         <div class="w3-bar w3-theme-dark">
-                <div class="w3-bar-item"><%= videoFileName %></div>
-                <div class="w3-bar-item w3-right w3-hide-small"><img src="Sources/Images/MediaPlayer2Small.png" alt="MediaPlayer" height="27px" /></div>
+            <div class="w3-bar-item"><%= videoFileName %></div>
+            <div class="w3-bar-item w3-right w3-hide-small">
+                <img src="Sources/Images/MediaPlayer2Small.png" alt="MediaPlayer" height="18px" />
             </div>
+            <div class="w3-bar-item w3-right w3-red">Experimental</div>
+            
+        </div>
 
         <div class="w3-panel" id="pnlVideo">
             <div class="w3-container w3-border w3-border-theme w3-center">
@@ -29,11 +33,12 @@
                     w3-border-theme"
                     style="visibility:hidden">
                 </canvas>
-                 --%>>
+                 --%>
                 <img
                     id="frame1"
                     alt="Player window"
                     src="http://toshiba/Sources/Images/Under_Construction/UnderConstruction.png"
+                    height="480px"
                     style="display:normal; text-align:center" />
                 <!--For double buffer coniguration (experimental)-->
                 <img
@@ -54,7 +59,9 @@
             </div>
             <div class="w3-container w3-theme-d5">
                 <div class="w3-bar">
-                    <button class="w3-bar-item w3-button w3-hover-white buttonHover" onclick="Play"><img class="buttonChild" src="Sources/Images/Controls/noun_play_410051.png" alt="MediaPlayer" height="20px" /></button>
+                    <button class="w3-bar-item w3-button w3-hover-white buttonHover" onclick="Play"><img class="buttonChild" src="Sources/Images/Controls/PlayW.png" alt="MediaPlayer" height="20px" /></button>
+                    <button class="w3-bar-item w3-button w3-hover-white buttonHover" onclick="Play"><img class="buttonChild" src="Sources/Images/Controls/BackwardW.png" alt="MediaPlayer" height="20px" /></button>
+                    <button class="w3-bar-item w3-button w3-hover-white buttonHover" onclick="Play"><img class="buttonChild" src="Sources/Images/Controls/ForwardW.png" alt="MediaPlayer" height="20px" /></button>
                     <div class="w3-bar-item w3-right">0:00:00</div>
                 </div>
             </div>
@@ -104,7 +111,7 @@
                         }
                     }
                 }
-                xhr.open('GET', 'http://localhost/MediaPlayer/Checker.aspx?mode=sample');
+                xhr.open('GET', 'http://192.168.1.245/MediaPlayer/Checker.aspx?mode=sample');
                 xhr.send();
             }
 

@@ -73,19 +73,19 @@
                             ID="lstFrameRate"
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
-                            <asp:ListItem>
+                            <asp:ListItem Value="-1">
                                 No override
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="24">
                                 24fps
                             </asp:ListItem>
-                            <asp:ListItem Selected="True">
+                            <asp:ListItem Value="30" Selected="True">
                                 30fps
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="60">
                                 60fps
                             </asp:ListItem>
-                            <asp:ListItem>
+                            <asp:ListItem Value="120">
                                 120fps
                             </asp:ListItem>
                         </asp:DropDownList>
@@ -111,10 +111,10 @@
                             <asp:ListItem Value="1" Selected="True">
                                 Single buffer
                             </asp:ListItem>
-                            <asp:ListItem Value="2" Enabled="false">
+                            <asp:ListItem Value="2">
                                 Double buffer (Experimental)
                             </asp:ListItem>
-                            <asp:ListItem Value="3" Enabled="false">
+                            <asp:ListItem Value="3">
                                 Triple buffer (Not yet supported)
                             </asp:ListItem>
                         </asp:DropDownList>

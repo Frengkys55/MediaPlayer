@@ -39,9 +39,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.1.2.2\lib\net40\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.1.0.1\lib\net40\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NReco.VideoInfo, Version=1.1.1.0, Culture=neutral, PublicKeyToken=8f59ee36d2987295, processorArchitecture=MSIL">
       <HintPath>..\packages\NReco.VideoInfo.1.1.1\lib\net35\NReco.VideoInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="SQLClassPeralatan">
       <HintPath>..\..\..\..\Documents\Visual Studio 2017\Projects\SQLClassPeralatan\SQLClassPeralatan\bin\Debug\SQLClassPeralatan.dll</HintPath>
@@ -106,6 +127,11 @@
     <Content Include="Help.aspx" />
     <Content Include="Index.aspx" />
     <Content Include="Player.aspx" />
+    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-1.2.2.js" />
+    <Content Include="Scripts\jquery.signalR-1.2.2.min.js" />
     <Content Include="Settings.aspx" />
     <Content Include="Sources\CSS\Custom.css" />
     <Content Include="Sources\CSS\W3S\codemirror.css" />
@@ -149,8 +175,14 @@
     <Content Include="Sources\CSS\W3S\w3data.js" />
     <Content Include="Sources\CSS\W3S\w3schools_footer.js" />
     <Content Include="Sources\Fonts\SegoeUI\SegoeUI-Light.svg" />
+    <Content Include="Sources\Images\Controls\Backward.png" />
+    <Content Include="Sources\Images\Controls\BackwardW.png" />
+    <Content Include="Sources\Images\Controls\Forward.png" />
+    <Content Include="Sources\Images\Controls\ForwardW.png" />
     <Content Include="Sources\Images\Controls\noun_pause icon_409033.png" />
     <Content Include="Sources\Images\Controls\noun_play_410051.png" />
+    <Content Include="Sources\Images\Controls\Play.png" />
+    <Content Include="Sources\Images\Controls\PlayW.png" />
     <Content Include="Sources\Images\poker-face.png" />
     <Content Include="Sources\Images\MediaPlayer%28Small%29.png" />
     <Content Include="Sources\Images\MediaPlayer.png" />
@@ -229,6 +261,7 @@
     <Compile Include="Settings.aspx.designer.cs">
       <DependentUpon>Settings.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SignalR\CheckerHub.cs" />
     <Compile Include="SiteSettings.cs" />
     <Compile Include="Validator.cs" />
   </ItemGroup>

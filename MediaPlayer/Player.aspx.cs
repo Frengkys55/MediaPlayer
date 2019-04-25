@@ -15,6 +15,7 @@ namespace MediaPlayer
         public static string videoTotalFrame = string.Empty;
         public static string middleFrame = string.Empty;
         public static double videoFrameRate = 0;
+        public static string videoPlaySpeed = string.Empty;
         public static string videoFileName = string.Empty;
         public static string VideoURL = string.Empty;
         public static int videoWidth = 0;
@@ -35,6 +36,7 @@ namespace MediaPlayer
                     startFrame = Request.QueryString["startframe"];
                     videoTotalFrame = Request.QueryString["endframe"];
                     videoHeight = Convert.ToInt32(Request.QueryString["videoresolution"]);
+                    videoPlaySpeed = Request.QueryString["playspeed"];
                     middleFrame = videoTotalFrame;
                 }
                 else

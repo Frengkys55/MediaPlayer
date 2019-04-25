@@ -48,6 +48,6 @@ self.addEventListener('message', function (e) {
             }
         }
     }
-    xhr.open('GET', 'http://localhost/MediaPlayer/Player.aspx');
+    xhr.open('GET', 'http://192.168.1.245/MediaPlayer/Player.aspx');
 
 });

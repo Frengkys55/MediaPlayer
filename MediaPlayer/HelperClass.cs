@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Web;
 using SQLClassPeralatan;
 
@@ -65,10 +66,10 @@ namespace MediaPlayer
             string SQLCommand = string.Empty;
             SQLCommand = "USE " + database + ";";
             SQLCommand += "UPDATE " + table + " SET ";
-            SQLCommand += "VideoHeight=" + settings.resolution + ", ";
-            SQLCommand += "FrameRate=" + settings.frameRate + ", ";
-            SQLCommand += "BufferMode=" + settings.bufferMode + ", ";
-            SQLCommand += "PreloadFrames=" + settings.preloadFrames + " WHERE ";
+            SQLCommand += "VideoHeight=" + (int)settings.resolution + ", ";
+            SQLCommand += "FrameRate=" + (int)settings.frameRate + ", ";
+            SQLCommand += "BufferMode=" + (int)settings.bufferMode + ", ";
+            SQLCommand += "PreloadFrames=" + (int)settings.preloadFrames + " WHERE ";
             SQLCommand += "UserID=" + userInfo.UserID + ";";
             #endregion SQL statement
 
@@ -227,8 +228,10 @@ namespace MediaPlayer
             return UserSettings;
         }
 
-        public static DatabaseProcessedInfo SetVideoInfo(VideoPlayerSettings settings, string SessionID)
+        public static DatabaseProcessedInfo SetVideoInfo(VideoPlayerSettings settings, UserInfo userInfo, ProcessedVideo processedVideo)
         {
+            
+            #region Preparation
             DatabaseProcessedInfo result = new DatabaseProcessedInfo();
 
             string SQLCommand = string.Empty;
@@ -237,6 +240,7 @@ namespace MediaPlayer
             string UserID = string.Empty;
             string OriginalVideoURL = string.Empty;
             string OriginalTemporaryVideoLocation = string.Empty;
+            string LocalProcessedVideoLocation = string.Empty;
             string NetworkProcessedVideoLocation = string.Empty;
             string OriginalVideoWidth = string.Empty;
             string OriginalVideoHeight = string.Empty;
@@ -253,10 +257,21 @@ namespace MediaPlayer
             string DateLastAccess = string.Empty;
             string VideoStatus = string.Empty;
             string LogID = string.Empty;
+            #endregion Preparation
 
             // Info prefetch
-            UserID = Peralatan.MintaDataDatabase("MediaPlayerDatabase", "SessionID", "SessionInfo", "SessionID", SessionID, connectionString);
-            
+            UserID = userInfo.UserID.ToString();
+
+            #region Data modification
+            byte[] originalURLinBytes = Encoding.UTF8.GetBytes(processedVideo.videoSource);
+            OriginalVideoURL = Convert.ToBase64String(originalURLinBytes);
+
+            byte[] localFileinBytes = Encoding.UTF8.GetBytes(processedVideo.localAccessLocation);
+            LocalProcessedVideoLocation = Convert.ToBase64String(localFileinBytes);
+
+            byte[] networkFileinBytes = Encoding.UTF8.GetBytes(processedVideo.networkAccessLocation);
+            NetworkProcessedVideoLocation = Convert.ToBase64String(networkFileinBytes);
+            #endregion Data modification
 
             // Video info data
             SQLCommand = "USE MediaPlayerDatabase;";
@@ -264,7 +279,7 @@ namespace MediaPlayer
             // Table column
             SQLCommand += "UserID, ";
             SQLCommand += "OriginalVideoURL, ";
-            SQLCommand += "OriginalTemporaryVideoFolder, ";
+            //SQLCommand += "OriginalTemporaryVideoFolder, ";
             SQLCommand += "LocalProcessedVideoFolder, ";
             SQLCommand += "NetworkProcessedVideoFolder, ";
             SQLCommand += "OriginalVideoWidth, ";
@@ -273,19 +288,41 @@ namespace MediaPlayer
             SQLCommand += "VideoFrameRate, ";
             SQLCommand += "VideoCalculatedEndFrame, ";
             SQLCommand += "VideoActualEndFrame, ";
-            SQLCommand += "VideoTotalFrames, ";
+            //SQLCommand += "VideoTotalFrames, ";
             SQLCommand += "Scaled, ";
             SQLCommand += "ScaledWidth, ";
             SQLCommand += "ScaledHeight, ";
             SQLCommand += "WithAudio, ";
-            SQLCommand += "DateProcessed, ";
-            SQLCommand += "DateLastAccess, ";
-            SQLCommand += "VideoStatus, ";
-            SQLCommand += "LogID";
+            //SQLCommand += "DateProcessed, ";
+            //SQLCommand += "DateLastAccess, ";
+            SQLCommand += "VideoStatus";
+            //SQLCommand += "LogID";
             // End table column
             // Table value
-            SQLCommand += ") VALUE (";
-            SQLCommand += "";
+            SQLCommand += ") VALUES (";
+            SQLCommand += UserID + ", ";
+            SQLCommand += "'" + OriginalVideoURL + "', ";
+            SQLCommand += "'" + LocalProcessedVideoLocation + "', ";
+            SQLCommand += "'" + NetworkProcessedVideoLocation + "', ";
+            SQLCommand += processedVideo.videoWidth + ", ";
+            SQLCommand += processedVideo.videoHeight + ", ";
+            SQLCommand += "'" + processedVideo.videoDuration + "', ";
+            SQLCommand += "'" + processedVideo.frameRate + "', ";
+            SQLCommand += processedVideo.endFrame + ", ";
+            //SQLCommand += "0, ";
+            SQLCommand += "0, ";
+            if (settings.resolution == Resolution.Original)
+            {
+                SQLCommand += "FALSE, ";
+            }
+            else
+            {
+                SQLCommand += "1, ";
+                SQLCommand += "0, ";
+                SQLCommand += ((int)settings.resolution).ToString() + ", ";
+            }
+            SQLCommand += "1, ";
+            SQLCommand += "1);";
 
             if (Peralatan.TambahKeDatabase(SQLCommand, connectionString))
             {

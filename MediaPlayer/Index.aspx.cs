@@ -49,6 +49,10 @@ namespace MediaPlayer
         string settingsTable = "UserSettings";
         string connectionString = string.Empty;
         #endregion Databae configurations
+
+        #region Selected mode
+        PlayMode userPlayMode;
+        #endregion Selected mode
         #endregion Website configurations
 
         #region Cloud drive service configurations
@@ -57,6 +61,11 @@ namespace MediaPlayer
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                userPlayMode = PlayMode.Url;
+            }
+
             #region Loader
             BackgroundImageLoader();
             #endregion Loader
@@ -98,6 +107,8 @@ namespace MediaPlayer
 
         protected void btnUploadURL_Click(object sender, EventArgs e)
         {
+
+
             pnlURLPlay.Visible = true;
             pnlUploadPlay.Visible = false;
 
@@ -110,6 +121,7 @@ namespace MediaPlayer
 
         protected void btnLoadUpload_Click(object sender, EventArgs e)
         {
+            btnSettings_Click(this, e);
             pnlUploadPlay.Visible = true;
             pnlURLPlay.Visible = false;
 
@@ -280,6 +292,17 @@ namespace MediaPlayer
                     queryString += "startframe=" + processedVideo.startFrame + "&";
                     queryString += "endframe=" + processedVideo.endFrame + "&";
                     queryString += "videoresolution=" + processedVideo.videoHeight;
+                    if (Convert.ToInt32(lstPlayingSpeed.SelectedValue) > 0)
+                    {
+                        queryString += "&playspeed=" + lstPlayingSpeed.SelectedValue;
+                    }
+                    if (txtCustomPlayTime.Text != string.Empty)
+                    {
+                        queryString += "&timeposition=" + txtCustomPlayTime.Text;
+                    }
+
+                    HelperClass.SetVideoInfo(settings, userInfo, processedVideo);
+
                     Response.Redirect("Player.aspx" + queryString);
                 }
 

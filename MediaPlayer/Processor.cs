@@ -355,7 +355,18 @@ namespace MediaPlayer
                 #region Video frame informations
                 videoInfo.startFrame = 1;
 
-                videoInfo.endFrame = processor.GetTotalFrames(temporaryDownloadLocation);
+                if (videoInformation.VideoSetting.frameRate == FrameRate.Default)
+                {
+                    videoInfo.endFrame = processor.GetTotalFrames(temporaryDownloadLocation);
+                }
+                else if (videoInformation.VideoSetting.frameRate == FrameRate.Other)
+                {
+                    videoInfo.endFrame = Convert.ToInt32(videoInfo.videoDuration * videoInformation.VideoSetting.FPS);
+                }
+                else
+                {
+                    videoInfo.endFrame = Convert.ToInt32(videoInfo.videoDuration * (double)videoInformation.VideoSetting.frameRate);
+                }
                 #endregion VIdeo frame informations
 
                 videoInfo.videoHeight = videoHeight;

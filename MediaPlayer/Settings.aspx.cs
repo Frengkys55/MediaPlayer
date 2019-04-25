@@ -61,40 +61,65 @@ namespace MediaPlayer
             #endregion User info loading
 
             #region User player configuration loading
-            // Check user player configuration
             VideoPlayerSettings userPlayerSetting = new VideoPlayerSettings();
-            if (HelperClass.CheckSettings("MediaPlayerDatabase", userInfo, "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+
+            if (!IsPostBack)
             {
-                userPlayerSetting = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
-            }
-            else
-            {
-                if (HelperClass.CreateNewSettings("MediaPlayerDatabase", "UserSettings", userInfo, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                // Check user player configuration
+                if (HelperClass.CheckSettings("MediaPlayerDatabase", userInfo, "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
                 {
                     userPlayerSetting = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
                 }
                 else
                 {
-                    Response.Redirect("Error.aspx?id=24");
+                    if (HelperClass.CreateNewSettings("MediaPlayerDatabase", "UserSettings", userInfo, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                    {
+                        userPlayerSetting = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                    }
+                    else
+                    {
+                        Response.Redirect("Error.aspx?id=24");
+                    }
                 }
             }
+
             #endregion User player configuration loading
 
             #endregion Preparation
 
-            lstVideoResolution.SelectedValue = ((int)userPlayerSetting.resolution).ToString();
-            lstFrameRate.SelectedValue = ((int)userPlayerSetting.frameRate).ToString();
-            lstFrameBufferMode.SelectedValue = ((int)userPlayerSetting.bufferMode).ToString();
-            lstFramePreload.SelectedValue = ((int)userPlayerSetting.preloadFrames).ToString();
-            lstPlayMode.SelectedIndex = 0;
+            if (!IsPostBack)
+            {
+                lstVideoResolution.SelectedValue = ((int)userPlayerSetting.resolution).ToString();
+                lstFrameRate.SelectedValue = ((int)userPlayerSetting.frameRate).ToString();
+                lstFrameBufferMode.SelectedValue = ((int)userPlayerSetting.bufferMode).ToString();
+                lstFramePreload.SelectedValue = ((int)userPlayerSetting.preloadFrames).ToString();
+                lstPlayMode.SelectedIndex = 0;
+            }
+            
         }
 
         protected void btnSaveSettings_Click(object sender, EventArgs e)
         {
             #region Preparation
             VideoPlayerSettings settings = new VideoPlayerSettings();
-
+            SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+            UserInfo userInfo = new UserInfo();
             #endregion Preparation
+
+            #region User info loading
+            userInfo.SessionID = Session.SessionID;
+            // Try reading user information
+            if (HelperClass.CheckUser("MediaPlayerDatabase", "SessionInfo", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+            {
+                // Load user info
+                SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", "SessionInfo", "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+            }
+            else
+            {
+                Response.Redirect("Error.aspx?id=21");
+            }
+            #endregion User info loading
 
             #region Resolution
             int selectedResolution = Convert.ToInt32(lstVideoResolution.SelectedValue);
@@ -188,7 +213,12 @@ namespace MediaPlayer
 
             #endregion Frame preload
 
-            HelperClass.UpdateSettings(settings, settingsDatabase, settingsTable, connectionString);
+            FunctionResult result = HelperClass.UpdateSettings(settings, userInfo, "MediaPlayerDatabase", "UserSettings", connectionString);
+            if (result.functionResult == Result.Fail)
+            {
+                Response.Redirect("Error.aspx?id=25");
+            }
+            Response.Redirect("Index.aspx");
         }
 
         protected void btnCancelSettings_Click(object sender, EventArgs e)

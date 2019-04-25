@@ -55,6 +55,13 @@ namespace MediaPlayer
                     errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
                     urlHasBeenSet = true;
                 }
+                else if (Request.QueryString["id"] == "25")
+                {
+                    lbError.Text = "Can't create your settings. Something is wrong...";
+                    errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+                    urlHasBeenSet = true;
+                }
+
                 else if (Request.QueryString["id"] == "50")
                 {
                     lbError.Text = "sumanai... test mode...";
