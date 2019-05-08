@@ -101,4 +101,10 @@ namespace MediaPlayer
         Opened,
         Closed
     }
+
+    public enum StringConversionMode
+    {
+        Encode = 1,
+        Decode = 2
+    }
 }

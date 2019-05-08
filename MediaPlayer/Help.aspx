@@ -42,9 +42,6 @@
                 <li>Tunggu hingga halaman dialihkan</li>
                 <li>Video sudah dapat ditonton</li>
             </ol>
-            <div>
-                Tambah "res=720" dan spasi didepan url untuk mengganti resolusi
-            </div>
         </asp:Panel>
         <asp:Panel
             ID="pnlPlayFromFile"
@@ -57,22 +54,21 @@
                 <li>Unggah video yang diinginkan</li>
                 <li>Tekan tombol "Upload"</li>
                 <li>Tunggu hingga halaman dialihkan</li>
-                <li>Video sudah dapat ditonton</li>
+                <li>Tunggu hingga tombol kendali video muncul dan video siap diputar</li>
             </ol>
         </asp:Panel>
         <asp:Panel
             ID="pnlCommands"
             runat="server"
             CssClass="w3-container">
-            <h4>Perinta-perintah</h4>
+            <h4>Perintah-perintah (Experimental)</h4>
             <div class="w3-text-theme">
-                Format penggunaan: perintah perintah_lainnya url video
+                Format penggunaan: url_video perintah perintah_lainnya 
             </div>
             <div>
                 Command info
             </div>
             <ol>
-                <li>res= = Atur resolusi video (contoh: res=720)</li>
                 <li>help = Buka halaman bantuan</li>
                 <li>settings = Buka halaman Pengaturan</li>
             </ol>
@@ -80,31 +76,12 @@
                 Debuging info
             </div>
             <ol>
-                <li>sample = Muat contoh file</li>
-                <li>error = (Debug) Buka halaman Error</li>
-                <li>player = (Debug) Buka (paksa) halaman Player</li>
+                <li>sample = Muat contoh file (<a href="https://www.youtube.com/watch?v=tyneiz9FRMw" target="_blank">Akari ga yattekita zo ~tsu</a>)</li>
+                <li>error = (Debug) Buka halaman Error.aspx</li>
+                <li>player = (Debug) Buka (paksa) halaman Player.aspx</li>
                 <li>checker = (Debug) Buka halaman Checker.aspx</li>
             </ol>
-            <div class="w3-text-red">
-                Catatan: Perintah yang dimasukkan akan secara otomatis mengganti pengaturan yang telah tersimpan (untuk akun ini)
-            </div>
         </asp:Panel>
-        <asp:Panel
-            ID="pnlWarning"
-            runat="server"
-            CssClass="w3-container">
-            Catatan:<br />
-            Pastikan ada terdapat ruang memori yang  cukup untuk menyimpan gambar (300).
-            <br />
-            Untuk saat ini, aplikasi akan menggunakan fungsi &ldquo;EnablePreload&rdquo; untuk membuat proses pemutaran video menjadi lebih baik.
-            <br />
-            Karena fungsi &ldquo;Enable Preload&rdquo; dihidupkan, aplikasi mungkin akan menggunakan banyak memori untuk memuat gambar.
-        </asp:Panel>
-        <div class="w3-container w3-panel w3-red w3-text-white">
-            Catatan:
-            <br />
-            Untuk sekarang video hanya dapat diputar dengan resolusi awalan, yaitu 854x480.
-        </div>
     </form>
 </body>
 </html>

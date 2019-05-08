@@ -19,6 +19,9 @@ namespace MediaPlayer
          * 3. If video status is processed, check for actual end frame
          * 4. If video status is processing, return string inprocess
          * 
+         * Note:
+         * I don't know how to use JSON yet and still confuse about SignalR,
+         * so this is the only workaround i can think of.
          */
 
         public static string CheckReturnValue = "null";
@@ -26,7 +29,7 @@ namespace MediaPlayer
         protected void Page_Load(object sender, EventArgs e)
         {
             string sessionID = string.Empty;
-            string requestedURL = string.Empty;
+            string requestedPID = string.Empty;
 
             if (Request.QueryString.Count != 0)
             {
@@ -37,63 +40,62 @@ namespace MediaPlayer
                     {
                         CheckReturnValue = "<return>sample</return>";
                     }
+                    else
+                    {
+                        Response.Redirect("Error.aspx");
+                    }
                 }
                 else
                 {
-                    // Check for id
+                    // Check for processID
                     if (Request.QueryString["id"] != null)
                     {
-                        sessionID = Request.QueryString["id"];
-                    }
-                    else
-                    {
-                        Server.Transfer("Error.aspx?id=97");
-                    }
-
-                    // Check for url
-                    if (Request.QueryString["url"] != null)
-                    {
-                        requestedURL = Request.QueryString["url"];
+                        requestedPID = Request.QueryString["id"];
                     }
                     else
                     {
                         Server.Transfer("Error.aspx?id=98");
                     }
-                    CheckReturnValue = "<value>" + CheckProcessStatus(sessionID, requestedURL) + "</value>";
+
+                    CheckReturnValue = "<value>" + CheckProcessStatus(requestedPID) + "</value>";
                 }
             }
             else
             {
-                Server.Transfer("Error.aspx?id=99");
+                Server.Transfer("Error.aspx");
             }
         }
 
-        private string CheckProcessStatus(string sessionID, string videoURL)
+        private string CheckProcessStatus(string PID)
         {
-            string database = string.Empty;
-            string table = string.Empty;
-            string connectionString = string.Empty;
+            #region Preparation
+            SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+            string database = "MediaPlayerDatabase";
+            string table = "ProcessedVideoInfo";
 
             string receivedStatus = string.Empty;
+            #endregion Preparation
 
             try
             {
-                receivedStatus = SQLClassPeralatan.Peralatan.MintaDataDatabase(database, "VideoStatus", table, "OriginalVideoURL", videoURL, connectionString);
-                if (receivedStatus == "0")
+                receivedStatus = SQLClassPeralatan.Peralatan.MintaDataDatabase(database, "VideoStatus", table, "ProcessID", PID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                if (receivedStatus == "1")
                 {
-                    return "error";
-                }
-                else if (receivedStatus == "1")
-                {
-                    return "inprocess";
+                    return "processing";
                 }
                 else if (receivedStatus == "2")
                 {
-                    return SQLClassPeralatan.Peralatan.MintaDataDatabase(database, "VideoActualEndFrame", table, "OriginalVideoURL", videoURL, connectionString);
+                    //Read the actual end frame
+                    
+                    return "success|" + SQLClassPeralatan.Peralatan.MintaDataDatabase(database, "VideoActualEndFrame", table, "ProcessID", PID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
                 }
                 else if (receivedStatus == "3")
                 {
-                    return "error";
+                    return "failed";
+                }
+                else if (receivedStatus == "4")
+                {
+                    return "canceled";
                 }
 
             }

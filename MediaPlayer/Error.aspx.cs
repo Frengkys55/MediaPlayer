@@ -10,6 +10,7 @@ namespace MediaPlayer
     public partial class Error : System.Web.UI.Page
     {
         public static string errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
+        public static string backgroundPosition = "left";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request.QueryString.Count != 0)
@@ -61,6 +62,14 @@ namespace MediaPlayer
                     errorImgURL = "http://toshiba/Sources/Images/Other/anime-poker-face-2.png";
                     urlHasBeenSet = true;
                 }
+                // Player error
+                else if (Request.QueryString["id"] == "31")
+                {
+                    lbError.Text = "Can't process this video name...<br />tehe...";
+                    errorImgURL = "Sources/Images/Other/trtS8mw.png";
+                    urlHasBeenSet = true;
+                    backgroundPosition = "right";
+                }
 
                 else if (Request.QueryString["id"] == "50")
                 {
@@ -74,13 +83,13 @@ namespace MediaPlayer
                 }
                 else if (Request.QueryString["id"] == "97")
                 {
-                    lbError.Text = "hmmm.... where did the id go?";
+                    lbError.Text = "hmmm.... where did the ID go?";
                     errorImgURL = "http://toshiba/Sources/Images/Other/anime_confuse.png";
                     urlHasBeenSet = true;
                 }
                 else if (Request.QueryString["id"] == "98")
                 {
-                    lbError.Text = "hmmm.... where did the url go?";
+                    lbError.Text = "hmmm.... where did the PID go?";
                     errorImgURL = "http://toshiba/Sources/Images/Other/anime_confuse.png";
                     urlHasBeenSet = true;
                 }

@@ -175,6 +175,11 @@
     <Content Include="Sources\CSS\W3S\w3data.js" />
     <Content Include="Sources\CSS\W3S\w3schools_footer.js" />
     <Content Include="Sources\Fonts\SegoeUI\SegoeUI-Light.svg" />
+    <Content Include="Sources\Images\1460399579_GuP-_hosted_on_webmshare-VNEqM.gif" />
+    <Content Include="Sources\Images\1522250897_1491486976_ภาพ 2.gif" />
+    <Content Include="Sources\Images\1522251213_61c07d0dbe2619900d57ff2834cc1b26.gif" />
+    <Content Include="Sources\Images\1522252016_qB178Bx.gif" />
+    <Content Include="Sources\Images\26e.png" />
     <Content Include="Sources\Images\Controls\Backward.png" />
     <Content Include="Sources\Images\Controls\BackwardW.png" />
     <Content Include="Sources\Images\Controls\Forward.png" />
@@ -188,6 +193,7 @@
     <Content Include="Sources\Images\MediaPlayer.png" />
     <Content Include="Sources\Images\MediaPlayer2.png" />
     <Content Include="Sources\Images\MediaPlayer2Small.png" />
+    <Content Include="Sources\Images\trtS8mw.png" />
     <Content Include="Sources\JavaScripts\ActualEndFrameChecker.js" />
     <Content Include="Sources\JavaScripts\donut-chart.js" />
     <Content Include="Sources\JavaScripts\FileDownloader.js" />

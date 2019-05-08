@@ -79,6 +79,7 @@ namespace MediaPlayer
         public int videoWidth;
         public int videoHeight;
         public Result result;
+        public int processID;
     }
 
     public struct VideoConfigurations

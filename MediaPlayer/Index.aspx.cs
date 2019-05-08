@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Net;
 using System.Configuration;
 using System.Diagnostics;
+using System.Text;
 
 namespace MediaPlayer
 {
@@ -54,10 +55,6 @@ namespace MediaPlayer
         PlayMode userPlayMode;
         #endregion Selected mode
         #endregion Website configurations
-
-        #region Cloud drive service configurations
-
-        #endregion Cloud drive service configurations
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -107,7 +104,10 @@ namespace MediaPlayer
 
         protected void btnUploadURL_Click(object sender, EventArgs e)
         {
-
+            if (pnlPlaySettings.Visible)
+            {
+                btnSettings_Click(this, e);
+            }
 
             pnlURLPlay.Visible = true;
             pnlUploadPlay.Visible = false;
@@ -117,16 +117,21 @@ namespace MediaPlayer
 
             btnUploadURL.CssClass = "w3-button w3-theme w3-hover-theme w3-theme";
             btnLoadUpload.CssClass = "w3-button w3-hover-theme w3-white";
+            btnSettings.CssClass = "w3-button w3-white w3-hover-theme w3-border w3-border-theme w3-bar-item";
         }
 
         protected void btnLoadUpload_Click(object sender, EventArgs e)
         {
-            btnSettings_Click(this, e);
+            if (pnlPlaySettings.Visible)
+            {
+                btnUploadSettings_Click(this, e);
+            }
             pnlUploadPlay.Visible = true;
             pnlURLPlay.Visible = false;
 
             btnUploadURL.CssClass = "w3-button w3-hover-theme w3-white";
             btnLoadUpload.CssClass = "w3-button w3-hover-theme w3-theme";
+            btnUploadSettings.CssClass = "w3-button w3-white w3-hover-theme w3-border w3-border-theme w3-bar-item";
         }
 
         protected void btnLoadURLVideo_Click(object sender, EventArgs e)
@@ -221,7 +226,7 @@ namespace MediaPlayer
                 SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
                 #endregion System configuration loader
 
-                #region User settings
+                #region User information loader
                 // Check for user information in database
                 if (HelperClass.CheckUser(databaseName, userTableName, Session.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
                 {
@@ -245,7 +250,7 @@ namespace MediaPlayer
                         userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
                     }
                 }
-                #endregion User settings
+                #endregion User information loader
 
                 #region Player settings loader
                 VideoPlayerSettings settings = new VideoPlayerSettings();
@@ -276,7 +281,6 @@ namespace MediaPlayer
                 userInfo.SessionID = Session.SessionID;
                 #endregion Information generation
 
-
                 #region Main process
                 ProcessedVideo processedVideo = mainProcessor.ProcessVideo(videoProcessingInformation, systemConfiguration, userInfo);
                 #endregion Main process
@@ -291,7 +295,8 @@ namespace MediaPlayer
                     queryString += "framerate=" + processedVideo.frameRate + "&";
                     queryString += "startframe=" + processedVideo.startFrame + "&";
                     queryString += "endframe=" + processedVideo.endFrame + "&";
-                    queryString += "videoresolution=" + processedVideo.videoHeight;
+                    queryString += "videoresolution=" + processedVideo.videoHeight + "&";
+                    queryString += "pid=" + processedVideo.processID;
                     if (Convert.ToInt32(lstPlayingSpeed.SelectedValue) > 0)
                     {
                         queryString += "&playspeed=" + lstPlayingSpeed.SelectedValue;
@@ -301,7 +306,6 @@ namespace MediaPlayer
                         queryString += "&timeposition=" + txtCustomPlayTime.Text;
                     }
 
-                    HelperClass.SetVideoInfo(settings, userInfo, processedVideo);
 
                     Response.Redirect("Player.aspx" + queryString);
                 }
@@ -341,83 +345,191 @@ namespace MediaPlayer
 
         protected void btnUploadVideo_Click(object sender, EventArgs e)
         {
-            #region File saving configuration
-            
-            string saveLocation = string.Empty;
-            bool requestDeleteFileAfterComplete = false;
+            //Response.Redirect("Error.aspx?id=96");
 
-            if (videoSaveLocation.EndsWith("\\"))
+            #region Preparation
+
+            #region Initialization
+
+            #region Database configuration
+            string databaseName = "MediaPlayerDatabase";
+            string userTableName = "SessionInfo";
+            string settingsTable = "UserSettings";
+            #endregion Database configuration
+
+            #region Processor initialization
+            Processor mainProcessor = new Processor();
+            #endregion Processor initialization
+
+            #region User information
+            UserInfo userInfo = new UserInfo();
+            #endregion User information
+
+            #region Video processing information
+            string videoName = string.Empty;
+            string videoNameWithoutExtension = string.Empty;
+            ProcessedVideo processedVideo = new ProcessedVideo();
+            VideoProcessingInformation videoProcessingInformation = new VideoProcessingInformation();
+            #endregion Video processing information
+
+            #endregion Initialization
+
+            #region System configuration loader
+            SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+            #endregion System configuration loader
+
+            #region User information loader
+            // Check for user information in database
+            if (HelperClass.CheckUser(databaseName, userTableName, Session.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
             {
-                saveLocation = videoSaveLocation + Session.SessionID;
+                userInfo.SessionID = Session.SessionID;
+                SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
+                if (!mintaDataDatabase.TerdapatKesalahan)
+                {
+                    userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                }
             }
             else
             {
-                saveLocation = videoSaveLocation + "\\" + Session.SessionID;
+                userInfo.SessionID = Session.SessionID;
+                if (!HelperClass.AddUser(databaseName, userTableName, userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                {
+                    Response.Redirect("Error.aspx?id=23");
+                }
+                SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
+                if (!mintaDataDatabase.TerdapatKesalahan)
+                {
+                    userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                }
+            }
+            #endregion User information loader
+
+            #region Player settings loader
+            VideoPlayerSettings settings = new VideoPlayerSettings();
+
+            if (HelperClass.CheckSettings(databaseName, userInfo, settingsTable, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+            {
+                settings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
+            }
+            else
+            {
+                if (HelperClass.CreateNewSettings(databaseName, settingsTable, userInfo, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                {
+                    settings = HelperClass.ReadPlayerSettings(Session.SessionID, database, settingsTable, connectionString);
+                }
+            }
+            #endregion Player settings loader
+
+            #region Video information preparation
+            processedVideo.videoName =  HttpUtility.UrlEncode(HelperClass.StringEncoderDecoder(Path.GetFileNameWithoutExtension(uplVideo.FileName), StringConversionMode.Encode));
+            //processedVideo.processedVideoName = Convert.ToBase64String(Encoding.UTF8.GetBytes(processedVideo.videoName));
+            #endregion Video information preparation
+
+            #endregion Preparation
+
+            #region File saving configuration
+
+            //string saveLocation = string.Empty;
+            
+            bool requestDeleteFileAfterComplete = false;
+
+            #region Temporary download location
+            if (videoSaveLocation.EndsWith("\\"))
+            {
+                processedVideo.localAccessLocation = videoSaveLocation + Session.SessionID;
+            }
+            else
+            {
+                processedVideo.localAccessLocation = videoSaveLocation + "\\" + Session.SessionID;
             }
 
             // Path checking
-            if (!Directory.Exists(saveLocation))
+            if (!Directory.Exists(processedVideo.localAccessLocation))
             {
-                Directory.CreateDirectory(saveLocation);
+                Directory.CreateDirectory(processedVideo.localAccessLocation);
             }
 
-            if (videoSaveLocation.EndsWith("\\"))
+            if (processedVideo.localAccessLocation.EndsWith("\\"))
             {
-                saveLocation += uplVideo.PostedFile.FileName;
+                //processedVideo.localAccessLocation += processedVideo.processedVideoName + Path.GetExtension(uplVideo.FileName);
+                processedVideo.localAccessLocation += Convert.ToBase64String(Encoding.UTF8.GetBytes(processedVideo.videoName)) + Path.GetExtension(uplVideo.FileName);
             }
             else
             {
-                saveLocation += "\\" + uplVideo.PostedFile.FileName;
+                processedVideo.localAccessLocation += "\\" + Convert.ToBase64String(Encoding.UTF8.GetBytes(processedVideo.videoName)) + Path.GetExtension(uplVideo.FileName); ;
             }
+            #endregion Temporary download location
+
+
             #endregion File saving configuration
 
             #region Received info configuration
             string networkAccessLocation = string.Empty;
-            string videoName = string.Empty;
+            //string videoName = string.Empty;
             string videoDuration = string.Empty;
             string frameRate = string.Empty;
             string startFrame = string.Empty;
             string endFrame = string.Empty;
             string videoWidth = string.Empty;
             string videoHeight = string.Empty;
+
             #endregion Received info configuration
 
             #region Video saving
-            uplVideo.SaveAs(saveLocation);
+            uplVideo.SaveAs(processedVideo.localAccessLocation);
             #endregion Video saving
 
+            #region Information generation
+            videoProcessingInformation.VideoLocations.VideoLocation = processedVideo.localAccessLocation;
+            videoProcessingInformation.VideoLocations.videoSaveLocation = systemConfiguration.ProcessedVideoSaveLocation;
+            videoProcessingInformation.VideoLocations.videoNetworkSaveLocation = systemConfiguration.NetworkProcessedVideoSaveLocation;
+            videoProcessingInformation.VideoSetting.processedVideoResolution = settings.resolution;
+            videoProcessingInformation.VideoSetting.frameRate = settings.frameRate;
+            videoProcessingInformation.VideoSetting.audioProcessing = AudioProcessing.ProcessAudio;
+
+            #endregion Information generation
+
             #region Video processing
-            VideoProcessingService.Service1Client client = new VideoProcessingService.Service1Client();
-            string[] receivedInfo = client.ProcessVideo2(saveLocation, true, Session.SessionID, true, 854, 480, 30);
+
+            ProcessedVideo processedVideo2 = mainProcessor.ProcessVideo(videoProcessingInformation, systemConfiguration, userInfo, true);
+
+            //VideoProcessingService.Service1Client client = new VideoProcessingService.Service1Client();
+            //string[] receivedInfo = client.ProcessVideo2(saveLocation, true, Session.SessionID, true, 854, 480, 30);
             #endregion Video processing
 
-            #region Received info processing
-            if (receivedInfo[0].ToLower().Contains("error"))
-            {
-                Response.Redirect("Error.aspx?id=10");
-                return;
-            }
-
-            networkAccessLocation = receivedInfo[1];
-            videoName = receivedInfo[2];
-            videoDuration = receivedInfo[3];
-            frameRate = receivedInfo[4];
-            startFrame = receivedInfo[5];
-            endFrame = receivedInfo[6];
-            videoWidth = receivedInfo[7];
-            // videoHeight = receivedInfo[8]
-            #endregion Received info processing
+            #region Result combination
+            string temporaryData = processedVideo.videoName;
+            processedVideo = processedVideo2;
+            processedVideo.videoName = temporaryData;
+            #endregion Result combination
 
             #region Query string preparation
             string queryString = string.Empty;
-            queryString += "?new=true&";
-            queryString += "path=" + networkAccessLocation + "&";
-            queryString += "name=" + videoName + "&";
-            queryString += "duration=" + videoDuration + "&";
-            queryString += "framerate=" + frameRate + "&";
-            queryString += "startframe=" + startFrame + "&";
-            queryString += "endframe=" + endFrame + "&";
-            queryString += "videowidth=" + videoWidth;
+
+            if (processedVideo.result == Result.Success)
+            {
+                queryString += "?new=true&";
+                queryString += "path=" + processedVideo.networkAccessLocation + "&";
+                queryString += "name=" + processedVideo.videoName + "&";
+                queryString += "duration=" + processedVideo.videoDuration + "&";
+                queryString += "framerate=" + processedVideo.frameRate + "&";
+                queryString += "startframe=" + processedVideo.startFrame + "&";
+                queryString += "endframe=" + processedVideo.endFrame + "&";
+                queryString += "videoresolution=" + processedVideo.videoHeight + "&";
+                queryString += "pid=" + processedVideo.processID;
+                if (Convert.ToInt32(lstPlayingSpeed.SelectedValue) > 0)
+                {
+                    queryString += "&playspeed=" + lstPlayingSpeed.SelectedValue;
+                }
+                if (txtCustomPlayTime.Text != string.Empty)
+                {
+                    queryString += "&timeposition=" + txtCustomPlayTime.Text;
+                }
+
+
+                Response.Redirect("Player.aspx" + queryString);
+            }
+
             #endregion Query string preparation
 
             // Transfer page
@@ -431,12 +543,26 @@ namespace MediaPlayer
 
         protected void btnUploadSettings_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Settings.aspx");
+            //Response.Redirect("Settings.aspx");
+
+            if (pnlPlaySettings.Visible == false)
+            {
+                pnlPlaySettings.Visible = true;
+                panelHeight = "250px";
+                btnUploadSettings.CssClass = "w3-button w3-theme w3-hover-white w3-border w3-border-theme w3-bar-item";
+            }
+            else
+            {
+                //Response.Redirect("Index.aspx");
+                pnlPlaySettings.Visible = false;
+                panelHeight = "180px";
+                btnUploadSettings.CssClass = "w3-button w3-white w3-hover-theme w3-border w3-border-theme w3-bar-item";
+            }
         }
 
         protected string LoadSample()
         {
-            return "Player.aspx?new=true&path=http://toshiba/test/Video/egqxbrd4xhzmgdbtk5vln3tn/[VTuber] HimeHina - RettouJoutou [MusicVideo]&name=[VTuber] HimeHina - RettouJoutou [MusicVideo]&duration=242,649&framerate=59,939998626709&startframe=1&endframe=14544&videowidth=854";
+            return "Player.aspx?new=true&path=http://toshiba/test/Video/qwzmcy1ddwbafhwk0dscvrz4/QWthcmkgZ2EgeWF0dGVraXRhIHpvIH50c3U=&name=Akari%20ga%20yattekita%20zo%20~tsu&duration=301,07&framerate=30&startframe=1&endframe=9032&videoresolution=480&pid=2004";
         }
 
         protected void btnMoreSettings_Click(object sender, EventArgs e)

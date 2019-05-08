@@ -159,7 +159,7 @@
                                 <asp:Button
                                     ID="btnUploadSettings"
                                     runat="server"
-                                    Text="Settings"
+                                    Text="v"
                                     CssClass="  w3-button
                                                 w3-white
                                                 w3-hover-theme

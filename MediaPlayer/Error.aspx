@@ -13,7 +13,7 @@
             background-image:url('<%= errorImgURL %>');
             background-attachment:fixed;
             background-repeat:no-repeat;
-            background-position:left bottom;
+            background-position:<%= backgroundPosition %> bottom;
             background-size:30%;
         }
         .Position-Screen-Middle {

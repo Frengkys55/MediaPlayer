@@ -28,6 +28,7 @@ namespace MediaPlayer
         #endregion Settings checking
         #endregion Checking
 
+        #region Settings processing
         public static bool AddUser(string database, string userTable, string sessionID, string connectionString)
         {
             string SQLCommand = string.Empty;
@@ -41,7 +42,7 @@ namespace MediaPlayer
         {
             VideoPlayerSettings playerSettings = new VideoPlayerSettings();
             playerSettings.bufferMode = BufferMode.SingleBuffer;
-            playerSettings.frameRate = FrameRate._30fps;
+            playerSettings.frameRate = FrameRate._24fps;
             playerSettings.resolution = Resolution.SD_480p;
             playerSettings.preloadFrames = PreloadFrames.EnablePreload;
 
@@ -227,6 +228,7 @@ namespace MediaPlayer
             #endregion Video preload frames
             return UserSettings;
         }
+        #endregion Settings processing
 
         public static DatabaseProcessedInfo SetVideoInfo(VideoPlayerSettings settings, UserInfo userInfo, ProcessedVideo processedVideo)
         {
@@ -427,6 +429,21 @@ namespace MediaPlayer
             #endregion Database information
 
             return loadedConfiguration;
+        }
+
+        public static string StringEncoderDecoder(string input, StringConversionMode mode = StringConversionMode.Encode)
+        {
+            string resultString = string.Empty;
+
+            if (mode == StringConversionMode.Encode)
+            {
+                resultString = Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
+            }
+            else if (mode == StringConversionMode.Decode)
+            {
+                resultString = Encoding.UTF8.GetString(Convert.FromBase64String(input));
+            }
+            return resultString;
         }
 
     }
