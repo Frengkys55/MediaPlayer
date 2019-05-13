@@ -31,13 +31,31 @@ namespace MediaPlayer {
         protected global::System.Web.UI.WebControls.ImageButton btnHome;
         
         /// <summary>
-        /// playerWindow control.
+        /// imgInnerControlPlay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl playerWindow;
+        protected global::System.Web.UI.WebControls.Image imgInnerControlPlay;
+        
+        /// <summary>
+        /// imgInnerControlReverse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgInnerControlReverse;
+        
+        /// <summary>
+        /// imgInnerControlFastForward control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgInnerControlFastForward;
         
         /// <summary>
         /// lbError control.

@@ -10,6 +10,11 @@ namespace MediaPlayer
 {
     public partial class Player : System.Web.UI.Page
     {
+        public static string customCSSLocation = string.Empty;
+        public static string W3CSSLocation = string.Empty;
+        public static string LoadingIcon = string.Empty;
+        public static string checkerAddress = string.Empty;
+
         public static double videoDuration = 0;
         public static int audioStartDuration = 0;
         public static string playSpeedIncrement = "0";
@@ -27,28 +32,54 @@ namespace MediaPlayer
         public static string CheckerAddress = string.Empty;
         string sessionID = string.Empty;
         bool testMode = false;
+        public static string processProgressBar = string.Empty;
+        public static string processTime = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
+            CSSLoader();
+            PageImageLoader();
             if (Request.QueryString.Count != 0)
             {
                 if (Request.QueryString["new"] == "true")
                 {
-                    VideoURL = Request.QueryString["path"];
-                    try
+                    if (ConfigurationManager.AppSettings["overridehost"] == "true")
                     {
-                        videoFileName = HelperClass.StringEncoderDecoder(HttpUtility.UrlDecode(Request.QueryString["name"]), StringConversionMode.Decode);
+                        VideoURL = HelperClass.HostChanger(Request.QueryString["path"]);
                     }
-                    catch (Exception err)
+                    else
                     {
-
-                        Response.Redirect("Error.aspx");
+                        VideoURL = Request.QueryString["path"];
                     }
+                    if (Request.QueryString["mode"] != null)
+                    {
+                        if (Request.QueryString["mode"] == "upload")
+                        {
+                            try
+                            {
+                                videoFileName = HelperClass.StringEncoderDecoder(HttpUtility.UrlDecode(Request.QueryString["name"]), StringConversionMode.Decode);
+                            }
+                            catch (Exception err)
+                            {
+                                //Response.Redirect("Error.aspx?id=31");
+                                videoFileName = "(Name conversion fail) " + HttpUtility.UrlDecode(Request.QueryString["name"]);
+                            }
+                        }
+                        else
+                        {
+                            videoFileName = Request.QueryString["name"];
+                        }
+                    }
+                    else
+                    {
+                        videoFileName = Request.QueryString["name"];
+                    }
+                    
                     videoDuration = Convert.ToDouble(Request.QueryString["duration"]);
                     videoFrameRate = Convert.ToDouble(Request.QueryString["framerate"]);
                     startFrame = Request.QueryString["startframe"];
                     videoTotalFrame = Request.QueryString["endframe"];
                     videoHeight = Convert.ToInt32(Request.QueryString["videoresolution"]);
-                    videoPlaySpeed = Request.QueryString["playspeed"];
+                    videoPlaySpeed = playSpeedIncrement = Request.QueryString["playspeed"];
                     middleFrame = videoTotalFrame;
                     CheckerAddress = ConfigurationManager.AppSettings["hostAddress"] + "Checker.aspx?id=" + Request.QueryString["pid"];
 
@@ -62,10 +93,60 @@ namespace MediaPlayer
 
                         startFrame = TimeToFrameConverter(audioStartDuration, videoFrameRate).ToString();
                     }
+                    else
+                    {
+                        audioStartDuration = 0;
+                    }
                     if (Request.QueryString["playspeed"] != null)
                     {
                         playSpeedIncrement = Request.QueryString["playspeed"];
                     }
+                    else
+                    {
+                        playSpeedIncrement = "0";
+                    }
+
+                    #region Video player settings
+
+                    #region Progress bar settings
+                    if (Request.QueryString["progressbar"] != null)
+                    {
+                        if (Request.QueryString["progressbar"] == "true")
+                        {
+                            processProgressBar = "true";
+                        }
+                        else
+                        {
+                            processProgressBar = "false";
+                        }
+                    }
+                    else
+                    {
+                        // Default
+                        processProgressBar = "true";
+                    }
+                    #endregion Progress bar settings
+
+                    #region Time settings
+                    if (Request.QueryString["time"] != null)
+                    {
+                        if (Request.QueryString["time"] == "true")
+                        {
+                            processTime = "true";
+                        }
+                        else
+                        {
+                            processTime = "false";
+                        }
+                    }
+                    else
+                    {
+                        // Default
+                        processTime = "true";
+                    }
+                    #endregion Time settings
+
+                    #endregion Video player settings
                 }
                 else
                 {
@@ -251,6 +332,60 @@ namespace MediaPlayer
             framePosition = Convert.ToInt32(convertedTime * frameRate);
             
             return framePosition;
+        }
+
+        protected void CSSLoader()
+        {
+            customCSSLocation = "\"" + HelperClass.CustomCSSLoader() + "\"";
+            W3CSSLocation = "\"" + HelperClass.W3CSSLoader() + "\"";
+        }
+
+        protected void PageImageLoader()
+        {
+            if (ConfigurationManager.AppSettings["UseExternalResources"] == "true")
+            {
+                #region Home button
+                btnHome.ImageUrl = ConfigurationManager.AppSettings["MediaPlayerLogoLocationW"];
+                #endregion Home button
+
+                #region Play button
+                imgInnerControlPlay.ImageUrl = ConfigurationManager.AppSettings["PlayControlIconLocation"];
+                #endregion Play button
+
+                #region Reverse button
+                imgInnerControlReverse.ImageUrl = ConfigurationManager.AppSettings["ReverseControlIconLocation"];
+                #endregion Reverse button
+
+                #region Fast forward button
+                imgInnerControlFastForward.ImageUrl = ConfigurationManager.AppSettings["FastForwardControlIconLocation"];
+                #endregion Fast forward button
+
+                #region Loading icon
+                LoadingIcon = "\"" + ConfigurationManager.AppSettings["LoadingIconLocation"] + "\"";
+                #endregion Loading icon
+            }
+            else
+            {
+                #region Home button
+                btnHome.ImageUrl = "~/Sources/Images/MediaPlayer2Small.png";
+                #endregion Home button
+
+                #region Play button
+                imgInnerControlPlay.ImageUrl = "~/Sources/Images/Controls/PlayW.png";
+                #endregion Play button
+
+                #region Reverse button
+                imgInnerControlReverse.ImageUrl = "~/Sources/Images/Controls/BackwardW.png";
+                #endregion Reverse button
+
+                #region Fast forward button
+                imgInnerControlFastForward.ImageUrl = "~/Sources/Images/Controls/ForwardW.png";
+                #endregion Fast forward button
+
+                #region Loading icon
+                LoadingIcon = "\"Sources/Images/1522250897_1491486976_ภาพ 2.gif\"";
+                #endregion Loading icon
+            }
         }
     }
 }

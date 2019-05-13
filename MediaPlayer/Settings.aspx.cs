@@ -9,6 +9,9 @@ namespace MediaPlayer
 {
     public partial class SiteSettings : System.Web.UI.Page
     {
+        public static string customCSSLocation = string.Empty;
+        public static string W3CSSLocation = string.Empty;
+        
         VideoPlayerSettings savedSettings = new VideoPlayerSettings();
         VideoPlayerSettings newSettings = new VideoPlayerSettings();
         string settingsDatabase = string.Empty;
@@ -17,6 +20,7 @@ namespace MediaPlayer
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            CSSLoader();
             //savedSettings = HelperClass.ReadPlayerSettings(Session.SessionID, settingsDatabase, settingsTable, connectionString);
 
             #region Preparation
@@ -224,6 +228,11 @@ namespace MediaPlayer
         protected void btnCancelSettings_Click(object sender, EventArgs e)
         {
             Response.Redirect("Index.aspx");
+        }
+        protected void CSSLoader()
+        {
+            customCSSLocation = "\"" + HelperClass.CustomCSSLoader() + "\"";
+            W3CSSLocation = "\"" + HelperClass.W3CSSLoader() + "\"";
         }
     }
 }

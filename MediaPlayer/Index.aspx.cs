@@ -16,6 +16,16 @@ namespace MediaPlayer
     {
         #region Website configurations
         #region Web page configurations
+        #region Image location
+        public static string mediaPlayerLogoLocation = string.Empty;
+        #endregion Image location
+
+        #region CSS location
+        public static string customCSSLocation = string.Empty;
+        public static string W3CSSLocation = string.Empty;
+        #endregion CSS location
+
+        #region Background images
         public static string panelHeight = "180px";
         public static string backgroundImage1 = string.Empty;
         public static string backgroundImage2 = string.Empty;
@@ -24,6 +34,7 @@ namespace MediaPlayer
         public static string backgroundImage5 = string.Empty;
         public static string backgroundImage6 = string.Empty;
         public static string backgroundImage7 = string.Empty;
+        #endregion Backkground images
         #endregion Web page configurations
 
         #region Code behind configuration
@@ -65,6 +76,8 @@ namespace MediaPlayer
 
             #region Loader
             BackgroundImageLoader();
+            CSSLoader();
+            PageImageLoader();
             #endregion Loader
 
             #region Settings
@@ -90,7 +103,7 @@ namespace MediaPlayer
                 }
                 else if (Request.QueryString["mode"] == "sample")
                 {
-                    Response.Redirect(LoadSample());
+                    Response.Redirect(LoadSample("sample1"));
                 }
                 else if (Request.QueryString["mode"] == "other")
                 {
@@ -156,9 +169,9 @@ namespace MediaPlayer
                 {
                     Response.Redirect("Player.aspx");
                 }
-                else if (txtURLSource.Text.ToLower() == "sample")
+                else if (txtURLSource.Text.ToLower() == "sample1" || txtURLSource.Text.ToLower() == "sample2" || txtURLSource.Text.ToLower() == "sample3" || txtURLSource.Text.ToLower() == "sample4" || txtURLSource.Text.ToLower() == "sample5")
                 {
-                    Response.Redirect(LoadSample());
+                    Response.Redirect(LoadSample(txtURLSource.Text));
                 }
                 else if (txtURLSource.Text.ToLower() == "checker")
                 {
@@ -421,7 +434,8 @@ namespace MediaPlayer
             #endregion Player settings loader
 
             #region Video information preparation
-            processedVideo.videoName =  HttpUtility.UrlEncode(HelperClass.StringEncoderDecoder(Path.GetFileNameWithoutExtension(uplVideo.FileName), StringConversionMode.Encode));
+            //processedVideo.videoName =  HttpUtility.UrlEncode(HelperClass.StringEncoderDecoder(Path.GetFileNameWithoutExtension(uplVideo.FileName), StringConversionMode.Encode));
+            processedVideo.videoName = HttpUtility.UrlEncode(HelperClass.StringEncoderDecoder(Path.GetFileName(uplVideo.FileName), StringConversionMode.Encode));
             //processedVideo.processedVideoName = Convert.ToBase64String(Encoding.UTF8.GetBytes(processedVideo.videoName));
             #endregion Video information preparation
 
@@ -430,7 +444,7 @@ namespace MediaPlayer
             #region File saving configuration
 
             //string saveLocation = string.Empty;
-            
+
             bool requestDeleteFileAfterComplete = false;
 
             #region Temporary download location
@@ -509,6 +523,7 @@ namespace MediaPlayer
             if (processedVideo.result == Result.Success)
             {
                 queryString += "?new=true&";
+                queryString += "mode=upload&";
                 queryString += "path=" + processedVideo.networkAccessLocation + "&";
                 queryString += "name=" + processedVideo.videoName + "&";
                 queryString += "duration=" + processedVideo.videoDuration + "&";
@@ -560,9 +575,17 @@ namespace MediaPlayer
             }
         }
 
-        protected string LoadSample()
+        protected string LoadSample(string information)
         {
-            return "Player.aspx?new=true&path=http://toshiba/test/Video/qwzmcy1ddwbafhwk0dscvrz4/QWthcmkgZ2EgeWF0dGVraXRhIHpvIH50c3U=&name=Akari%20ga%20yattekita%20zo%20~tsu&duration=301,07&framerate=30&startframe=1&endframe=9032&videoresolution=480&pid=2004";
+            int sampleNumber = 0;
+            if (Int32.TryParse(information.ToLower().Replace("sample", ""), out sampleNumber))
+            {
+                return HelperClass.HostChanger(HelperClass.StringEncoderDecoder(ConfigurationManager.AppSettings["SampleVideo" + sampleNumber], StringConversionMode.Decode));
+            }
+            else
+            {
+                return HelperClass.HostChanger(HelperClass.StringEncoderDecoder(ConfigurationManager.AppSettings["SampleVideo1"], StringConversionMode.Decode));
+            }
         }
 
         protected void btnMoreSettings_Click(object sender, EventArgs e)
@@ -590,6 +613,24 @@ namespace MediaPlayer
             backgroundImage5 = ConfigurationManager.AppSettings["backgroundImage5"];
             backgroundImage6 = ConfigurationManager.AppSettings["backgroundImage6"];
             backgroundImage7 = ConfigurationManager.AppSettings["backgroundImage7"];
+        }
+
+        protected void CSSLoader()
+        {
+            customCSSLocation = "\"" + HelperClass.CustomCSSLoader() + "\"";
+            W3CSSLocation = "\"" + HelperClass.W3CSSLoader() + "\""; 
+        }
+
+        protected void PageImageLoader()
+        {
+            if (ConfigurationManager.AppSettings["UseExternalResources"] == "true")
+            {
+                imgLogo.ImageUrl = ConfigurationManager.AppSettings["MediaPlayerLogoLocationW"];
+            }
+            else
+            {
+                imgLogo.ImageUrl = "~/Sources/Images/MediaPlayer2Small.png";
+            }
         }
 
         protected void ConfigurationLoader()

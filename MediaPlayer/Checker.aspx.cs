@@ -81,7 +81,7 @@ namespace MediaPlayer
                 receivedStatus = SQLClassPeralatan.Peralatan.MintaDataDatabase(database, "VideoStatus", table, "ProcessID", PID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
                 if (receivedStatus == "1")
                 {
-                    return "processing";
+                    return "processing|" + GetTotalProcessedFile(PID);
                 }
                 else if (receivedStatus == "2")
                 {
@@ -105,6 +105,25 @@ namespace MediaPlayer
             }
 
             return receivedStatus;
+        }
+
+        private int GetTotalProcessedFile(string PID)
+        {
+            int processedFiles = 0;
+            string processingLocation = string.Empty;
+            SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+
+            SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("LocalProcessedVideoFolder", "ProcessedVideoInfo", "ProcessID", PID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+            if (!mintaDataDatabase.TerdapatKesalahan)
+            {
+                processingLocation = HelperClass.StringEncoderDecoder(mintaDataDatabase.DataDiterima, StringConversionMode.Decode);
+                processedFiles = Directory.GetFiles(processingLocation, "*.jpg").Length;
+            }
+            else
+            {
+                processedFiles = 0;
+            }
+            return processedFiles;
         }
     }
 }

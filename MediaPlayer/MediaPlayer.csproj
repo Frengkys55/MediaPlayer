@@ -108,6 +108,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -180,6 +181,9 @@
     <Content Include="Sources\Images\1522251213_61c07d0dbe2619900d57ff2834cc1b26.gif" />
     <Content Include="Sources\Images\1522252016_qB178Bx.gif" />
     <Content Include="Sources\Images\26e.png" />
+    <Content Include="Sources\Images\anime-poker-face-2.png" />
+    <Content Include="Sources\Images\anime_confuse.png" />
+    <Content Include="Sources\Images\anime_uninterested.png" />
     <Content Include="Sources\Images\Controls\Backward.png" />
     <Content Include="Sources\Images\Controls\BackwardW.png" />
     <Content Include="Sources\Images\Controls\Forward.png" />

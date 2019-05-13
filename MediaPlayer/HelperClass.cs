@@ -34,8 +34,12 @@ namespace MediaPlayer
             string SQLCommand = string.Empty;
             SQLCommand += "USE " + database + ";";
             SQLCommand += "INSERT INTO " + userTable + " (SessionID) VALUES ('" + sessionID + "');";
-
-            return Peralatan.TambahKeDatabase(SQLCommand, connectionString);
+            bool result = Peralatan.TambahKeDatabase(SQLCommand, connectionString);
+            if (!result)
+            {
+                throw new Exception(Peralatan.PesanKesalahan);
+            }
+            return result;
         }
         
         public static bool CreateNewSettings(string database, string table, UserInfo userInfo, string connectionString)
@@ -446,5 +450,24 @@ namespace MediaPlayer
             return resultString;
         }
 
+        #region Page settings loader
+        // Just a simple location loader for easier javascript and css loading
+        public static string CustomCSSLoader()
+        {
+            return ConfigurationManager.AppSettings["CustomCSSLocation"];
+        }
+        public static string W3CSSLoader()
+        {
+            return ConfigurationManager.AppSettings["W3CSSLocation"];
+        }
+        #endregion Page settings loader
+
+        public static string HostChanger(string input)
+        {
+            string oldHost = ConfigurationManager.AppSettings["oldHostAddress"];
+            string newHost = ConfigurationManager.AppSettings["newHostAddress"];
+
+            return input.Replace(oldHost, newHost);
+        }
     }
 }  

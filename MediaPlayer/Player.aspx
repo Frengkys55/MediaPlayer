@@ -5,8 +5,161 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title><%= videoFileName.Replace("%20", " ") %> - MediaPlayer</title>
-    <link rel="stylesheet" href="Sources/CSS/W3S/w3.css" />
-    <link rel="stylesheet" href="Sources/CSS/Custom.css" />
+    <link rel="stylesheet" href=<%= W3CSSLocation %> />
+    <style>
+        /*@font-face {
+            font-family: 'SegoeUI-Light';
+            src: local('/Fonts/SegoeUI/SegoeUI-Light.woff') format('woff'), url('/Fonts/SegoeUI/SegoeUI-Light.ttf') format('truetype'), url('/Fonts/SegoeUI/SegoeUI-Light.svg#SegoeUI-Light') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'segoeuil';
+            src: url('segoeuil.eot');
+            src: url('segoeuil.woff2') format('woff2'), url('segoeuil.eot?#iefix') format('embedded-opentype');
+            font-weight: normal;
+            font-style: normal;
+
+        }*/
+
+        body{
+            font-family:'Segoe UI Light';
+        }
+        /*Background colors*/
+        .Background-Color-Dark-Grey {
+            background-color: #404040;
+        }
+        .Background-Color-White{
+            background-color:white;
+        }
+
+        /*Background hover colors*/
+        .Hover-Background-Color-Dark-Grey:hover {
+            background-color: #404040;
+        }
+
+        /*Text colors*/
+        .Text-Color-Dark-Grey {
+            color: #404040;
+        }
+
+        /*Hover text colors*/
+        .Hover-Text-Color-White:hover {
+            color: white;
+        }
+
+        .Hover-Text-Color-Dark-Grey:hover {
+            color: #404040;
+        }
+
+
+
+        .Button-Even-Spacing {
+            display: flex;
+            -ms-flex-wrap: wrap;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+        }
+
+        /*
+            Custom W3 CSS theme
+        */
+        .w3-theme-l5 {
+            color: #000 !important;
+            background-color: #f4f4f4 !important
+        }
+
+        .w3-theme-l4 {
+            color: #000 !important;
+            background-color: #d9d9d9 !important
+        }
+
+        .w3-theme-l3 {
+            color: #000 !important;
+            background-color: #b3b3b3 !important
+        }
+
+        .w3-theme-l2 {
+            color: #fff !important;
+            background-color: #8c8c8c !important
+        }
+
+        .w3-theme-l1 {
+            color: #fff !important;
+            background-color: #666666 !important
+        }
+
+        .w3-theme-d1 {
+            color: #fff !important;
+            background-color: #393939 !important
+        }
+
+        .w3-theme-d2 {
+            color: #fff !important;
+            background-color: #333333 !important
+        }
+
+        .w3-theme-d3 {
+            color: #fff !important;
+            background-color: #2d2d2d !important
+        }
+
+        .w3-theme-d4 {
+            color: #fff !important;
+            background-color: #262626 !important
+        }
+
+        .w3-theme-d5 {
+            color: #fff !important;
+            background-color: #202020 !important
+        }
+
+        .w3-theme-light {
+            color: #000 !important;
+            background-color: #f4f4f4 !important
+        }
+
+        .w3-theme-dark {
+            color: #fff !important;
+            background-color: #202020 !important
+        }
+
+        .w3-theme-action {
+            color: #fff !important;
+            background-color: #202020 !important
+        }
+
+        .w3-theme {
+            color: #fff !important;
+            background-color: #404040 !important
+        }
+
+        .w3-text-theme {
+            color: #404040 !important
+        }
+
+        .w3-border-theme {
+            border-color: #404040 !important
+        }
+
+        .w3-hover-theme:hover {
+            color: #fff !important;
+            background-color: #404040 !important
+        }
+
+        .w3-hover-text-theme:hover {
+            color: #404040 !important
+        }
+
+        .w3-hover-border-theme:hover {
+            border-color: #404040 !important
+        }
+
+
+    </style>
     <style>
         .buttonHover:hover > .buttonChild{
             filter: invert(100%);
@@ -21,10 +174,11 @@
                 <asp:ImageButton
                     ID="btnHome"
                     runat="server"
-                    ImageUrl="Sources/Images/MediaPlayer2Small.png"
+                    ImageUrl="~/Sources/Images/MediaPlayer2Small.png"
                     Height="18px"
                     CssClass="buttonChild"
-                    OnClick="btnHome_Click "/>
+                    OnClick="btnHome_Click"
+                    AlternateText="Home"/>
             </div>
             <div class="w3-bar-item w3-right w3-red">Experimental</div>
             
@@ -32,20 +186,18 @@
 
         <div class="w3-panel" id="pnlVideo">
             <div class="w3-container w3-border w3-border-theme w3-center">
-                <canvas
-                    runat="server"
-                    id="playerWindow"
-                    class=" w3-border
-                    w3-border-theme"
-                    style="display:none">
-                </canvas>
                 <img
                     id="frame1"
                     alt="Player window"
-                    src="http://toshiba/Sources/Images/Under_Construction/UnderConstruction.png"
-                    height="480px"
-                    style="display:normal; text-align:center" />
-                <audio id="audio" src='<%= VideoURL %>/audio.mp3' hidden="hidden"></audio>
+                    src=<%= LoadingIcon %>
+                    style=" display:normal;
+                            text-align:center;
+                            max-height: 480px;
+                            max-width: 100%" />
+                <audio
+                    id="audio"
+                    src='<%= VideoURL %>/audio.mp3'
+                    hidden="hidden"></audio>
                 <!--Preloaded frames location-->
                 <img
                     id="preloadFrame1"
@@ -74,15 +226,63 @@
                     style="display:none" />
                 <!--Preloaded frames location-->
             </div>
-            <div class="w3-white">
-                <div class="w3-theme" style="width: 50%; height: 5px"></div>
-            </div>
             <div id="pnlPlayerControls" class="w3-container w3-theme-d5" style="display:none">
                 <div class="w3-bar">
-                    <div id="btnControlPlay" class="w3-bar-item w3-button w3-hover-white buttonHover"><img id="btnInnerControlPlay" class="buttonChild" src="Sources/Images/Controls/PlayW.png" alt="MediaPlayer" style="height:20px" /></div>
-                    <div id="btnControlReverse" class="w3-bar-item w3-button w3-hover-white buttonHover"><img class="buttonChild" src="Sources/Images/Controls/BackwardW.png" alt="MediaPlayer" style="height:20px" /></div>
-                    <div id="btnControlFastForward" class="w3-bar-item w3-button w3-hover-white buttonHover"><img class="buttonChild" src="Sources/Images/Controls/ForwardW.png" alt="MediaPlayer" style="height:20px" /></div>
-                    <div class="w3-bar-item w3-right">0:00:00</div>
+                    <div
+                        id="btnControlPlay"
+                        class=" w3-bar-item
+                                w3-button
+                                w3-hover-white
+                                buttonHover">
+                        <asp:Image
+                            ID="imgInnerControlPlay"
+                            runat="server"
+                            ImageUrl="Sources/Images/Controls/PlayW.png"
+                            CssClass="buttonChild"
+                            Height="20px" />
+                        
+                    </div>
+                    <div
+                        id="btnControlReverse"
+                        class=" w3-bar-item
+                                w3-button
+                                w3-hover-white
+                                buttonHover">
+                        <asp:Image
+                            ID="imgInnerControlReverse"
+                            runat="server"
+                            ImageUrl="~/Sources/Images/Controls/BackwardW.png"
+                            AlternateText="Reverse"
+                            CssClass="buttonChild"
+                            Height="20px" />
+                    </div>
+                    <div
+                        id="btnControlFastForward"
+                        class=" w3-bar-item
+                                w3-button
+                                w3-hover-white
+                                buttonHover">
+                        <asp:Image
+                            ID="imgInnerControlFastForward"
+                            runat="server"
+                            ImageUrl="~/Sources/Images/Controls/ForwardW.png"
+                            AlternateText="Fast Forward"
+                            CssClass="buttonChild"
+                            Height="20px" />
+                    </div>
+                    <div
+                        id="time"
+                        class=" w3-bar-item
+                                w3-right">
+                        0:00:00
+                    </div>
+                </div>
+            </div>
+            <div class="w3-white">
+                <div
+                    id="progressBar"
+                    class="w3-theme"
+                    style="width: 0%; height: 5px">
                 </div>
             </div>
         </div>
@@ -146,6 +346,8 @@
             //#region Player controls
             var isPlaying = false;
             var controlPlayButtonCSS = ""
+            var processProgressBar = <%= processProgressBar %>;
+            var processTime = <%= processTime %>;
             //#endregion Player controls
 
             //#endregion Player settings
@@ -165,6 +367,22 @@
             var frameIncrementValue = <%= playSpeedIncrement %>;
             var frameCounter = 0;
             //#endregion Video settings
+
+            // Checker information extractor
+            function ActualEndFrameExtractor(information) {
+                var extractedEndFrame;
+                var temp = information.split("|");
+                extractedEndFrame = parseInt(temp[1].substring(0, temp[1].search("<")));
+                return extractedEndFrame;
+            }
+
+            function VideoProcessingProgressWorker(information) {
+                var receivedValue;
+                var temp = information.split("|");
+                receivedValue = parseInt(temp[1].substring(0, temp[1].search("<")));
+                console.log(receivedValue);
+                document.getElementById("progressBar").style.width = ((receivedValue / endFrame) * 100) + "%";
+            }
 
             function processChecker() {
                 console.log("checking");
@@ -199,11 +417,17 @@
                                 // Reload audio source
                                 var audioSrc = document.getElementById("audio").src;
                                 document.getElementById("audio").src = audioSrc;
+                                document.getElementById("progressBar").style.width = "0%";
                                 if (audioStartSecond > 0) {
                                     document.getElementById("audio").currentTime = audioStartSecond;
                                 }
                                 InitialPreload();
                             }
+                            else {
+                                // Update progress bar
+                                VideoProcessingProgressWorker(pageInString);
+                            }
+
                         }
                     }
                 }
@@ -211,31 +435,49 @@
                 xhr.send();
             }
 
-            // Checker information extractor
-            function ActualEndFrameExtractor(information) {
-                var extractedEndFrame;
-                var temp = information.split("|");
-                extractedEndFrame = parseInt(temp[1].substring(0, temp[1].search("<")));
-                console.log(extractedEndFrame);
-                return extractedEndFrame;
-            }
+            
 
             function InitialPreload() {
                 document.getElementById("preloadFrame1").src = videoURL + "/" + startFrame + ".jpg";
-                document.getElementById("preloadFrame2").src = videoURL + "/" + (startFrame + 1) + ".jpg";
-                document.getElementById("preloadFrame3").src = videoURL + "/" + (startFrame + 2) + ".jpg";
-                document.getElementById("preloadFrame4").src = videoURL + "/" + (startFrame + 3) + ".jpg";
-                document.getElementById("preloadFrame5").src = videoURL + "/" + (startFrame + 4) + ".jpg";
+                document.getElementById("preloadFrame2").src = videoURL + "/" + ((startFrame + 1) + frameIncrementValue) + ".jpg";
+                document.getElementById("preloadFrame3").src = videoURL + "/" + ((startFrame + 2) + frameIncrementValue) + ".jpg";
+                document.getElementById("preloadFrame4").src = videoURL + "/" + ((startFrame + 3) + frameIncrementValue) + ".jpg";
+                document.getElementById("preloadFrame5").src = videoURL + "/" + ((startFrame + 4) + frameIncrementValue) + ".jpg";
+
+                if (processProgressBar) {
+                    document.getElementById("progressBar").style.display = "block";
+                }
+                else {
+                    document.getElementById("progressBar").style.display = "none";
+                }
+
+                if (processTime) {
+                    document.getElementById("time").style.display = "block";
+                }
+                else {
+                    document.getElementById("time").style.display = "none";
+                }
+
+                document.getElementById("frame1").src = document.getElementById("preloadFrame1").src;
             }
 
             function NextFramePreloadWorker() {
-                document.getElementById("preloadFrame" + currentUsedPreloadFrame).src = videoURL + "/" + (currentDisplayedFrame + 5 + ".jpg");
+                document.getElementById("preloadFrame" + currentUsedPreloadFrame).src = videoURL + "/" + ((currentDisplayedFrame + 5) + frameIncrementValue) + ".jpg";
             }
 
             function framePositionCorretor() {
-                // Function to correct frame position from audio position
+                // Function to correct frame position based on audio position
                 currentDisplayedFrame = parseInt(document.getElementById("audio").currentTime * videoFrameRate);
-                console.log("Corrector executed");
+            }
+
+            // Progressbar processing
+            function ProgressBarWorker() {
+                document.getElementById("progressBar").style.width = ((Math.floor(document.getElementById("audio").currentTime) / Math.floor(document.getElementById("audio").duration)) * 100) + "%";
+            }
+
+            // Time processing
+            function TimeWorker() {
+
             }
 
             // Main function
@@ -252,6 +494,15 @@
             function SequencePlayer() {
                 document.getElementById("frame1").src = document.getElementById("preloadFrame" + currentUsedPreloadFrame).src;
                 NextFramePreloadWorker();
+
+                frameCounter++;
+                if (frameCounter === parseInt(videoFrameRate)) {
+                    if (frameIncrementValue === 0) {
+                        framePositionCorretor();
+                    }
+                    frameCounter = 0;
+                }
+
                 currentUsedPreloadFrame++;
                 if (currentUsedPreloadFrame == 6) {
                     currentUsedPreloadFrame = 1;
@@ -259,24 +510,25 @@
                 else if (currentUsedPreloadFrame == 0) {
                     currentUsedPreloadFrame = 5;
                 }
-                currentDisplayedFrame++;
+                currentDisplayedFrame = (currentDisplayedFrame + 1) + frameIncrementValue;
                 if (currentDisplayedFrame === endFrame) {
                     clearInterval(animationId);
                     
                 }
                 //frameCounter++;
-                //if (frameCounter === 30) {
+                //if (frameCounter === parseInt(videoFrameRate)) {
                 //    framePositionCorretor();
                 //    frameCounter = 0;
+                    
                 //}
-
-
             }
 
             // Player functions
             function Play() {
                 if (!isVideoPlaying) {
-                    document.getElementById("audio").play();
+                    if (frameIncrementValue === 0) {
+                        document.getElementById("audio").play();
+                    }
                     animationId = setInterval(SequencePlayer, (1000 / videoFrameRate));
                 }
                 //window.location.replace("Error.aspx?id=96");
@@ -284,13 +536,29 @@
             }
 
             function FastForward() {
-                window.location.replace("Error.aspx?id=96");
+                //window.location.replace("Error.aspx?id=96");
                 console.log("Fast forward button is pressed");
+                frameIncrementValue++;
+                if (frameIncrementValue === 0 && isVideoPlaying === true) {
+                    document.getElementById("audio").play();
+                    alert("Playing Audio after clicking fast forward button is still under development");
+                }
+                else {
+                    document.getElementById("audio").pause();
+                }
             }
 
             function Reverse() {
-                window.location.replace("Error.aspx?id=96");
+                //window.location.replace("Error.aspx?id=96");
                 console.log("Reverse button is pressed");
+                frameIncrementValue--;
+                if (frameIncrementValue === 0 && isVideoPlaying === true) {
+                    document.getElementById("audio").play();
+                    alert("Playing Audio after clicking reverse button is still under development");
+                }
+                else {
+                    document.getElementById("audio").pause();
+                }
             }
 
             //#region Javascript button events
@@ -299,6 +567,18 @@
             var btnReverse = document.getElementById("btnControlReverse").onclick = function () { Reverse(); };
             //btnPlay.addEventListener("click", Play);
             //#endregion
+
+            //#region other events
+            var timeEvent = document.getElementById("audio").ontimeupdate = function () {
+                if (processProgressBar) {
+                    ProgressBarWorker();
+                    }
+                if (processTime) {
+                    TimeWorker();
+                }
+                document.getElementById('time').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);
+            };
+            //#endregion other events
         </script>
     </form>
 </body>

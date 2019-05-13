@@ -335,14 +335,14 @@ namespace MediaPlayer
                     #endregion Video frame rate
 
                     #region Local video save location
-                    if (processedVideoDirectory.EndsWith("\\"))
-                    {
-                        videoInfo.localAccessLocation = processedVideoDirectory + localFileName;
-                    }
-                    else
-                    {
-                        videoInfo.localAccessLocation = processedVideoDirectory + "\\" + localFileName;
-                    }
+                    //if (processedVideoDirectory.EndsWith("\\"))
+                    //{
+                    //    videoInfo.localAccessLocation = processedVideoDirectory + localFileName;
+                    //}
+                    //else
+                    //{
+                    //    videoInfo.localAccessLocation = processedVideoDirectory + "\\" + localFileName;
+                    //}
                     #endregion Local video save location
 
                     #region Network video save location
