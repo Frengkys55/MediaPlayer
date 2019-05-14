@@ -12,6 +12,9 @@ This application is just a simple web based video playing program similar to You
 # What type of video format the application can play
 This application uses FFmpeg for processing, so it supports all the format supported by FFmpeg
 
+# What it uses
+1. NReco (to run FFmpeg much simpler)
+
 # Known bugs
 1. Can't pause video
 2. Video and audio out-of-sync when playing from specific time
