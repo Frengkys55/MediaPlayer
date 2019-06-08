@@ -15,7 +15,7 @@ namespace MediaPlayer
         public static string LoadingIcon = string.Empty;
         public static string checkerAddress = string.Empty;
 
-        public static double videoDuration = 0;
+        public static string videoDuration = string.Empty;
         public static int audioStartDuration = 0;
         public static string playSpeedIncrement = "0";
         public static double videoStartRequestDuration = 0;
@@ -34,6 +34,7 @@ namespace MediaPlayer
         bool testMode = false;
         public static string processProgressBar = string.Empty;
         public static string processTime = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             CSSLoader();
@@ -74,7 +75,7 @@ namespace MediaPlayer
                         videoFileName = Request.QueryString["name"];
                     }
                     
-                    videoDuration = Convert.ToDouble(Request.QueryString["duration"]);
+                    videoDuration = TimeSecondToTimeStringConverter(Convert.ToDouble(Request.QueryString["duration"]));
                     videoFrameRate = Convert.ToDouble(Request.QueryString["framerate"]);
                     startFrame = Request.QueryString["startframe"];
                     videoTotalFrame = Request.QueryString["endframe"];
@@ -86,7 +87,7 @@ namespace MediaPlayer
                     if (Request.QueryString["timeposition"] != null)
                     {
                         audioStartDuration = TimeStringToSecondConverter(Request.QueryString["timeposition"]);
-                        if (audioStartDuration >= videoDuration)
+                        if (audioStartDuration >= Convert.ToDouble(Request.QueryString["duration"]))
                         {
                             audioStartDuration = 0;
                         }
@@ -187,7 +188,7 @@ namespace MediaPlayer
             {
                 VideoURL = string.Empty;
                 videoFileName = string.Empty;
-                videoDuration = 0;
+                videoDuration = "0";
                 videoFrameRate = 0;
                 startFrame = string.Empty;
                 videoTotalFrame = string.Empty;
@@ -333,6 +334,40 @@ namespace MediaPlayer
             
             return framePosition;
         }
+        private string TimeSecondToTimeStringConverter(double seconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
+            string convertedTime = string.Empty;
+
+            if (time.Hours.ToString().Length < 2)
+            {
+                convertedTime += "0" + time.Hours + ":";
+            }
+            else
+            {
+                convertedTime += time.Hours + ":";
+            }
+
+            if (time.Minutes.ToString().Length < 2)
+            {
+                convertedTime += "0" + time.Minutes + ":";
+            }
+            else
+            {
+                convertedTime += time.Minutes + ":";
+            }
+
+            if (time.Seconds.ToString().Length < 2)
+            {
+                convertedTime += "0" + time.Seconds;
+            }
+            else
+            {
+                convertedTime += time.Seconds;
+            }
+
+            return convertedTime;
+        }
 
         protected void CSSLoader()
         {
@@ -345,7 +380,7 @@ namespace MediaPlayer
             if (ConfigurationManager.AppSettings["UseExternalResources"] == "true")
             {
                 #region Home button
-                btnHome.ImageUrl = ConfigurationManager.AppSettings["MediaPlayerLogoLocationW"];
+                btnHome.ImageUrl = ConfigurationManager.AppSettings["PlayerPageUsedIcons"];
                 #endregion Home button
 
                 #region Play button

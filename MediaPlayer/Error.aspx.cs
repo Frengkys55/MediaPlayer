@@ -127,7 +127,8 @@ namespace MediaPlayer
                     lbError.Text = "This is an error page....";
                     backgroundPosition = "left";
                 }
-                #region File error handling
+
+                #region File error handling (Error code 2xx)
                 else if (Request.QueryString["id"] == "201")
                 {
                     lbError.Text = "Either file name or directory or both is too long....";
@@ -135,7 +136,34 @@ namespace MediaPlayer
                     urlHasBeenSet = true;
                     backgroundPosition = "right";
                 }
-                #endregion File error handling
+
+                else if (Request.QueryString["id"] == "202")
+                {
+                    lbError.Text = "Can't save the video...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
+                    errorImgURL = TeheperoImage;
+                    urlHasBeenSet = true;
+                    backgroundPosition = "right";
+                }
+
+                #endregion File error handling (Error code 2xx)
+
+                #region Processing error handling (Error code 3xx)
+                else if (Request.QueryString["id"] == "301")
+                {
+                    lbError.Text = "Processing video failed...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
+                    errorImgURL = TeheperoImage;
+                    urlHasBeenSet = true;
+                    backgroundPosition = "right";
+                }
+                #endregion Processing error handling (Error code 3xx)
                 else
                 {
                     lbError.Text = "hmmmmmmmm....";

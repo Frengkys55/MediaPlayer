@@ -94,6 +94,7 @@
     <Content Include="Connected Services\VideoProcessingService\MediaPlayer.VideoProcessingService.CompositeType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Connected Services\VideoProcessingService\Service1.wsdl" />
     <None Include="Connected Services\VideoProcessingService\Service1.xsd">
       <SubType>Designer</SubType>
@@ -108,7 +109,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\LocalHostPublish.pubxml" />
+    <None Include="Properties\PublishProfiles\TheServerPublish.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -216,7 +219,6 @@
     <Content Include="Sources\Fonts\SegoeUI\segoeui.ttf" />
     <Content Include="Sources\Fonts\SegoeUI\segoeuil.eot" />
     <Content Include="Sources\Fonts\SegoeUI\segoeuil.woff2" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Checker.aspx.cs">

@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MediaPlayer.Checker">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAIAAAAAAAAAABAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Checker.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaPlayer.Index">
+    <Position X="2.5" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>BAj/GdEQTIkGCNzIAEGIBAAEYAKCEpQBYAAgAhMAAAA=</HashCode>
+      <FileName>Index.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaPlayer.Processor">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Processor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaPlayer.Validator">
+    <Position X="6.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAQBAAAAAAAA=</HashCode>
+      <FileName>Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaPlayer.HelperClass">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAACAECAAEAAgCgAACAgAAAABMAAAAA=</HashCode>
+      <FileName>HelperClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MediaPlayer.VideoPlayerSettings" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAACBAAAAAIAAAAAAgAAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.DatabaseProcessedInfo" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAIAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.VideoInfo" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAQAgAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.ErrorInformation" Collapsed="true">
+    <Position X="10.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.FunctionResult" Collapsed="true">
+    <Position X="12.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.ProcessedVideo" Collapsed="true">
+    <Position X="14.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAACAgAAAAAAkBAAAAIgQAAQAoAAAgAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.VideoConfigurations" Collapsed="true">
+    <Position X="9" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAQAgAAAAAAAAAADAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.VideoProcessingSetting">
+    <Position X="9" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAQAQAAAAAAAAQAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.VideoOriginalInformation" Collapsed="true">
+    <Position X="10.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.VideoProcessingLocations">
+    <Position X="14.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAhAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.VideoProcessingInformation">
+    <Position X="12.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.DatabaseConfiguration">
+    <Position X="9" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAQAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.SystemConfiguration" Collapsed="true">
+    <Position X="12.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABABAAAAAAAAAAgIABAAAAAAgYAQCACEAAAABAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.UserInfo" Collapsed="true">
+    <Position X="14.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.ProcessingLog" Collapsed="true">
+    <Position X="10.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAEAAAAAAAAABABAAAAIAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MediaPlayer.ProcessedVideoLog">
+    <Position X="9" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="MediaPlayer.BufferMode" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAABAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.Resolution" Collapsed="true">
+    <Position X="9" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAIAAAAAAIAAAAAAAAAAAAAACAACAAAU=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.FrameRate" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAACAAAAAAEAAAAIAAAAAAAAAAAAAAAAAIAIAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.PreloadFrames" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.PlaySpeed" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAEAAAJAAAAAAAIAAAAAAACAAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.AccessMode" Collapsed="true">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.ProcessedStatus" Collapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAACAAAAAAABABAAAAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.PlayMode" Collapsed="true">
+    <Position X="9" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.OptionalSettingsStatus" Collapsed="true">
+    <Position X="14.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.StringConversionMode" Collapsed="true">
+    <Position X="10.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>SiteSettings.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.Result" Collapsed="true">
+    <Position X="10.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.VideoResolution" Collapsed="true">
+    <Position X="14.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAIAgAAAAACAAAAABAAAAAAACAAAAAAU=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.VideoFrameRate" Collapsed="true">
+    <Position X="12.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAQgAAAAAAAQAAAAAAAAAAAAAAIQ=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MediaPlayer.AudioProcessing" Collapsed="true">
+    <Position X="9" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACE=</HashCode>
+      <FileName>DataClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -53,8 +53,6 @@
             color: #404040;
         }
 
-
-
         .Button-Even-Spacing {
             display: flex;
             -ms-flex-wrap: wrap;
@@ -157,8 +155,6 @@
         .w3-hover-border-theme:hover {
             border-color: #404040 !important
         }
-
-
     </style>
 
     <style>
@@ -398,7 +394,7 @@
 
         <style>
             body{
-                background: url('http://toshiba/Sources/Images/Other/HonkaiGakuen.jpg') no-repeat center center fixed; 
+                background: url('<%= backgroundImage0 %>') no-repeat center center fixed; 
 			    -webkit-background-size: cover;
 			    -moz-background-size: cover;
 			    -o-background-size: cover;
@@ -413,8 +409,6 @@
                 z-index:-20;
             }
         </style>
-        <script src="http://toshiba/Sources/JavaScript/jquery.js" type="text/javascript"></script>
-        <script type="text/javascript" src="http://toshiba/Sources/JavaScript/jquery.easing.1.3.js"></script>
         <script>
             var img1 = "url('" + '<%= backgroundImage1 %>' + "') no-repeat center center fixed";
             var img2 = "url('" + '<%= backgroundImage2 %>' + "') no-repeat center center fixed";

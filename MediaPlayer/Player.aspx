@@ -53,8 +53,6 @@
             color: #404040;
         }
 
-
-
         .Button-Even-Spacing {
             display: flex;
             -ms-flex-wrap: wrap;
@@ -192,8 +190,7 @@
                     src=<%= LoadingIcon %>
                     style=" display:normal;
                             text-align:center;
-                            max-height: 480px;
-                            max-width: 100%" />
+                            max-height:480px;" />
                 <audio
                     id="audio"
                     src='<%= VideoURL %>/audio.mp3'
@@ -274,7 +271,7 @@
                         id="time"
                         class=" w3-bar-item
                                 w3-right">
-                        0:00:00
+                        <%= videoDuration %>
                     </div>
                 </div>
             </div>
@@ -303,6 +300,13 @@
                 <img id="frame" alt="frame1" src="http://toshiba/Sources/Images/GIF/loading.gif" style="width:640px; position:absolute" class="w3-border w3-border-theme" />
             </div>
         </div>
+
+        <div class="w3-bottom w3-red">
+            <div>
+                Currently known bug: Fast forward and slowing down video bug (video loop)
+            </div>
+        </div>
+
         <script>
 
             //#region Player settings
@@ -365,6 +369,8 @@
             var audioLevel; // Not yet supported
             var audioStartSecond = <%= audioStartDuration %>;
             var frameIncrementValue = <%= playSpeedIncrement %>;
+            var frameHoldValue = 0;
+            var currentFrameHoldValue = 0;
             var frameCounter = 0;
             //#endregion Video settings
 
@@ -380,12 +386,10 @@
                 var receivedValue;
                 var temp = information.split("|");
                 receivedValue = parseInt(temp[1].substring(0, temp[1].search("<")));
-                console.log(receivedValue);
                 document.getElementById("progressBar").style.width = ((receivedValue / endFrame) * 100) + "%";
             }
 
             function processChecker() {
-                console.log("checking");
                 var startTag = "<value>";
                 var endTag = "</value>";
 
@@ -427,15 +431,12 @@
                                 // Update progress bar
                                 VideoProcessingProgressWorker(pageInString);
                             }
-
                         }
                     }
                 }
                 xhr.open('GET', '<%= CheckerAddress %>');
                 xhr.send();
             }
-
-            
 
             function InitialPreload() {
                 document.getElementById("preloadFrame1").src = videoURL + "/" + startFrame + ".jpg";
@@ -476,8 +477,33 @@
             }
 
             // Time processing
-            function TimeWorker() {
+            function TimeWorker(duration) {
+                duration = Number(duration);
 
+                var h = Math.floor(duration / 3600);
+                var m = Math.floor(duration % 3600 / 60);
+                var s = Math.floor(duration % 3600 % 60);
+
+                var durationInString = "";
+                if (h.toString().length < 2) {
+                    durationInString += "0" + h.toString() + ":";
+                }
+                else {
+                    durationInString += h.toString() + ":";
+                }
+                if (m.toString().length < 2) {
+                    durationInString += "0" + m.toString() + ":";
+                }
+                else {
+                    durationInString += m.toString() + ":";
+                }
+                if (s.toString().length < 2) {
+                    durationInString += "0" + s.toString();
+                }
+                else {
+                    durationInString += s.toString();
+                }
+                return durationInString;
             }
 
             // Main function
@@ -493,27 +519,39 @@
 
             function SequencePlayer() {
                 document.getElementById("frame1").src = document.getElementById("preloadFrame" + currentUsedPreloadFrame).src;
-                NextFramePreloadWorker();
 
-                frameCounter++;
-                if (frameCounter === parseInt(videoFrameRate)) {
-                    if (frameIncrementValue === 0) {
-                        framePositionCorretor();
+                if (frameHoldValue === 0 || currentFrameHoldValue === frameHoldValue) {
+
+                    NextFramePreloadWorker();
+
+                    frameCounter++;
+                    if (frameCounter === parseInt(videoFrameRate)) {
+                        if (frameIncrementValue === 0 && frameHoldValue === 0) {
+                            framePositionCorretor();
+                        }
+                        frameCounter = 0;
                     }
-                    frameCounter = 0;
-                }
 
-                currentUsedPreloadFrame++;
-                if (currentUsedPreloadFrame == 6) {
-                    currentUsedPreloadFrame = 1;
+                    currentUsedPreloadFrame++;
+                    if (currentUsedPreloadFrame == 6) {
+                        currentUsedPreloadFrame = 1;
+                    }
+                    else if (currentUsedPreloadFrame == 0) {
+                        currentUsedPreloadFrame = 5;
+                    }
+                    currentDisplayedFrame = (currentDisplayedFrame + 1) + frameIncrementValue;
+                    if (currentDisplayedFrame === endFrame) {
+                        clearInterval(animationId);
+                        currentDisplayedFrame = 0;
+                        isVideoPlaying = false;
+                    }
+
+                    if (frameHoldValue > 0) {
+                        currentFrameHoldValue = 0;
+                    }
                 }
-                else if (currentUsedPreloadFrame == 0) {
-                    currentUsedPreloadFrame = 5;
-                }
-                currentDisplayedFrame = (currentDisplayedFrame + 1) + frameIncrementValue;
-                if (currentDisplayedFrame === endFrame) {
-                    clearInterval(animationId);
-                    
+                else {
+                    currentFrameHoldValue++;
                 }
                 //frameCounter++;
                 //if (frameCounter === parseInt(videoFrameRate)) {
@@ -525,21 +563,39 @@
 
             // Player functions
             function Play() {
-                if (!isVideoPlaying) {
+                if (frameHoldValue > 0 || frameIncrementValue > 0) {
+                    frameIncrementValue = 0;
+                    frameHoldValue = 0;
+                }
+                if (!isVideoPlaying && (frameHoldValue === 0 || frameIncrementValue === 0)) {
+                    isVideoPlaying = true;
                     if (frameIncrementValue === 0) {
                         document.getElementById("audio").play();
                     }
                     animationId = setInterval(SequencePlayer, (1000 / videoFrameRate));
                 }
+                else {
+                    isVideoPlaying = false;
+                    clearInterval(animationId);
+                    document.getElementById("audio").pause();
+                }
                 //window.location.replace("Error.aspx?id=96");
                 //console.log("Play button is pressed");
+                
             }
 
             function FastForward() {
                 //window.location.replace("Error.aspx?id=96");
                 console.log("Fast forward button is pressed");
-                frameIncrementValue++;
+                if (frameHoldValue > 0) {
+                    frameHoldValue--;
+                }
+                else {
+                    frameIncrementValue++;
+                }
                 if (frameIncrementValue === 0 && isVideoPlaying === true) {
+                    document.getElementById("audio").stop();
+                    document.getElementById("audio").currentTime = currentDisplayedFrame * videoFrameRate;
                     document.getElementById("audio").play();
                     alert("Playing Audio after clicking fast forward button is still under development");
                 }
@@ -548,11 +604,20 @@
                 }
             }
 
-            function Reverse() {
+            function SlowDown() {
                 //window.location.replace("Error.aspx?id=96");
                 console.log("Reverse button is pressed");
-                frameIncrementValue--;
-                if (frameIncrementValue === 0 && isVideoPlaying === true) {
+                if (frameIncrementValue > 0) {
+                    frameIncrementValue--;
+                }
+                else {
+                    frameHoldValue++;
+                }
+                if (frameIncrementValue === 0 && frameHoldValue === 0 && isVideoPlaying === true) {
+
+                    //document.getElementById("audio").currentTime = currentDisplayedFrame * videoFrameRate; // still buggy
+                    document.getElementById("audio").stop();
+                    document.getElementById("audio").currentTime = currentDisplayedFrame * videoFrameRate;
                     document.getElementById("audio").play();
                     alert("Playing Audio after clicking reverse button is still under development");
                 }
@@ -564,7 +629,7 @@
             //#region Javascript button events
             var btnPlay = document.getElementById("btnControlPlay").onclick = function () { Play(); };
             var btnFastForward = document.getElementById("btnControlFastForward").onclick = function () { FastForward(); };
-            var btnReverse = document.getElementById("btnControlReverse").onclick = function () { Reverse(); };
+            var btnReverse = document.getElementById("btnControlReverse").onclick = function () { SlowDown(); };
             //btnPlay.addEventListener("click", Play);
             //#endregion
 
@@ -574,9 +639,9 @@
                     ProgressBarWorker();
                     }
                 if (processTime) {
-                    TimeWorker();
+                    document.getElementById("time").innerHTML = TimeWorker(this.currentTime);
                 }
-                document.getElementById('time').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);
+                //document.getElementById('time').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);
             };
             //#endregion other events
         </script>

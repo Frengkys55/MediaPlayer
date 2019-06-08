@@ -61,8 +61,7 @@ namespace MediaPlayer
         public Result functionResult;
         public ErrorInformation functionErrroInformation;
     }
-
-
+    
     #region Video informations
     #region From "Processor.cs" in WCFAIOProcessor service
     public struct ProcessedVideo

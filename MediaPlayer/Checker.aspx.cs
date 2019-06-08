@@ -101,7 +101,7 @@ namespace MediaPlayer
             }
             catch (Exception err)
             {
-                return "error";
+                return "error" + err.Message;
             }
 
             return receivedStatus;

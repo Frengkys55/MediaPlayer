@@ -662,7 +662,7 @@ namespace MediaPlayer
                 #endregion Video frame rate
 
                 #region Local video save location
-                processedVideo.localAccessLocation = videoInformation.VideoLocations.VideoLocation;
+                //processedVideo.localAccessLocation = videoInformation.VideoLocations.VideoLocation;
                 #endregion Local video save location
 
                 #region Network video save location

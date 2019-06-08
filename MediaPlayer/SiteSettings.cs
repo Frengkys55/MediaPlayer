@@ -89,8 +89,7 @@ namespace MediaPlayer
         DateTime VideoDuration;
         bool withAudio;
     }
-
-
+    
     public enum PlayMode
     {
         Url,
