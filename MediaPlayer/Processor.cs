@@ -260,6 +260,10 @@ namespace MediaPlayer
                         {
                             arguments += " height=" + videoHeight;
                         }
+                        else
+                        {
+                            arguments += " height=-1";
+                        }
                     }
                     #endregion Scaling
 
@@ -306,6 +310,7 @@ namespace MediaPlayer
 
                     #region Generate info
                     ProcessedVideo videoInfo = new ProcessedVideo();
+                    
 
                     #region File location informations
                     videoInfo.videoSource = videoInformation.VideoLocations.VideoLocation;
@@ -327,6 +332,7 @@ namespace MediaPlayer
                     else if (videoInformation.VideoSetting.frameRate == FrameRate.Default)
                     {
                         videoInfo.frameRate = processor.GetFrameRate(temporaryDownloadLocation);
+                        //videoInfo.frameRate = -1;
                     }
                     else
                     {

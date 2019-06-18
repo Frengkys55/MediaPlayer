@@ -14,6 +14,7 @@ namespace MediaPlayer
         public static string W3CSSLocation = string.Empty;
         public static string LoadingIcon = string.Empty;
         public static string checkerAddress = string.Empty;
+        public static string userRequestedURL = string.Empty;
 
         public static string videoDuration = string.Empty;
         public static int audioStartDuration = 0;
@@ -201,6 +202,8 @@ namespace MediaPlayer
                 startFrame = string.Empty;
                 playSpeedIncrement = string.Empty;
             }
+
+            userRequestedURL = Request.Url.AbsoluteUri;
         }
 
         protected void Page_Init(object sender, EventArgs e)

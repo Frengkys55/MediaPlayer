@@ -16,6 +16,7 @@ namespace MediaPlayer
         public static string notInterestedImage = string.Empty;
         public static string TeheperoImage = string.Empty;
         public static string ConfuseImage = string.Empty;
+        public static string SadImage = string.Empty;
 
 
         public static string customCSSLocation = string.Empty;
@@ -50,6 +51,10 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "21")
                 {
                     lbError.Text = "Can't load your info. Something is wrong...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
                     errorImgURL = pokerFaceImage;
                     backgroundPosition = "left";
                     urlHasBeenSet = true;
@@ -57,6 +62,10 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "22")
                 {
                     lbError.Text = "Can't load your settings. Something is wrong...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
                     errorImgURL = pokerFaceImage;
                     backgroundPosition = "left";
                     urlHasBeenSet = true;
@@ -64,6 +73,10 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "23")
                 {
                     lbError.Text = "Can't create your info. Something is wrong...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
                     errorImgURL = pokerFaceImage;
                     backgroundPosition = "left";
                     urlHasBeenSet = true;
@@ -71,6 +84,10 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "24")
                 {
                     lbError.Text = "Can't create your settings. Something is wrong...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
                     errorImgURL = pokerFaceImage;
                     backgroundPosition = "left";
                     urlHasBeenSet = true;
@@ -78,6 +95,10 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "25")
                 {
                     lbError.Text = "Can't load your settings. Something is wrong...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br />" + Request.QueryString["message"];
+                    }
                     errorImgURL = TeheperoImage;
                     backgroundPosition = "left";
                     urlHasBeenSet = true;
@@ -164,6 +185,24 @@ namespace MediaPlayer
                     backgroundPosition = "right";
                 }
                 #endregion Processing error handling (Error code 3xx)
+
+                #region User related problems
+                else if (Request.QueryString["id"] == "901")
+                {
+                    lbError.Text = "It seems like the JavaScript was disabled.<br \\>This player uses javascript for playing video so please enable it and then click ";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<a href=\"" + Request.QueryString["message"] + "\">here</a>.";
+                    }
+                    else
+                    {
+                        lbError.Text += "<a href=\"Index.aspx\">here</a>.";
+                    }
+                    errorImgURL = SadImage;
+                    urlHasBeenSet = true;
+                    backgroundPosition = "left";
+                }
+                #endregion User related problems
                 else
                 {
                     lbError.Text = "hmmmmmmmm....";
@@ -193,6 +232,7 @@ errorImgURL = ConfuseImage;
                 notInterestedImage = ConfigurationManager.AppSettings["PokerFaceImageLocation"];
                 ConfuseImage = ConfigurationManager.AppSettings["ConfuseImageLocation"];
                 TeheperoImage = ConfigurationManager.AppSettings["TeheperoImageLocation"];
+                SadImage = ConfigurationManager.AppSettings["SadImageLocation"];
             }
             else
             {
@@ -200,6 +240,7 @@ errorImgURL = ConfuseImage;
                 notInterestedImage = "Sources/Images/anime_uninterested.png";
                 ConfuseImage = "Sources/Images/anime_confuse.png";
                 TeheperoImage = "Sources/Images/trtS8mw.png";
+                SadImage = "Sources/Images/(GIF Image, 600 × 400 pixels).gif";
             }
 
 

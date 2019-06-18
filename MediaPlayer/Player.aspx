@@ -390,32 +390,25 @@
             }
 
             function processChecker() {
-                var startTag = "<value>";
-                var endTag = "</value>";
-
                 var pageInString;
-                var result;
+                
 
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
-
                             // Write page to object
                             pageInString = xhr.responseText;
+
                             // Process object
-                            var x = pageInString.indexOf(startTag);
-                            //x = pageInString.indexOf(">", x);
-
-                            x = pageInString.search("success");
-                            var y = pageInString.lastIndexOf(endTag);
-
-                            //console.log(pageInString.split(x + 1, y));
-
-                            if (x !== -1) {
+                            if (pageInString.search("success") !== -1) {
+                                // Stop the checking
                                 clearInterval(checkerID);
+
+                                // Get the actual end frame
                                 endFrame = ActualEndFrameExtractor(pageInString);
 
+                                // Display controls
                                 document.getElementById("pnlPlayerControls").style.display = "block";
 
                                 // Reload audio source
@@ -425,10 +418,14 @@
                                 if (audioStartSecond > 0) {
                                     document.getElementById("audio").currentTime = audioStartSecond;
                                 }
+
+                                // Preload frames
                                 InitialPreload();
                             }
+                            else if (pageInString.search("error") !== -1) {
+                                window.location.replace("Error.aspx?id=301");
+                            }
                             else {
-                                // Update progress bar
                                 VideoProcessingProgressWorker(pageInString);
                             }
                         }
@@ -581,7 +578,6 @@
                 }
                 //window.location.replace("Error.aspx?id=96");
                 //console.log("Play button is pressed");
-                
             }
 
             function FastForward() {
@@ -645,6 +641,10 @@
             };
             //#endregion other events
         </script>
+        <noscript>
+            <style>html{display:none;}</style>
+            <meta http-equiv="refresh" content='0.0;url=error.aspx?id=901&message=<%= userRequestedURL %>' />
+        </noscript>
     </form>
 </body>
 </html>

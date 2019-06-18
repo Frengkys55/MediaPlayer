@@ -35,58 +35,72 @@ namespace MediaPlayer
             };
 
             // Try reading user information
-            if (HelperClass.CheckUser("MediaPlayerDatabase", "SessionInfo", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+            try
             {
-                // Load user info
-                SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", "SessionInfo", "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
-                userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
-            }
-            else
-            {
-                // Add user info
-                if (HelperClass.AddUser("MediaPlayerDatabase", "SessionInfo", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                if (HelperClass.CheckUser("MediaPlayerDatabase", "SessionInfo", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
                 {
-                    // Read user id
+                    // Load user info
                     SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", "SessionInfo", "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
-                    if (!mintaDataDatabase.TerdapatKesalahan)
-                    {
-                        userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
-                    }
-                    else
-                    {
-                        Response.Redirect("Error.aspx?id=21");
-                    }
+                    userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
                 }
                 else
                 {
-                    Response.Redirect("Error.aspx?id=23");
+                    // Add user info
+                    if (HelperClass.AddUser("MediaPlayerDatabase", "SessionInfo", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                    {
+                        // Read user id
+                        SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", "SessionInfo", "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                        if (!mintaDataDatabase.TerdapatKesalahan)
+                        {
+                            userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                        }
+                        else
+                        {
+                            Response.Redirect("Error.aspx?id=21");
+                        }
+                    }
+                    else
+                    {
+                        Response.Redirect("Error.aspx?id=23");
+                    }
                 }
+            }
+            catch (Exception err)
+            {
+                Response.Redirect("Error.aspx?id=21&message=" + err.Message);
             }
             #endregion User info loading
 
             #region User player configuration loading
             VideoPlayerSettings userPlayerSetting = new VideoPlayerSettings();
 
-            if (!IsPostBack)
+            try
             {
-                // Check user player configuration
-                if (HelperClass.CheckSettings("MediaPlayerDatabase", userInfo, "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                if (!IsPostBack)
                 {
-                    userPlayerSetting = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
-                }
-                else
-                {
-                    if (HelperClass.CreateNewSettings("MediaPlayerDatabase", "UserSettings", userInfo, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                    // Check user player configuration
+                    if (HelperClass.CheckSettings("MediaPlayerDatabase", userInfo, "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
                     {
                         userPlayerSetting = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
                     }
                     else
                     {
-                        Response.Redirect("Error.aspx?id=24");
+                        if (HelperClass.CreateNewSettings("MediaPlayerDatabase", "UserSettings", userInfo, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
+                        {
+                            userPlayerSetting = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                        }
+                        else
+                        {
+                            Response.Redirect("Error.aspx?id=24&message=Maybe a server problem");
+                        }
                     }
                 }
-            }
 
+            }
+            catch (Exception err)
+            {
+                Response.Redirect("Error.aspx?id=24&message=" + err.Message);
+            }
             #endregion User player configuration loading
 
             #endregion Preparation
