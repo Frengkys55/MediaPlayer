@@ -336,7 +336,8 @@
                                     runat="server"
                                     CssClass="w3-input w3-border w3-border-theme w3-bar-item"
                                     Width="120px"
-                                    ToolTip="Play speed">
+                                    ToolTip="Play speed"
+                                    style="display:none">
                                     <asp:ListItem Value="0">
                                     Speed
                                     </asp:ListItem>

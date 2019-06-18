@@ -560,62 +560,63 @@
 
             // Player functions
             function Play() {
-                if (frameHoldValue > 0 || frameIncrementValue > 0) {
-                    frameIncrementValue = 0;
-                    frameHoldValue = 0;
+
+                if (frameIncrementValue > 0 || frameHoldValue > 0) {
+                    document.getElementById("audio").currentTime = currentDisplayedFrame / videoFrameRate;
                 }
-                if (!isVideoPlaying && (frameHoldValue === 0 || frameIncrementValue === 0)) {
+
+                // Restore frameHoldValue and frameIncrementValue to 0
+                frameIncrementValue = 0;
+                frameHoldValue = 0;
+
+                // Stop current animation
+                clearInterval(animationId);
+                
+                if (!isVideoPlaying) {
                     isVideoPlaying = true;
-                    if (frameIncrementValue === 0) {
-                        document.getElementById("audio").play();
-                    }
+                    document.getElementById("audio").play();
                     animationId = setInterval(SequencePlayer, (1000 / videoFrameRate));
                 }
                 else {
                     isVideoPlaying = false;
-                    clearInterval(animationId);
+                    //clearInterval(animationId);
                     document.getElementById("audio").pause();
                 }
-                //window.location.replace("Error.aspx?id=96");
-                //console.log("Play button is pressed");
             }
 
-            function FastForward() {
-                //window.location.replace("Error.aspx?id=96");
-                console.log("Fast forward button is pressed");
+            function FastPlay() {
                 if (frameHoldValue > 0) {
                     frameHoldValue--;
+                    isVideoPlaying = false;
                 }
                 else {
                     frameIncrementValue++;
+                    isVideoPlaying = false;
                 }
-                if (frameIncrementValue === 0 && isVideoPlaying === true) {
-                    document.getElementById("audio").stop();
-                    document.getElementById("audio").currentTime = currentDisplayedFrame * videoFrameRate;
-                    document.getElementById("audio").play();
-                    alert("Playing Audio after clicking fast forward button is still under development");
+                if (frameIncrementValue === 0 && frameHoldValue === 0) {
+                    document.getElementById("audio").currentTime = currentDisplayedFrame / videoFrameRate;
+                    clearInterval(animationId);
+                    Play();
                 }
                 else {
                     document.getElementById("audio").pause();
                 }
             }
 
-            function SlowDown() {
+            function SlowPlay() {
                 //window.location.replace("Error.aspx?id=96");
-                console.log("Reverse button is pressed");
                 if (frameIncrementValue > 0) {
                     frameIncrementValue--;
+                    isVideoPlaying = false;
                 }
                 else {
                     frameHoldValue++;
+                    isVideoPlaying = false;
                 }
-                if (frameIncrementValue === 0 && frameHoldValue === 0 && isVideoPlaying === true) {
-
-                    //document.getElementById("audio").currentTime = currentDisplayedFrame * videoFrameRate; // still buggy
-                    document.getElementById("audio").stop();
-                    document.getElementById("audio").currentTime = currentDisplayedFrame * videoFrameRate;
-                    document.getElementById("audio").play();
-                    alert("Playing Audio after clicking reverse button is still under development");
+                if (frameIncrementValue === 0 && frameHoldValue === 0) {
+                    document.getElementById("audio").currentTime = currentDisplayedFrame / videoFrameRate;
+                    clearInterval(animationId);
+                    Play();
                 }
                 else {
                     document.getElementById("audio").pause();
@@ -624,8 +625,8 @@
 
             //#region Javascript button events
             var btnPlay = document.getElementById("btnControlPlay").onclick = function () { Play(); };
-            var btnFastForward = document.getElementById("btnControlFastForward").onclick = function () { FastForward(); };
-            var btnReverse = document.getElementById("btnControlReverse").onclick = function () { SlowDown(); };
+            var btnFastForward = document.getElementById("btnControlFastForward").onclick = function () { FastPlay(); };
+            var btnReverse = document.getElementById("btnControlReverse").onclick = function () { SlowPlay(); };
             //btnPlay.addEventListener("click", Play);
             //#endregion
 

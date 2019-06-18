@@ -187,7 +187,7 @@
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
                             <asp:ListItem Value="0">
-                                Original
+                                Original (bug)
                             </asp:ListItem>
                             <asp:ListItem Value="7" Enabled="false">
                                 Other
@@ -228,7 +228,7 @@
                             runat="server"
                             CssClass="w3-input w3-border w3-border-theme">
                             <asp:ListItem Value="-1">
-                                No override
+                                No override (bug)
                             </asp:ListItem>
                             <asp:ListItem Value="24">
                                 24fps
@@ -248,7 +248,8 @@
                 <asp:Panel
                     ID="pnlFrameBuffer"
                     runat="server"
-                    CssClass="w3-panel">
+                    CssClass="w3-panel"
+                    style="display:none">
                     <header>
                         <h4>
                             Buffer mode (Experimental)
@@ -265,10 +266,10 @@
                             <asp:ListItem Value="1" Selected="True">
                                 Single buffer
                             </asp:ListItem>
-                            <asp:ListItem Value="2">
+                            <asp:ListItem Value="2" Enabled="false">
                                 Double buffer (Experimental)
                             </asp:ListItem>
-                            <asp:ListItem Value="3">
+                            <asp:ListItem Value="3" Enabled="false">
                                 Triple buffer (Not yet supported)
                             </asp:ListItem>
                         </asp:DropDownList>
@@ -285,7 +286,7 @@
                     </header>
                     <div class="w3-container">
                         <div class="w3-text-red">
-                            Note: For now it will not preload frames, so make sure internet access is fast enough to handle real-time request.
+                            
                         </div>
                         <asp:DropDownList
                             ID="lstFramePreload"
