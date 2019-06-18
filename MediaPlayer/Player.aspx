@@ -392,7 +392,6 @@
             function processChecker() {
                 var pageInString;
                 
-
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4) {
@@ -503,39 +502,42 @@
                 return durationInString;
             }
 
-            // Main function
-            if (typeof Worker !== 'unidentified') {
-                checkerID = setInterval(processChecker, 1000);
-            }
-            else {
-                window.location.replace("Error.aspx?id=1");
-                document.getElementById("pnlVideo").style.visibility = "hidden";
-                document.getElementById("pnlError").style.visibility = "visible";
-                document.body.style = "background-image:url('http://toshiba/Sources/Images/other/anime-poker-face-2.png'); background-attachment:fixed; background-repeat:no-repeat; background-position:left bottom; background-size:30%;";
-            }
-
+            // Video availability checker
+            checkerID = setInterval(processChecker, 1000);
+            
             function SequencePlayer() {
+                // Replace frame source
                 document.getElementById("frame1").src = document.getElementById("preloadFrame" + currentUsedPreloadFrame).src;
 
                 if (frameHoldValue === 0 || currentFrameHoldValue === frameHoldValue) {
 
+                    // Load next frame
                     NextFramePreloadWorker();
 
+                    // Count frame
                     frameCounter++;
                     if (frameCounter === parseInt(videoFrameRate)) {
                         if (frameIncrementValue === 0 && frameHoldValue === 0) {
+
+                            // Correct frame position
                             framePositionCorretor();
                         }
+
+                        // Reset counter
                         frameCounter = 0;
                     }
 
+                    // Update "frame buffer"
                     currentUsedPreloadFrame++;
+
                     if (currentUsedPreloadFrame == 6) {
                         currentUsedPreloadFrame = 1;
                     }
                     else if (currentUsedPreloadFrame == 0) {
                         currentUsedPreloadFrame = 5;
                     }
+
+                    // Update frame position
                     currentDisplayedFrame = (currentDisplayedFrame + 1) + frameIncrementValue;
                     if (currentDisplayedFrame === endFrame) {
                         clearInterval(animationId);
@@ -543,29 +545,26 @@
                         isVideoPlaying = false;
                     }
 
+                    // Update frameHoldValue
                     if (frameHoldValue > 0) {
                         currentFrameHoldValue = 0;
                     }
                 }
                 else {
+                    // Hold frame
                     currentFrameHoldValue++;
                 }
-                //frameCounter++;
-                //if (frameCounter === parseInt(videoFrameRate)) {
-                //    framePositionCorretor();
-                //    frameCounter = 0;
-                    
-                //}
             }
 
             // Player functions
             function Play() {
 
                 if (frameIncrementValue > 0 || frameHoldValue > 0) {
+                    // Update audio position
                     document.getElementById("audio").currentTime = currentDisplayedFrame / videoFrameRate;
                 }
 
-                // Restore frameHoldValue and frameIncrementValue to 0
+                // Reset frameHoldValue and frameIncrementValue to 0
                 frameIncrementValue = 0;
                 frameHoldValue = 0;
 
@@ -574,7 +573,11 @@
                 
                 if (!isVideoPlaying) {
                     isVideoPlaying = true;
+
+                    // Play audio
                     document.getElementById("audio").play();
+
+                    // Start animation
                     animationId = setInterval(SequencePlayer, (1000 / videoFrameRate));
                 }
                 else {
@@ -585,26 +588,41 @@
             }
 
             function FastPlay() {
+                // Update frame control value
                 if (frameHoldValue > 0) {
+                    // Update frameHoldValue if variable is not equal to 0
                     frameHoldValue--;
+
+                    // Set video playing status to false (temporary)
                     isVideoPlaying = false;
                 }
                 else {
+                    // Upadte frameIncrementValue (refer to "frame skipping")
                     frameIncrementValue++;
+
+                    // Set video playing status to false (temporary)
                     isVideoPlaying = false;
                 }
+
+                // Play the video when all control variables equal to 0
                 if (frameIncrementValue === 0 && frameHoldValue === 0) {
+                    // Update frame audio position
                     document.getElementById("audio").currentTime = currentDisplayedFrame / videoFrameRate;
+
+                    // Stop animation
                     clearInterval(animationId);
+
+                    // Play animation
                     Play();
                 }
                 else {
+                    // Pause audio when all control variables not equal to 0
                     document.getElementById("audio").pause();
                 }
             }
 
             function SlowPlay() {
-                //window.location.replace("Error.aspx?id=96");
+                // Update control variables (refer to FastPlay())
                 if (frameIncrementValue > 0) {
                     frameIncrementValue--;
                     isVideoPlaying = false;
@@ -627,18 +645,19 @@
             var btnPlay = document.getElementById("btnControlPlay").onclick = function () { Play(); };
             var btnFastForward = document.getElementById("btnControlFastForward").onclick = function () { FastPlay(); };
             var btnReverse = document.getElementById("btnControlReverse").onclick = function () { SlowPlay(); };
-            //btnPlay.addEventListener("click", Play);
-            //#endregion
+            //#endregion Javascript button events
 
             //#region other events
             var timeEvent = document.getElementById("audio").ontimeupdate = function () {
+                // Process progress bar
                 if (processProgressBar) {
                     ProgressBarWorker();
-                    }
+                }
+
+                // Update time
                 if (processTime) {
                     document.getElementById("time").innerHTML = TimeWorker(this.currentTime);
                 }
-                //document.getElementById('time').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);
             };
             //#endregion other events
         </script>
