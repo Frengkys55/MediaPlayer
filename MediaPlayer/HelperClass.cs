@@ -128,6 +128,26 @@ namespace MediaPlayer
             return Peralatan.UbahDataDatabase(SQLCommand, connectionString);
         }
 
+        public static UserInfo ReadUserInfo(string SessionID)
+        {
+            UserInfo receivedUserInfo = new UserInfo();
+            receivedUserInfo.SessionID = SessionID;
+            SystemConfiguration systemConfiguration = SystemConfigurationLoader();
+            string userTableName = "UserSettings";
+
+            MintaDataDatabase mintaDataDatabase = new MintaDataDatabase("UserID", userTableName, "SessionID", receivedUserInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+
+            if (!mintaDataDatabase.TerdapatKesalahan)
+            {
+                receivedUserInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
+
+            return receivedUserInfo;
+        }
 
         public static VideoPlayerSettings ReadPlayerSettings(string sessionID, string database, string table, string connectionString)
         {
