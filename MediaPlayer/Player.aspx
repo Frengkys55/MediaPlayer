@@ -190,37 +190,14 @@
                     src=<%= LoadingIcon %>
                     style=" display:normal;
                             text-align:center;
-                            max-height:480px;" />
+                            max-height:480px;"
+                    class="w3-image" />
                 <audio
                     id="audio"
                     src='<%= VideoURL %>/audio.mp3'
                     hidden="hidden"></audio>
-                <!--Preloaded frames location-->
-                <img
-                    id="preloadFrame1"
-                    alt="preloadFrame1"
-                    src="#"
-                    style="display:none" />
-                <img
-                    id="preloadFrame2"
-                    alt="preloadFrame2"
-                    src="#"
-                    style="display:none" />
-                <img
-                    id="preloadFrame3"
-                    alt="preloadFrame3"
-                    src="#"
-                    style="display:none" />
-                <img
-                    id="preloadFrame4"
-                    alt="preloadFrame4"
-                    src="#"
-                    style="display:none" />
-                <img
-                    id="preloadFrame5"
-                    alt="preloadFrame5"
-                    src="#"
-                    style="display:none" />
+                <!--Preloaded frames location (Change the numbers in configuration file)-->
+                <%= frameBufferCode %>
                 <!--Preloaded frames location-->
             </div>
             <div id="pnlPlayerControls" class="w3-container w3-theme-d5" style="display:none">
@@ -303,7 +280,7 @@
 
         <div class="w3-bottom w3-red">
             <div>
-                Currently known bug: Fast forward and slowing down video bug (video loop)
+                
             </div>
         </div>
 
@@ -311,7 +288,7 @@
 
             //#region Player settings
 
-            //#region Frame buffer
+            //#region Frame buffer (Not used)
 
             /*
              * 1 = Single buffer
@@ -322,18 +299,16 @@
             var frameBufferMode = 1;
             var currentBuffer = 0;
             var nextBuffer = 0;
-            //#endregion Frame buffer
+            //#endregion Frame buffer (Not used)
 
-            //#region Frame rate
-            
-            //#region Frame preload
+            //#region Frame preload (Not used)
 
             /*
              * 0 = Enable preload
              * 1 = Disable preload
              */
             var framePreload = true;
-            //#endregion Frame preload
+            //#endregion Frame preload (Not used)
 
             //#region Animation information
             var animationId;
@@ -372,6 +347,7 @@
             var frameHoldValue = 0;
             var currentFrameHoldValue = 0;
             var frameCounter = 0;
+            var frameBufferNumber = <%= frameBufferNumber %>;
             //#endregion Video settings
 
             // Checker information extractor
@@ -436,10 +412,10 @@
 
             function InitialPreload() {
                 document.getElementById("preloadFrame1").src = videoURL + "/" + startFrame + ".jpg";
-                document.getElementById("preloadFrame2").src = videoURL + "/" + ((startFrame + 1) + frameIncrementValue) + ".jpg";
-                document.getElementById("preloadFrame3").src = videoURL + "/" + ((startFrame + 2) + frameIncrementValue) + ".jpg";
-                document.getElementById("preloadFrame4").src = videoURL + "/" + ((startFrame + 3) + frameIncrementValue) + ".jpg";
-                document.getElementById("preloadFrame5").src = videoURL + "/" + ((startFrame + 4) + frameIncrementValue) + ".jpg";
+
+                for (var i = 1; i <= frameBufferNumber; i++) {
+                    document.getElementById("preloadFrame" + i).src = videoURL + "/" + ((startFrame + i) + frameIncrementValue) + ".jpg";
+                }
 
                 if (processProgressBar) {
                     document.getElementById("progressBar").style.display = "block";
@@ -459,7 +435,7 @@
             }
 
             function NextFramePreloadWorker() {
-                document.getElementById("preloadFrame" + currentUsedPreloadFrame).src = videoURL + "/" + ((currentDisplayedFrame + 5) + frameIncrementValue) + ".jpg";
+                document.getElementById("preloadFrame" + currentUsedPreloadFrame).src = videoURL + "/" + ((currentDisplayedFrame + frameBufferNumber) + frameIncrementValue) + ".jpg";
             }
 
             function framePositionCorretor() {
@@ -518,7 +494,6 @@
                     frameCounter++;
                     if (frameCounter === parseInt(videoFrameRate)) {
                         if (frameIncrementValue === 0 && frameHoldValue === 0) {
-
                             // Correct frame position
                             framePositionCorretor();
                         }
@@ -530,11 +505,11 @@
                     // Update "frame buffer"
                     currentUsedPreloadFrame++;
 
-                    if (currentUsedPreloadFrame == 6) {
+                    if (currentUsedPreloadFrame == frameBufferNumber + 1) {
                         currentUsedPreloadFrame = 1;
                     }
                     else if (currentUsedPreloadFrame == 0) {
-                        currentUsedPreloadFrame = 5;
+                        currentUsedPreloadFrame = frameBufferNumber;
                     }
 
                     // Update frame position

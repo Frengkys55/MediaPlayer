@@ -190,6 +190,14 @@ namespace MediaPlayer
                 }
                 #endregion In line commands
 
+                #region Validation
+                if (HelperClass.CheckWebsite(txtURLSource.Text))
+                {
+                    Uri uri = new Uri(txtURLSource.Text);
+                    Response.Redirect("Error.aspx?id=902&message=" + uri.Host);
+                }
+                #endregion Validation
+
                 #region (Old) Main Processing
 
                 //#region Old main processing
@@ -255,10 +263,13 @@ namespace MediaPlayer
                 if (HelperClass.CheckUser(databaseName, userTableName, Session.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
                 {
                     userInfo.SessionID = Session.SessionID;
-                    SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
-                    if (!mintaDataDatabase.TerdapatKesalahan)
+                    try
                     {
-                        userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                        userInfo.UserID = HelperClass.ReadUserInfo(Session.SessionID).UserID;
+                    }
+                    catch (Exception err)
+                    {
+                        Response.Redirect("Error.aspx?id=22&message=" + err.Message);
                     }
                 }
                 else
@@ -268,10 +279,13 @@ namespace MediaPlayer
                     {
                         Response.Redirect("Error.aspx?id=23");
                     }
-                    SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
-                    if (!mintaDataDatabase.TerdapatKesalahan)
+                    try
                     {
-                        userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                        userInfo.UserID = HelperClass.ReadUserInfo(Session.SessionID).UserID;
+                    }
+                    catch (Exception err)
+                    {
+                        Response.Redirect("Error.aspx?id=22&message=" + err.Message);
                     }
                 }
                 #endregion User information loader
@@ -405,23 +419,14 @@ namespace MediaPlayer
             if (HelperClass.CheckUser(databaseName, userTableName, Session.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString))
             {
                 userInfo.SessionID = Session.SessionID;
-                // Read user information
                 try
                 {
-
+                    userInfo.UserID = HelperClass.ReadUserInfo(Session.SessionID).UserID;
                 }
-                catch (Exception)
+                catch (Exception err)
                 {
-
-                    throw;
+                    Response.Redirect("Error.aspx?id=22&message=" + err.Message);
                 }
-                HelperClass.ReadUserInfo(Session.SessionID);
-
-                //SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
-                //if (!mintaDataDatabase.TerdapatKesalahan)
-                //{
-                //    userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
-                //}
             }
             else
             {
@@ -430,10 +435,14 @@ namespace MediaPlayer
                 {
                     Response.Redirect("Error.aspx?id=23");
                 }
-                SQLClassPeralatan.MintaDataDatabase mintaDataDatabase = new SQLClassPeralatan.MintaDataDatabase("UserID", userTableName, "SessionID", userInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString); ;
-                if (!mintaDataDatabase.TerdapatKesalahan)
+
+                try
                 {
-                    userInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
+                    userInfo.UserID = HelperClass.ReadUserInfo(Session.SessionID).UserID;
+                }
+                catch (Exception err)
+                {
+                    Response.Redirect("Error.aspx?id=22&message=" + err.Message);
                 }
             }
             #endregion User information loader

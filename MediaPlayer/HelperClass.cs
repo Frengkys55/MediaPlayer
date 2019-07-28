@@ -26,6 +26,30 @@ namespace MediaPlayer
             return Peralatan.PeriksaDataDatabase(userID, "UserID", database, settingsTable, connectionString);
         }
         #endregion Settings checking
+
+        #region Website checking
+        public static bool CheckWebsite(string URL)
+        {
+            #region Preparation
+            List<string> blockList = new List<string>();
+            #endregion Preparation
+
+            #region Blocked website
+            blockList.Add("youtube");
+            blockList.Add("youtu.be");
+            #endregion Blocked website
+
+            foreach (var item in blockList)
+            {
+                if (URL.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        #endregion Website checking
+
         #endregion Checking
 
         #region Settings processing
@@ -133,19 +157,16 @@ namespace MediaPlayer
             UserInfo receivedUserInfo = new UserInfo();
             receivedUserInfo.SessionID = SessionID;
             SystemConfiguration systemConfiguration = SystemConfigurationLoader();
-            string userTableName = "UserSettings";
-
+            string userTableName = "SessionInfo";
             MintaDataDatabase mintaDataDatabase = new MintaDataDatabase("UserID", userTableName, "SessionID", receivedUserInfo.SessionID, systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
-
             if (!mintaDataDatabase.TerdapatKesalahan)
             {
                 receivedUserInfo.UserID = Convert.ToInt32(mintaDataDatabase.DataDiterima);
             }
             else
             {
-                throw new Exception("User not found");
+                throw new Exception("User information reading failed. User information not found?");
             }
-
             return receivedUserInfo;
         }
 
@@ -452,6 +473,10 @@ namespace MediaPlayer
             loadedConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString = ConfigurationManager.AppSettings["DatabaseConnectionString"];
             #endregion Database information
 
+            #region Player configurations
+            loadedConfiguration.NumberOfImageContainer = Convert.ToInt32(ConfigurationManager.AppSettings["NumberOfImageContainers"]);
+            #endregion Player configurations
+
             return loadedConfiguration;
         }
 
@@ -474,11 +499,25 @@ namespace MediaPlayer
         // Just a simple location loader for easier javascript and css loading
         public static string CustomCSSLoader()
         {
-            return ConfigurationManager.AppSettings["CustomCSSLocation"];
+            if (ConfigurationManager.AppSettings["UseExternalResources"] == "true")
+            {
+                return ConfigurationManager.AppSettings["CustomCSSLocation"];
+            }
+            else
+            {
+                return "/Sources/CSS/Custom.css";
+            }
         }
         public static string W3CSSLoader()
         {
-            return ConfigurationManager.AppSettings["W3CSSLocation"];
+            if (ConfigurationManager.AppSettings["UseExternalResources"] == "true")
+            {
+                return ConfigurationManager.AppSettings["W3CSSLocation"];
+            }
+            else
+            {
+                return "/Sources/CSS/W3S/W3.css";
+            }
         }
         #endregion Page settings loader
 

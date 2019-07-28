@@ -385,7 +385,7 @@ namespace MediaPlayer
 
                     #region Video information registration
                     //Re-read user settings
-                    VideoPlayerSettings settings = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MdeiaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                    VideoPlayerSettings settings = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
 
                     // Add process to database
                     HelperClass.SetVideoInfo(settings, userInfo, videoInfo);
@@ -705,7 +705,7 @@ namespace MediaPlayer
 
                 #region Video information registration
                 //Re-read user settings
-                VideoPlayerSettings settings = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MdeiaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
+                VideoPlayerSettings settings = HelperClass.ReadPlayerSettings(userInfo.SessionID, "MediaPlayerDatabase", "UserSettings", systemConfiguration.DatabaseProcessingConfiguration.DatabaseConectionString);
 
                 // Add process to database
                 HelperClass.SetVideoInfo(settings, userInfo, processedVideo);

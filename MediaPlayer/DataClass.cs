@@ -166,6 +166,8 @@ namespace MediaPlayer
         public ProcessWindowStyle windowStyle;
         #endregion VideoProcessing.exe window style
 
+        public int NumberOfImageContainer;
+
         public DatabaseConfiguration DatabaseProcessingConfiguration;
     }
 

@@ -17,7 +17,12 @@ namespace MediaPlayer
         public static string TeheperoImage = string.Empty;
         public static string ConfuseImage = string.Empty;
         public static string SadImage = string.Empty;
-
+        public static string SmirkImage = string.Empty;
+        public static string PlayDeadImage = string.Empty;
+        public static string CryingImage = string.Empty;
+        public static string NyaaImage = string.Empty;
+        public static string ShockedImage = string.Empty;
+        public static string LoveImage = string.Empty;
 
         public static string customCSSLocation = string.Empty;
         public static string W3CSSLocation = string.Empty;
@@ -202,6 +207,17 @@ namespace MediaPlayer
                     urlHasBeenSet = true;
                     backgroundPosition = "left";
                 }
+                else if (Request.QueryString["id"] == "902")
+                {
+                    lbError.Text = "You aren't alowed to download from that site...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br >" + Request.QueryString["message"];
+                    }
+                    errorImgURL = SmirkImage;
+                    urlHasBeenSet = true;
+                    backgroundPosition = "right";
+                }
                 #endregion User related problems
                 else
                 {
@@ -233,6 +249,12 @@ errorImgURL = ConfuseImage;
                 ConfuseImage = ConfigurationManager.AppSettings["ConfuseImageLocation"];
                 TeheperoImage = ConfigurationManager.AppSettings["TeheperoImageLocation"];
                 SadImage = ConfigurationManager.AppSettings["SadImageLocation"];
+                SmirkImage = ConfigurationManager.AppSettings["SmirkImageLocation"];
+                PlayDeadImage = ConfigurationManager.AppSettings["PlayDeadImageLocation"];
+                CryingImage = ConfigurationManager.AppSettings["CryingImageLocation"];
+                NyaaImage = ConfigurationManager.AppSettings["NyaaImageLocation"];
+                ShockedImage = ConfigurationManager.AppSettings["ShockedImageLocation"];
+                LoveImage = ConfigurationManager.AppSettings["LoveImageLocation"];
             }
             else
             {
@@ -241,9 +263,13 @@ errorImgURL = ConfuseImage;
                 ConfuseImage = "Sources/Images/anime_confuse.png";
                 TeheperoImage = "Sources/Images/trtS8mw.png";
                 SadImage = "Sources/Images/(GIF Image, 600 × 400 pixels).gif";
+                SmirkImage = "Sources/Images/SeekPng.com_jackie-chan-png_806732.png";
+                PlayDeadImage = "Sources/Images/641799.jpg";
+                CryingImage = "Sources/Images/641700.jpg";
+                NyaaImage = "Sources/Images/karen_by_ror362_d6fus3x.png";
+                ShockedImage = "Sources/Images/Z2OOJZg.png";
+                LoveImage = "Sources/Images/yaya_by_ror362_d6wwht4.png";
             }
-
-
         }
         protected void CSSLoader()
         {

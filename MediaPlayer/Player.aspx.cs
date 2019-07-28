@@ -29,6 +29,10 @@ namespace MediaPlayer
         public static string VideoURL = string.Empty;
         public static int videoWidth = 0;
         public static int videoHeight = 0;
+
+        public static string frameBufferCode = string.Empty;
+        public static string frameBufferNumber = "5";
+
         public static string VideoSequenceLocation = ConfigurationManager.AppSettings["videoSequenceLocation"];
         public static string CheckerAddress = string.Empty;
         string sessionID = string.Empty;
@@ -40,6 +44,7 @@ namespace MediaPlayer
         {
             CSSLoader();
             PageImageLoader();
+            PreloadBufferGenerator();
             if (Request.QueryString.Count != 0)
             {
                 if (Request.QueryString["new"] == "true")
@@ -423,6 +428,18 @@ namespace MediaPlayer
                 #region Loading icon
                 LoadingIcon = "\"Sources/Images/1522250897_1491486976_ภาพ 2.gif\"";
                 #endregion Loading icon
+            }
+        }
+
+        protected void PreloadBufferGenerator()
+        {
+            SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
+
+            frameBufferNumber = systemConfiguration.NumberOfImageContainer.ToString();
+            frameBufferCode = string.Empty;
+            for (int i = 0; i < systemConfiguration.NumberOfImageContainer; i++)
+            {
+                frameBufferCode += "<img id=\"preloadFrame"  + (i + 1) + "\" alt=\"preloadFrame" + (i + 1) + "\" src=\"#\" style=\"display:none\" />\n";
             }
         }
     }

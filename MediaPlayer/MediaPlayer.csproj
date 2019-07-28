@@ -185,6 +185,8 @@
     <Content Include="Sources\Images\1522251213_61c07d0dbe2619900d57ff2834cc1b26.gif" />
     <Content Include="Sources\Images\1522252016_qB178Bx.gif" />
     <Content Include="Sources\Images\26e.png" />
+    <Content Include="Sources\Images\641700.jpg" />
+    <Content Include="Sources\Images\641799.jpg" />
     <Content Include="Sources\Images\anime-poker-face-2.png" />
     <Content Include="Sources\Images\anime_confuse.png" />
     <Content Include="Sources\Images\anime_uninterested.png" />
@@ -196,12 +198,16 @@
     <Content Include="Sources\Images\Controls\noun_play_410051.png" />
     <Content Include="Sources\Images\Controls\Play.png" />
     <Content Include="Sources\Images\Controls\PlayW.png" />
+    <Content Include="Sources\Images\karen_by_ror362_d6fus3x.png" />
     <Content Include="Sources\Images\poker-face.png" />
     <Content Include="Sources\Images\MediaPlayer%28Small%29.png" />
     <Content Include="Sources\Images\MediaPlayer.png" />
     <Content Include="Sources\Images\MediaPlayer2.png" />
     <Content Include="Sources\Images\MediaPlayer2Small.png" />
+    <Content Include="Sources\Images\SeekPng.com_jackie-chan-png_806732.png" />
     <Content Include="Sources\Images\trtS8mw.png" />
+    <Content Include="Sources\Images\yaya_by_ror362_d6wwht4.png" />
+    <Content Include="Sources\Images\Z2OOJZg.png" />
     <Content Include="Sources\JavaScripts\ActualEndFrameChecker.js" />
     <Content Include="Sources\JavaScripts\donut-chart.js" />
     <Content Include="Sources\JavaScripts\FileDownloader.js" />
