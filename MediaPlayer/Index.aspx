@@ -227,7 +227,7 @@
                                 <asp:Button
                                     ID="btnLoadURLVideo"
                                     runat="server"
-                                    Text="Play Video"
+                                    Text="Load video"
                                     CssClass="  w3-button
                                             w3-white
                                             w3-border
@@ -392,7 +392,14 @@
                 Experimental
             </div>
         </div>
-
+        <div class="w3-container w3-bottom w3-hide-small w3-margin-bottom">
+            <div class="w3-bar">
+                <div class="w3-bar-item">
+                    A part of <a href="http://toshiba/" class="">Modular Project</a>
+                </div>
+                <a href="http://toshiba/" class="w3-bar-item w3-button w3-white w3-hover-theme w3-border w3-border-theme w3-right">Project Manager ></a>
+            </div>
+        </div>
         <style>
             body{
                 background: url('<%= backgroundImage0 %>') no-repeat center center fixed; 
@@ -451,6 +458,10 @@
                 document.body.style.backgroundSize = "cover"
             }, 10000);
         </script>
+        <noscript>
+            <style>html{display:none;}</style>
+            <meta http-equiv="refresh" content='0.0;url=error.aspx?id=901' />
+        </noscript>
     </form>
 </body>
 </html>

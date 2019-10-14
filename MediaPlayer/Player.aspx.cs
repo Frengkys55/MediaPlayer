@@ -208,7 +208,7 @@ namespace MediaPlayer
                 playSpeedIncrement = string.Empty;
             }
 
-            userRequestedURL = Request.Url.AbsoluteUri;
+            userRequestedURL = HelperClass.StringEncoderDecoder(Request.Url.AbsoluteUri, StringConversionMode.Encode) + "&encoded=true";
         }
 
         protected void Page_Init(object sender, EventArgs e)

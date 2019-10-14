@@ -168,7 +168,14 @@ namespace MediaPlayer
                     lbError.Text = "Can't save the video...";
                     if (Request.QueryString["message"] != null)
                     {
-                        lbError.Text += "<br />" + Request.QueryString["message"];
+                        if (Request.QueryString["encoded"] == "true")
+                        {
+                            lbError.Text += "<br />" + HelperClass.StringEncoderDecoder(Request.QueryString["message"], StringConversionMode.Decode);
+                        }
+                        else
+                        {
+                            lbError.Text += "<br />" + Request.QueryString["message"];
+                        }
                     }
                     errorImgURL = TeheperoImage;
                     urlHasBeenSet = true;
@@ -197,7 +204,15 @@ namespace MediaPlayer
                     lbError.Text = "It seems like the JavaScript was disabled.<br \\>This player uses javascript for playing video so please enable it and then click ";
                     if (Request.QueryString["message"] != null)
                     {
-                        lbError.Text += "<a href=\"" + Request.QueryString["message"] + "\">here</a>.";
+                        if (Request.QueryString["encoded"] == "true")
+                        {
+                            lbError.Text += "<a href=\"" + HelperClass.StringEncoderDecoder(Request.QueryString["message"], StringConversionMode.Decode) + "\">here</a>.";
+                            
+                        }
+                        else
+                        {
+                            lbError.Text += "<a href=\"" + Request.QueryString["message"] + "\">here</a>.";
+                        }
                     }
                     else
                     {
@@ -210,6 +225,17 @@ namespace MediaPlayer
                 else if (Request.QueryString["id"] == "902")
                 {
                     lbError.Text = "You aren't alowed to download from that site...";
+                    if (Request.QueryString["message"] != null)
+                    {
+                        lbError.Text += "<br >" + Request.QueryString["message"];
+                    }
+                    errorImgURL = SmirkImage;
+                    urlHasBeenSet = true;
+                    backgroundPosition = "right";
+                }
+                else if (Request.QueryString["id"] == "903")
+                {
+                    lbError.Text = "What i need is video and not page, so...";
                     if (Request.QueryString["message"] != null)
                     {
                         lbError.Text += "<br >" + Request.QueryString["message"];

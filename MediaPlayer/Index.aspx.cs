@@ -321,8 +321,6 @@ namespace MediaPlayer
 
                 #region Main process
                 ProcessedVideo processedVideo = mainProcessor.ProcessVideo(videoProcessingInformation, systemConfiguration, userInfo);
-                #endregion Main process
-
                 string queryString = string.Empty;
                 if (processedVideo.result == Result.Success)
                 {
@@ -343,10 +341,14 @@ namespace MediaPlayer
                     {
                         queryString += "&timeposition=" + txtCustomPlayTime.Text;
                     }
-
-
                     Response.Redirect("Player.aspx" + queryString);
                 }
+                else
+                {
+                    Response.Redirect("Error.aspx?id=301");
+                }
+                #endregion Main process
+
 
                 #endregion New processing
             }

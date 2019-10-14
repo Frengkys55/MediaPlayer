@@ -19,6 +19,7 @@ namespace MediaPlayer
             {
                 // Check if input is an http url
                 #region Preparation
+                ProcessedVideo videoInfo = new ProcessedVideo();
                 ProcessStartInfo startInfo = new ProcessStartInfo(systemConfiguration.VideoProcessorLocation);
                 FFProbe fFProbe = new FFProbe();
                 bool isHttp = Validator.IsHttp(videoInformation.VideoLocations.VideoLocation);
@@ -222,10 +223,19 @@ namespace MediaPlayer
                     #endregion Working directory download location (Second phase)
 
                     #region File download
-                    using (var client = new WebClient())
+                    try
                     {
-                        client.DownloadFile(videoInformation.VideoLocations.VideoLocation, temporaryDownloadLocation);
+                        using (var client = new WebClient())
+                        {
+                            client.DownloadFile(videoInformation.VideoLocations.VideoLocation, temporaryDownloadLocation);
+                        }
                     }
+                    catch (Exception err)
+                    {
+                        videoInfo.result = Result.Fail;
+                        return videoInfo;
+                    }
+                    
                     #endregion File download
 
                     #region VideoProcessing.exe argument configurations
@@ -309,8 +319,6 @@ namespace MediaPlayer
                     #endregion Video info extraction
 
                     #region Generate info
-                    ProcessedVideo videoInfo = new ProcessedVideo();
-                    
 
                     #region File location informations
                     videoInfo.videoSource = videoInformation.VideoLocations.VideoLocation;
