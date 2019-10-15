@@ -108,6 +108,7 @@
     <None Include="Connected Services\VideoProcessingService\Service13.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Loader.ashx" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\LocalHostPublish.pubxml" />
@@ -130,6 +131,7 @@
     <Content Include="Error.aspx" />
     <Content Include="Help.aspx" />
     <Content Include="Index.aspx" />
+    <Content Include="Loader.aspx" />
     <Content Include="Player.aspx" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
@@ -262,6 +264,16 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Loader.ashx.cs">
+      <DependentUpon>Loader.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Loader.aspx.cs">
+      <DependentUpon>Loader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Loader.aspx.designer.cs">
+      <DependentUpon>Loader.aspx</DependentUpon>
     </Compile>
     <Compile Include="Player.aspx.cs">
       <DependentUpon>Player.aspx</DependentUpon>
