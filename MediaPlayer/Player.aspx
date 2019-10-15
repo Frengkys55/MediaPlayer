@@ -156,7 +156,12 @@
             border-color: #404040 !important
         }
 
-
+        #pnlVideoWindow{
+            background-image:url("");
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+        }
     </style>
     <style>
         .buttonHover:hover > .buttonChild{
@@ -166,8 +171,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="w3-bar w3-theme-dark">
-            <div class="w3-bar-item"><%= videoFileName %></div>
+        <div class=<%= titleBarTheme %>>
+            <div id="videoTitle" class="w3-bar-item"><%= videoFileName %></div>
             <div class="w3-bar-item w3-right w3-hide-small w3-button w3-hover-white buttonHover">
                 <asp:ImageButton
                     ID="btnHome"
@@ -179,11 +184,23 @@
                     AlternateText="Home"/>
             </div>
             <div class="w3-bar-item w3-right w3-red">Experimental</div>
-            
+            <asp:Button
+                ID="btnThemeSwitch"
+                runat="server"
+                Text="Theme: Default"
+                CssClass="  w3-bar-item
+                            w3-right
+                            W3-button
+                            w3-theme-d5
+                            w3-hover-white
+                            w3-text-white
+                            w3-hover-text-theme"
+                ToolTip="Will restart video position if you click while playing video"
+                OnClick="btnThemeSwitch_Click" />
         </div>
 
         <div class="w3-panel" id="pnlVideo">
-            <div class="w3-container w3-border w3-border-theme w3-center">
+            <div id="pnlVideoWindow" class="w3-container w3-border w3-border-theme w3-center">
                 <img
                     id="frame1"
                     alt="Player window"
@@ -200,28 +217,21 @@
                 <%= frameBufferCode %>
                 <!--Preloaded frames location-->
             </div>
-            <div id="pnlPlayerControls" class="w3-container w3-theme-d5" style="display:none">
+            <div id="pnlPlayerControls" class=<%= controlBarTheme %> style="display:none">
                 <div class="w3-bar">
                     <div
                         id="btnControlPlay"
-                        class=" w3-bar-item
-                                w3-button
-                                w3-hover-white
-                                buttonHover">
+                        class=<%= buttonControlTheme %>>
                         <asp:Image
                             ID="imgInnerControlPlay"
                             runat="server"
                             ImageUrl="Sources/Images/Controls/PlayW.png"
                             CssClass="buttonChild"
                             Height="20px" />
-                        
                     </div>
                     <div
                         id="btnControlReverse"
-                        class=" w3-bar-item
-                                w3-button
-                                w3-hover-white
-                                buttonHover">
+                        class=<%= buttonControlTheme %>>
                         <asp:Image
                             ID="imgInnerControlReverse"
                             runat="server"
@@ -232,10 +242,7 @@
                     </div>
                     <div
                         id="btnControlFastForward"
-                        class=" w3-bar-item
-                                w3-button
-                                w3-hover-white
-                                buttonHover">
+                        class=<%= buttonControlTheme %>>
                         <asp:Image
                             ID="imgInnerControlFastForward"
                             runat="server"
@@ -310,6 +317,10 @@
             var framePreload = true;
             //#endregion Frame preload (Not used)
 
+            //#region Video information
+            var videoName = '<%= videoFileName %>';
+            //#endregion Video information
+
             //#region Animation information
             var animationId;
             var checkerID;
@@ -363,6 +374,25 @@
                 var temp = information.split("|");
                 receivedValue = parseInt(temp[1].substring(0, temp[1].search("<")));
                 document.getElementById("progressBar").style.width = ((receivedValue / endFrame) * 100) + "%";
+
+                // Show current image position and progress information
+                if (receivedValue == 0) {
+                    document.getElementById("videoTitle").innerHTML = videoName + " | Processing audio...";
+                }
+                else {
+                    document.getElementById("videoTitle").innerHTML = videoName + " | Processing frame " + receivedValue + " of " + endFrame + "...";
+
+                    if (frameCounter == 1) {
+                        document.getElementById("pnlVideoWindow").style.backgroundImage = "url('" + document.getElementById("preloadFrame1").src + "')";
+                        document.getElementById("preloadFrame1").src = videoURL + "/" + receivedValue + ".jpg";
+                        console.log(document.getElementById("preloadFrame1").src);
+                    }
+
+                    if (frameCounter == 0) {
+                        document.getElementById("preloadFrame1").src = videoURL + "/" + receivedValue + ".jpg";
+                    }
+                    frameCounter = 1;
+                }
             }
 
             function processChecker() {
@@ -396,6 +426,8 @@
 
                                 // Preload frames
                                 InitialPreload();
+                                document.getElementById("videoTitle").innerHTML = videoName;
+                                document.getElementById("pnlVideoWindow").style.background = "";
                             }
                             else if (pageInString.search("error") !== -1) {
                                 window.location.replace("Error.aspx?id=301");

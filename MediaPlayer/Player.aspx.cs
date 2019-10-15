@@ -10,6 +10,17 @@ namespace MediaPlayer
 {
     public partial class Player : System.Web.UI.Page
     {
+        #region Player theming
+        #region Header theming
+        public static string titleBarTheme = "\"w3-bar w3-theme-dark\"";
+        #endregion Header theming
+        #region Player control theming
+        public static string controlBarTheme = "\"w3-container w3-theme-d5\"";
+        public static string buttonControlTheme = "\"w3-bar-item w3-button w3-hover-white buttonHover\"";
+
+        #endregion Player control theming
+        #endregion Player theming
+
         public static string customCSSLocation = string.Empty;
         public static string W3CSSLocation = string.Empty;
         public static string LoadingIcon = string.Empty;
@@ -43,7 +54,11 @@ namespace MediaPlayer
         protected void Page_Load(object sender, EventArgs e)
         {
             CSSLoader();
-            PageImageLoader();
+            if (!IsPostBack)
+            {
+                PageImageLoader();
+                PageThemeLoader();
+            }
             PreloadBufferGenerator();
             if (Request.QueryString.Count != 0)
             {
@@ -224,6 +239,22 @@ namespace MediaPlayer
             Response.Redirect("Index.aspx");
         }
 
+        protected void btnThemeSwitch_Click(object sender, EventArgs e)
+        {
+            if (btnThemeSwitch.Text.ToLower().Contains("default"))
+            {
+                PageImageLoader(true);
+                PageThemeLoader(true);
+                btnThemeSwitch.Text = "Theme: Lines";
+            }
+            else
+            {
+                PageImageLoader();
+                PageThemeLoader();
+                btnThemeSwitch.Text = "Theme: Default";
+            }
+        }
+
         private int TimeStringToSecondConverter(string time)
         {
             #region Preparation
@@ -383,26 +414,46 @@ namespace MediaPlayer
             W3CSSLocation = "\"" + HelperClass.W3CSSLoader() + "\"";
         }
 
-        protected void PageImageLoader()
+        protected void PageImageLoader(bool useDarkIcons = false)
         {
             if (ConfigurationManager.AppSettings["UseExternalResources"] == "true")
             {
-                #region Home button
-                btnHome.ImageUrl = ConfigurationManager.AppSettings["PlayerPageUsedIcons"];
-                #endregion Home button
+                if (useDarkIcons)
+                {
+                    #region Home button
+                    btnHome.ImageUrl = ConfigurationManager.AppSettings["PlayerPageUsedIconsLight"];
+                    #endregion Home button
 
-                #region Play button
-                imgInnerControlPlay.ImageUrl = ConfigurationManager.AppSettings["PlayControlIconLocation"];
-                #endregion Play button
+                    #region Play button
+                    imgInnerControlPlay.ImageUrl = ConfigurationManager.AppSettings["PlayControlIconLocationLight"];
+                    #endregion Play button
 
-                #region Reverse button
-                imgInnerControlReverse.ImageUrl = ConfigurationManager.AppSettings["ReverseControlIconLocation"];
-                #endregion Reverse button
+                    #region Reverse button
+                    imgInnerControlReverse.ImageUrl = ConfigurationManager.AppSettings["ReverseControlIconLocationLight"];
+                    #endregion Reverse button
 
-                #region Fast forward button
-                imgInnerControlFastForward.ImageUrl = ConfigurationManager.AppSettings["FastForwardControlIconLocation"];
-                #endregion Fast forward button
+                    #region Fast forward button
+                    imgInnerControlFastForward.ImageUrl = ConfigurationManager.AppSettings["FastForwardControlIconLocationLight"];
+                    #endregion Fast forward button
+                }
+                else
+                {
+                    #region Home button
+                    btnHome.ImageUrl = ConfigurationManager.AppSettings["PlayerPageUsedIcons"];
+                    #endregion Home button
 
+                    #region Play button
+                    imgInnerControlPlay.ImageUrl = ConfigurationManager.AppSettings["PlayControlIconLocation"];
+                    #endregion Play button
+
+                    #region Reverse button
+                    imgInnerControlReverse.ImageUrl = ConfigurationManager.AppSettings["ReverseControlIconLocation"];
+                    #endregion Reverse button
+
+                    #region Fast forward button
+                    imgInnerControlFastForward.ImageUrl = ConfigurationManager.AppSettings["FastForwardControlIconLocation"];
+                    #endregion Fast forward button
+                }
                 #region Loading icon
                 LoadingIcon = "\"" + ConfigurationManager.AppSettings["LoadingIconLocation"] + "\"";
                 #endregion Loading icon
@@ -431,6 +482,22 @@ namespace MediaPlayer
             }
         }
 
+        protected void PageThemeLoader(bool lightTheme = false)
+        {
+            if (lightTheme)
+            {
+                titleBarTheme = "\"w3-bar w3-white w3-border-bottom w3-border-theme\"";
+                controlBarTheme = "\"w3-container w3-white w3-border-bottom w3-border-right w3-border-left w3-border-theme\"";
+                buttonControlTheme = "\"w3-bar-item w3-button w3-white w3-hover-theme buttonHover\"";
+            }
+            else
+            {
+                titleBarTheme = "\"w3-bar w3-theme-dark\"";
+                controlBarTheme = "\"w3-container w3-theme-d5\"";
+                buttonControlTheme = "\"w3-bar-item w3-button w3-hover-white buttonHover\"";
+    }
+        }
+
         protected void PreloadBufferGenerator()
         {
             SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
@@ -442,5 +509,7 @@ namespace MediaPlayer
                 frameBufferCode += "<img id=\"preloadFrame"  + (i + 1) + "\" alt=\"preloadFrame" + (i + 1) + "\" src=\"#\" style=\"display:none\" />\n";
             }
         }
+
+        
     }
 }
