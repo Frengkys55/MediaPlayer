@@ -15,8 +15,9 @@ This application uses FFmpeg for processing, so it supports all the format suppo
 # What it uses
 1. NReco (to run FFmpeg much simpler)
 
+# TODO List
+1. Running the application completely protable
+2. Resource loader for loading image from FTP server
+
 # Known bugs
-1. Can't pause video
-2. Video and audio out-of-sync when playing from specific time
-3. When slowing down video to normal speed, the video will freeze
-4. Can't play video at slower speed
+1. Video and audio out-of-sync when playing from specific time (This is a problem with VideoProcessing.exe)
