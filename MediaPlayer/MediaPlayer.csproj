@@ -110,8 +110,8 @@
     </None>
     <Content Include="Loader.ashx" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\LocalHostPublish.pubxml" />
+    <None Include="Properties\PublishProfiles\OneDrive publish.pubxml" />
     <None Include="Properties\PublishProfiles\TheServerPublish.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
