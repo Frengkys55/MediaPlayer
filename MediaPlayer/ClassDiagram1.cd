@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="MediaPlayer.Checker">
+  <Class Name="MediaPlayer.Checker" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAIAAAAAAAAAABAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MediaPlayer.Index" Collapsed="true">
-    <Position X="2.5" Y="0.5" Width="4" />
+    <Position X="2.5" Y="1.5" Width="4" />
     <TypeIdentifier>
       <HashCode>BAj/GdEQTIkGCNzIAEGIBAAEYAKCEpQBYAAgAhMAAAA=</HashCode>
       <FileName>Index.aspx.cs</FileName>
@@ -28,18 +28,32 @@
       <FileName>Validator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MediaPlayer.HelperClass">
+  <Class Name="MediaPlayer.HelperClass" Collapsed="true">
     <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>iAAAAgAAAAAAAAACAECAAEAAgCgAACAgAAAABMAAAAA=</HashCode>
       <FileName>HelperClass.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MediaPlayer.Player">
-    <Position X="2.5" Y="1.5" Width="4" />
+  <Class Name="MediaPlayer.Player" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="4" />
     <TypeIdentifier>
-      <HashCode>AQARBsCAgQQCoJAEAAgCToEAJEIgiCIBQQEQAAYAAAU=</HashCode>
+      <HashCode>AQARhsCAgQQCoJAEAAgCToEAJEIgiCIBQQEQAAYAAAU=</HashCode>
       <FileName>Player.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaPlayer.SiteSettings">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEBBEAAEAACAggJAEIAAAQAIACAAFAAAEAAAiIAACA=</HashCode>
+      <FileName>Settings.aspx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaPlayer.Error">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAMAAAAACAAAAACAAARAALAAEBAAAAABAACoQQAI=</HashCode>
+      <FileName>Error.aspx.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="MediaPlayer.VideoPlayerSettings" Collapsed="true">
@@ -70,17 +84,17 @@
       <FileName>DataClass.cs</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="MediaPlayer.FunctionResult" Collapsed="true">
+  <Struct Name="MediaPlayer.FunctionResult">
     <Position X="12.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DataClass.cs</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="MediaPlayer.ProcessedVideo" Collapsed="true">
+  <Struct Name="MediaPlayer.ProcessedVideo">
     <Position X="14.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAACAgAAAAAAkBAAAAIgQAAQAoAAAgAAAAAAAAAA=</HashCode>
+      <HashCode>gAAAAACAgAAAAAAkBAAAAIgQAAQAoAAAgAAAAAAAACA=</HashCode>
       <FileName>DataClass.cs</FileName>
     </TypeIdentifier>
   </Struct>

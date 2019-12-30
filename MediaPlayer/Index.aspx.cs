@@ -114,10 +114,11 @@ namespace MediaPlayer
                 }
                 else if (Request.QueryString["mode"] == "sample")
                 {
-                    Response.Redirect(LoadSample("sample1"));
+                    Response.Redirect("Error.aspx?id=2");
                 }
                 else if (Request.QueryString["mode"] == "other")
                 {
+                    Response.Redirect("Error.aspx?id=3");
                     mode = AccessMode.Other;
                 }
             }
@@ -182,7 +183,7 @@ namespace MediaPlayer
                 }
                 else if (txtURLSource.Text.ToLower() == "sample1" || txtURLSource.Text.ToLower() == "sample2" || txtURLSource.Text.ToLower() == "sample3" || txtURLSource.Text.ToLower() == "sample4" || txtURLSource.Text.ToLower() == "sample5")
                 {
-                    Response.Redirect(LoadSample(txtURLSource.Text));
+                    Response.Redirect("Error.aspx?id=2");
                 }
                 else if (txtURLSource.Text.ToLower() == "checker")
                 {
@@ -345,7 +346,7 @@ namespace MediaPlayer
                 }
                 else
                 {
-                    Response.Redirect("Error.aspx?id=301");
+                    Response.Redirect("Error.aspx?id=301&message=" + processedVideo.message);
                 }
                 #endregion Main process
 
@@ -523,6 +524,15 @@ namespace MediaPlayer
 
             #region Video saving
             uplVideo.SaveAs(processedVideo.localAccessLocation);
+
+            //try
+            //{
+            //}
+            //catch (Exception err)
+            //{
+            //    Response.Redirect("Error.aspx?id=202&message=" + err.Message);
+            //    return;
+            //}
             #endregion Video saving
 
             #region Information generation

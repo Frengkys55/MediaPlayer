@@ -39,6 +39,20 @@ namespace MediaPlayer
                     lbError.Text = "Couldn't play. The browser doesn't support this kind of things (for now)...";
                     backgroundPosition = "left";
                 }
+                else if (Request.QueryString["id"] == "2")
+                {
+                    lbError.Text = "Can't play sample video...tehepero...";
+                    errorImgURL = TeheperoImage;
+                    backgroundPosition = "right";
+                    urlHasBeenSet = true;
+                }
+                else if (Request.QueryString["id"] == "3")
+                {
+                    lbError.Text = "Sorry, i can't use that right now...";
+                    errorImgURL = SadImage;
+                    backgroundPosition = "right";
+                    urlHasBeenSet = true;
+                }
                 else if (Request.QueryString["id"] == "10")
                 {
                     lbError.Text = "There's an error that happening on the service (WCFAIOProcessor)";

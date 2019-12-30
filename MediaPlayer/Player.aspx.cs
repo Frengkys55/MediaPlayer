@@ -27,6 +27,7 @@ namespace MediaPlayer
         public static string checkerAddress = string.Empty;
         public static string userRequestedURL = string.Empty;
 
+        public static string displayPreloadImage = "false";
         public static string videoDuration = string.Empty;
         public static int audioStartDuration = 0;
         public static string playSpeedIncrement = "0";
@@ -54,12 +55,22 @@ namespace MediaPlayer
         protected void Page_Load(object sender, EventArgs e)
         {
             CSSLoader();
+
+            if (Request.QueryString["displaypreload"] == "true")
+            {
+                PreloadBufferGenerator(true);
+            }
+            else
+            {
+                PreloadBufferGenerator();
+            }
+
             if (!IsPostBack)
             {
                 PageImageLoader();
                 PageThemeLoader();
             }
-            PreloadBufferGenerator();
+
             if (Request.QueryString.Count != 0)
             {
                 if (Request.QueryString["new"] == "true")
@@ -207,6 +218,7 @@ namespace MediaPlayer
             }
             else
             {
+                displayPreloadImage = "false";
                 VideoURL = string.Empty;
                 videoFileName = string.Empty;
                 videoDuration = "0";
@@ -498,15 +510,20 @@ namespace MediaPlayer
     }
         }
 
-        protected void PreloadBufferGenerator()
+        protected void PreloadBufferGenerator(bool displayImage = false)
         {
             SystemConfiguration systemConfiguration = HelperClass.SystemConfigurationLoader();
 
             frameBufferNumber = systemConfiguration.NumberOfImageContainer.ToString();
             frameBufferCode = string.Empty;
+            string imageDisplayStyle = "none";
+            if (displayImage)
+            {
+                imageDisplayStyle = "visible";
+            }
             for (int i = 0; i < systemConfiguration.NumberOfImageContainer; i++)
             {
-                frameBufferCode += "<img id=\"preloadFrame"  + (i + 1) + "\" alt=\"preloadFrame" + (i + 1) + "\" src=\"#\" style=\"display:none\" />\n";
+                frameBufferCode += "<img id=\"preloadFrame"  + (i + 1) + "\" alt=\"preloadFrame" + (i + 1) + "\" src=\"#\" style=\"width:100px;display:" + imageDisplayStyle + "\" />\n";
             }
         }
 

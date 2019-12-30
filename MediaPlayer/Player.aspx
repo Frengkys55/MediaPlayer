@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= videoFileName.Replace("%20", " ") %> - MediaPlayer</title>
     <link rel="stylesheet" href=<%= W3CSSLocation %> />
     <style>
@@ -211,11 +212,10 @@
                     class="w3-image" />
                 <audio
                     id="audio"
+                    preload="auto"
                     src='<%= VideoURL %>/audio.mp3'
                     hidden="hidden"></audio>
-                <!--Preloaded frames location (Change the numbers in configuration file)-->
-                <%= frameBufferCode %>
-                <!--Preloaded frames location-->
+                
             </div>
             <div id="pnlPlayerControls" class=<%= controlBarTheme %> style="display:none">
                 <div class="w3-bar">
@@ -278,7 +278,9 @@
                 </h1>
             </div>
         </div>
-        
+        <!--Preloaded frames location (Change the numbers in configuration file)-->
+        <%= frameBufferCode %>
+        <!--Preloaded frames location-->
         <div hidden="hidden">
             <div class="" style="width:640px;z-index:2">
                 <img id="frame" alt="frame1" src="http://toshiba/Sources/Images/GIF/loading.gif" style="width:640px; position:absolute" class="w3-border w3-border-theme" />
@@ -330,7 +332,9 @@
             //#endregion Animation information
 
             //#region Preload information
+            var displayPreloadFrame = <%= displayPreloadImage %>;
             var currentUsedPreloadFrame = 1;
+            var previousUsedPreloadFrame = 0;
             //#endregion Preload information
 
             //#region Player controls
@@ -517,6 +521,14 @@
                 // Replace frame source
                 document.getElementById("frame1").src = document.getElementById("preloadFrame" + currentUsedPreloadFrame).src;
 
+                // Highlight used preload frame if displayPreloadFrame is set to true
+                if (displayPreloadFrame) {
+                    document.getElementById("preloadFrame" + currentUsedPreloadFrame).style.width = "120px";
+
+                    // remove border from previously used frame
+                    document.getElementById("preloadFrame" + previousUsedPreloadFrame).style.width = "100px";
+                }
+
                 if (frameHoldValue === 0 || currentFrameHoldValue === frameHoldValue) {
 
                     // Load next frame
@@ -535,6 +547,7 @@
                     }
 
                     // Update "frame buffer"
+                    previousUsedPreloadFrame = currentUsedPreloadFrame;
                     currentUsedPreloadFrame++;
 
                     if (currentUsedPreloadFrame == frameBufferNumber + 1) {
@@ -650,8 +663,8 @@
 
             //#region Javascript button events
             var btnPlay = document.getElementById("btnControlPlay").onclick = function () { Play(); };
-            var btnFastForward = document.getElementById("btnControlFastForward").onclick = function () { FastPlay(); };
-            var btnReverse = document.getElementById("btnControlReverse").onclick = function () { SlowPlay(); };
+            var btnFastPlay = document.getElementById("btnControlFastForward").onclick = function () { FastPlay(); };
+            var btnSlowPlay = document.getElementById("btnControlReverse").onclick = function () { SlowPlay(); };
             //#endregion Javascript button events
 
             //#region other events

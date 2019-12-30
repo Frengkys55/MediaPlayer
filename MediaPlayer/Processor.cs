@@ -437,7 +437,9 @@ namespace MediaPlayer
                 }
                 else
                 {
-                    throw new NotImplementedException("Video playing with protocol other than http is not supported");
+                    videoInfo.result = Result.Fail;
+                    videoInfo.message = "Video playing with protocol other than http is not supported";
+                    return videoInfo;
                 }
             }
             else
